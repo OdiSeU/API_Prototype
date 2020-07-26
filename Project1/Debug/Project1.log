@@ -2,5 +2,4 @@
 C:\Users\tongm\OneDrive\Documents\GameProject\API_Prototype\Project1\main.cpp(74,16): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 C:\Users\tongm\OneDrive\Documents\GameProject\API_Prototype\Project1\main.cpp(89,21): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 C:\Users\tongm\OneDrive\Documents\GameProject\API_Prototype\Project1\main.cpp(90,21): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  LINK : C:\Users\tongm\OneDrive\Documents\GameProject\API_Prototype\Debug\Project1.exe을(를) 찾을 수 없거나 마지막 증분 링크에 의해 빌드되지 않았습니다. 전체 링크를 수행하고 있습니다.
   Project1.vcxproj -> C:\Users\tongm\OneDrive\Documents\GameProject\API_Prototype\Debug\Project1.exe
