@@ -1,5 +1,5 @@
 // 마스터 수정
-
+// 수정2
 #include <windows.h>
 #include <iostream>
 #include <cmath>
