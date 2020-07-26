@@ -1,0 +1,4 @@
+C:\Users\신민수\source\repos\WindowsProject1\Debug\WindowsProject1.exe
+C:\Users\신민수\source\repos\WindowsProject1\Debug\WindowsProject1.pdb
+C:\Users\신민수\Desktop\WindowsProject1\Debug\WindowsProject1.exe
+C:\Users\신민수\Desktop\WindowsProject1\Debug\WindowsProject1.pdb
