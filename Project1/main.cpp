@@ -1,3 +1,5 @@
+// 마스터 수정
+
 #include <windows.h>
 #include <iostream>
 #include <cmath>
