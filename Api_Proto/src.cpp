@@ -108,6 +108,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		break;
 
 	case WM_DESTROY:
+		g_bLoop = false;
 		PostQuitMessage(0);
 		break;
 	}
