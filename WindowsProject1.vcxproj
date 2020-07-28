@@ -141,14 +141,14 @@
   <ItemGroup>
     <ClInclude Include="Constant.h" />
     <ClInclude Include="framework.h" />
-    <ClInclude Include="Map.cpp" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="Resolution.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="WindowsProject1.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="character.cpp" />
+    <ClCompile Include="character.h" />
     <ClCompile Include="WindowsProject1.cpp" />
   </ItemGroup>
   <ItemGroup>

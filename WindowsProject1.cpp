@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cmath>
 #include "Constant.h"
-#include "Map.cpp"
+#include "Map.h"
 #include "Resolution.h"
 
 using namespace std;
