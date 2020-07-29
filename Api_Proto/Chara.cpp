@@ -8,7 +8,7 @@ Character::Character(int width, int height)
 	vy = 0;
 	Heart = 10;
 	Shield = 3;
-	JumpPower = 400;
+	JumpPower = 30;
 	AttackSpeed = 1;
 	Weapon = 0;
 }
@@ -27,3 +27,92 @@ void Character::draw(HDC hdc)
 {
 	Rectangle(hdc, getLeft(), getTop(), getRight(), getBottom());
 }
+
+void Character::MVRight(HDC hdc)
+{
+	if (GetAsyncKeyState('D') & 0x8000)
+	{
+		clear(hdc);
+		centerX = centerX + MVSpeed;
+	}
+}
+
+void Character::MVLeft(HDC hdc)
+{
+	if (GetAsyncKeyState('A') & 0x8000)
+	{
+		clear(hdc);
+		centerX = centerX - MVSpeed;
+	}
+}
+
+void Character::clear(HDC hdc)
+{
+	HPEN NewPen, OldPen;
+	NewPen = CreatePen(PS_NULL, 3, RGB(255, 255, 255));
+	OldPen = (HPEN)SelectObject(hdc, NewPen);
+
+	Rectangle(hdc, getLeft() - 1, getTop() - 1, getRight() + 1, getBottom() + 1);
+
+	SelectObject(hdc, OldPen);
+	DeleteObject(NewPen); // 펜 해제
+}
+
+/*
+void Character::Jump(HDC hdc)
+{	
+	if (GetAsyncKeyState(VK_SPACE) & 0x8000)
+	{
+		clear(hdc);
+		centerX = centerX - MVSpeed;
+	}
+	vy -= JumpPower;
+}
+*/
+
+void Character::Jump(HDC hdc, float delta)
+{	
+	//JumpPower = JumpPower - 0.1 * delta;
+	JumpPower = 400 * delta;
+	if (GetAsyncKeyState(VK_SPACE) & 0x0001)
+	{
+		JumpedY = centerY - 90; // 90이 점프 높이 결정
+	}
+	if (JumpedY < centerY)
+	{
+		clear(hdc);
+		centerY = centerY - JumpPower;
+		vy = 0;
+	}
+	else if (JumpedY >= centerY)
+	{
+		JumpedY = 10000;
+		update(hdc, delta);
+	}
+}
+
+void Character::update(HDC hdc, float delta)
+{
+	clear(hdc);
+	vy = vy + 0.098 * delta;
+	centerY = centerY + vy;
+}
+
+/*
+if ((GetAsyncKeyState(VK_SPACE) & 0x0001))
+{
+	//jumpflag = true;
+	JumpedY = Player.centerY - 90;
+}
+if (JumpedY < Player.centerY)
+{
+	Player.clear(g_hDC);
+	Player.centerY = Player.centerY - Player.JumpPower;
+}
+else if (JumpedY >= Player.centerY)
+{
+	Player.vy = 0;
+	JumpedY = 1000;
+	Player.update(g_hDC);
+}
+*/

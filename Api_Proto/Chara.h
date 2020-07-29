@@ -1,15 +1,18 @@
 #include <Windows.h>
 
 #pragma once
-#define CharaW 100
-#define CharaH 100
+#define CharaW 30
+#define CharaH 30
+#define CHARACTERSPEED 200
+
+static float JumpedY = 10000; // а║гагр y
 
 class Character
 {
 public:
 	float centerX, centerY;
 	float vx, vy;
-	int MVSpeed;
+	float MVSpeed;
 	int Heart;
 	int Shield;
 	float JumpPower;
@@ -23,4 +26,9 @@ public:
 	float getRight() { return centerX + CharaW / 2; }
 	float getLeft() { return centerX - CharaW / 2; }
 	void draw(HDC hdc);
+	void MVRight(HDC hdc);
+	void MVLeft(HDC hdc);
+	void clear(HDC hdc);
+	void update(HDC hdc, float delta);
+	void Jump(HDC hdc, float delta);
 };
