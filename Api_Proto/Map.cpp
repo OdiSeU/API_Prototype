@@ -1,6 +1,6 @@
 #include "Map.h"
 
-Map::Map(int H, int W)
+Map::Map()
 {
-	Height = H; Width = W;
+
 }

@@ -5,6 +5,11 @@
 #include "Proj.h"
 #include "Map.h"
 
+Character Player(CharaW, CharaH); // 캐릭 선언
+Map PlayGround;
+//맵 id
+int Mapnum = 0;
+
 // 루프 관련
 bool g_bLoop = true;
 
@@ -23,7 +28,42 @@ void Run()
 	QueryPerformanceCounter(&tTime);
 	g_fDeltatime = (tTime.QuadPart - g_tTime.QuadPart) / (float)g_tsecond.QuadPart;
 	g_tTime = tTime;
+	g_hDC = GetDC(g_hWnd);
 	//여기에 만든거 합치기
+	int borderX = PlayGround.getWidth(Mapnum) * SIZE_OF_MAPWIDTH + MAP_START_POINT_X;
+	int borderY = PlayGround.getHeight(Mapnum) * SIZE_OF_MAPHEIGHT + MAP_START_POINT_Y;
+
+	Player.MVSpeed = 300 * g_fDeltatime;
+
+	if (GetAsyncKeyState('D') & 0x8000)
+	{
+		Player.centerX = Player.centerX + Player.MVSpeed;
+		Player.centerY = Player.centerY + Player.MVSpeed;
+	}
+	if (GetAsyncKeyState('A') & 0x8000)
+	{
+		Player.centerX = Player.centerX - Player.MVSpeed;
+		Player.centerY = Player.centerY - Player.MVSpeed;
+	}
+
+	if (MAP_START_POINT_X > Player.getLeft())
+	{
+		Player.centerX = MAP_START_POINT_X + CharaW / 2;
+	}
+	if (MAP_START_POINT_Y > Player.getTop())
+	{
+		Player.centerY = MAP_START_POINT_Y + CharaH / 2;	
+	}
+	if (borderX < Player.getRight())
+	{
+		Player.centerX = borderX - CharaW / 2;
+	}
+	if (borderY < Player.getBottom())
+	{
+		Player.centerY = borderY - CharaH / 2;
+	}
+	Player.draw(g_hDC);
+	ReleaseDC(g_hWnd, g_hDC);
 }
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg,
@@ -36,6 +76,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, //WINAPI : 윈도
 { //szCmdLine : 커멘트라인 상에서 프로그램 구동 시 전달된 문자열
 	HWND hwnd; //iCmdShow : 윈도우가 화면에 출력될 형태
 	MSG msg;
+
+	QueryPerformanceFrequency(&g_tsecond);
+	QueryPerformanceCounter(&g_tTime);
+
 	WNDCLASS WndClass; //WndClass 라는 구조체 정의 
 	WndClass.style = CS_HREDRAW | CS_VREDRAW; //출력스타일 : 수직/수평의 변화시 다시 그림
 	WndClass.lpfnWndProc = WndProc; //프로시저 함수명
@@ -63,6 +107,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, //WINAPI : 윈도
 	);
 	ShowWindow(hwnd, nCmdShow); //윈도우의 화면 출력
 	UpdateWindow(hwnd); //O/S 에 WM_PAINT 메시지 전송
+
+	g_hWnd = hwnd;
 
 	while (g_bLoop)
 	{
@@ -95,9 +141,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	case WM_PAINT:
 		hdc = BeginPaint(hwnd, &ps);
 
-		for (int i = 0; i < COUNT_OF_MAPHEIGHT; i++)
+		for (int i = 0; i < PlayGround.getHeight(Mapnum); i++)
 		{
-			for (int j = 0; j < COUNT_OF_MAPWIDTH; j++)
+			for (int j = 0; j < PlayGround.getWidth(Mapnum); j++)
 			{
 				Rectangle(hdc, MAP_START_POINT_X + j * SIZE_OF_MAPWIDTH, MAP_START_POINT_Y + i * SIZE_OF_MAPHEIGHT,
 					MAP_START_POINT_X + j * SIZE_OF_MAPWIDTH + SIZE_OF_MAPWIDTH, MAP_START_POINT_Y + i * SIZE_OF_MAPHEIGHT + SIZE_OF_MAPHEIGHT);
@@ -106,6 +152,34 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 
 		EndPaint(hwnd, &ps);
 		break;
+
+	case WM_KEYDOWN:
+	{
+
+		Player.MVSpeed = 300 * g_fDeltatime;
+
+		if (GetAsyncKeyState('D') & 0x8000)
+		{
+			Player.centerX = Player.centerX + Player.MVSpeed;
+			Player.centerY = Player.centerY + Player.MVSpeed;
+		}
+		if (GetAsyncKeyState('A') & 0x8000)
+		{
+			Player.centerX = Player.centerX - Player.MVSpeed;
+			Player.centerY = Player.centerY - Player.MVSpeed;
+		}
+
+		if (GetAsyncKeyState(VK_SPACE) & 0x8000)
+		{
+			Player.centerX = Player.centerX + (g_fDeltatime * Player.JumpPower);
+			Player.centerY = Player.centerY + (g_fDeltatime * Player.JumpPower);
+		}
+		if (wParam = VK_DOWN)
+		{
+
+		}
+		break;
+	}
 
 	case WM_DESTROY:
 		g_bLoop = false;

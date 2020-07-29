@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Chara.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Proj.cpp" />
     <ClCompile Include="Resol.cpp" />

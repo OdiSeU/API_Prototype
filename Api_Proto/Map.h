@@ -1,7 +1,7 @@
 #pragma once
 // 맵 사각형 개수
-#define COUNT_OF_MAPWIDTH 33
-#define COUNT_OF_MAPHEIGHT 16
+#define MAX_OF_MAPWIDTH 40
+#define MAX_OF_MAPHEIGHT 40
 
 // 맵 사각형 크기
 #define SIZE_OF_MAPWIDTH 50
@@ -14,9 +14,7 @@
 class Map
 {
 	enum { Deadlock = 1, Floor };
-	int Height;
-	int Width;
-	unsigned char matrix[5][COUNT_OF_MAPHEIGHT][COUNT_OF_MAPWIDTH] =
+	unsigned char matrix[5][MAX_OF_MAPHEIGHT][MAX_OF_MAPWIDTH] =
 	{ { 
 		{1,1,1,1,1,1,1,1,1,1},
 		{1,0,0,0,0,0,0,0,0,1},
@@ -42,9 +40,26 @@ class Map
 		{1,0,0,0,0,0,0,0,0,1},
 		{1,1,1,1,1,1,1,1,1,1}
 		}
-
 	};
 public:
-	Map(int Height, int Width);
+	Map();
+	int getWidth(int num) 
+	{
+		int count = 0;
+		for (int i = 0; matrix[num][0][i] == 1; i++)
+		{
+			count++;
+		}
+		return count;
+	}
+	int getHeight(int num)
+	{
+		int count = 0;
+		for (int i = 0; matrix[num][i][0] == 1; i++)
+		{
+			count++;
+		}
+		return count;
+	}
 };
 
