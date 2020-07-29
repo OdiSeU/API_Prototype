@@ -61,5 +61,8 @@ public:
 		}
 		return count;
 	}
+	void drawMap(HDC hdc, int);
+	void drawBorder(HDC hdc, int);
+	void drawObject(HDC hdc, int Mapnum);
 };
 

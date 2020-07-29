@@ -4,6 +4,7 @@
 #define CharaW 30
 #define CharaH 30
 #define CHARACTERSPEED 200
+#define JUMPHEIGHT 50
 
 static float JumpedY = 10000; // а║гагр y
 

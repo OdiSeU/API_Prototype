@@ -58,19 +58,7 @@ void Character::clear(HDC hdc)
 	DeleteObject(NewPen); // Ææ ÇØÁ¦
 }
 
-/*
-void Character::Jump(HDC hdc)
-{	
-	if (GetAsyncKeyState(VK_SPACE) & 0x8000)
-	{
-		clear(hdc);
-		centerX = centerX - MVSpeed;
-	}
-	vy -= JumpPower;
-}
-*/
-
-void Character::Jump(HDC hdc, float delta)
+void Character::Jump(HDC hdc, float delta) // ¹Ì¿Ï
 {	
 	//JumpPower = JumpPower - 0.1 * delta;
 	JumpPower = 400 * delta;
@@ -84,7 +72,7 @@ void Character::Jump(HDC hdc, float delta)
 		centerY = centerY - JumpPower;
 		vy = 0;
 	}
-	else if (JumpedY >= centerY)
+	if (JumpedY >= centerY)
 	{
 		JumpedY = 10000;
 		update(hdc, delta);
@@ -97,22 +85,3 @@ void Character::update(HDC hdc, float delta)
 	vy = vy + 0.098 * delta;
 	centerY = centerY + vy;
 }
-
-/*
-if ((GetAsyncKeyState(VK_SPACE) & 0x0001))
-{
-	//jumpflag = true;
-	JumpedY = Player.centerY - 90;
-}
-if (JumpedY < Player.centerY)
-{
-	Player.clear(g_hDC);
-	Player.centerY = Player.centerY - Player.JumpPower;
-}
-else if (JumpedY >= Player.centerY)
-{
-	Player.vy = 0;
-	JumpedY = 1000;
-	Player.update(g_hDC);
-}
-*/

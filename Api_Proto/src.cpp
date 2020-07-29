@@ -35,16 +35,23 @@ void Run()
 	int borderX = PlayGround.getWidth(Mapnum) * SIZE_OF_MAPWIDTH + MAP_START_POINT_X;
 	int borderY = PlayGround.getHeight(Mapnum) * SIZE_OF_MAPHEIGHT + MAP_START_POINT_Y;
 
+	PlayGround.drawBorder(g_hDC, Mapnum);
+	PlayGround.drawObject(g_hDC, Mapnum);
+
 	Player.MVSpeed = CHARACTERSPEED * g_fDeltatime;
-	//Player.JumpPower = 400 * g_fDeltatime;
+	Player.JumpPower = 400 * g_fDeltatime;
 
 	Player.MVLeft(g_hDC);
 	Player.MVRight(g_hDC);
-	Player.Jump(g_hDC, g_fDeltatime);
-	/*
+	
+	// 점프, 함수로 넣으면 실행시 지랄나서 일단 빼둠
 	if ((GetAsyncKeyState(VK_SPACE) & 0x0001))
 	{
-		JumpedY = Player.centerY - 90;
+		JumpedY = Player.getTop() - JUMPHEIGHT;
+		if (JumpedY <= 100)
+		{
+			JumpedY = 100 + CharaH / 2;
+		}
 	}
 	if (JumpedY < Player.centerY)
 	{
@@ -57,7 +64,6 @@ void Run()
 		JumpedY = 10000;
 		Player.update(g_hDC, g_fDeltatime);
 	}
-	*/
 
 	if (MAP_START_POINT_X > Player.getLeft())
 	{
@@ -156,20 +162,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 
 		hdc = BeginPaint(hwnd, &ps);
 
-		for (int i = 0; i < PlayGround.getHeight(Mapnum); i++)
-		{
-			for (int j = 0; j < PlayGround.getWidth(Mapnum); j++)
-			{
-				Rectangle(hdc, MAP_START_POINT_X + j * SIZE_OF_MAPWIDTH, MAP_START_POINT_Y + i * SIZE_OF_MAPHEIGHT,
-					MAP_START_POINT_X + j * SIZE_OF_MAPWIDTH + SIZE_OF_MAPWIDTH, MAP_START_POINT_Y + i * SIZE_OF_MAPHEIGHT + SIZE_OF_MAPHEIGHT);
-			}
-		}
-
 		EndPaint(hwnd, &ps);
-		break;
-
-	case WM_KEYDOWN:
-		
 		break;
 	case WM_DESTROY:
 		g_bLoop = false;
