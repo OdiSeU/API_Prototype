@@ -3,7 +3,7 @@
 Character::Character(int width, int height)
 {
 	jumpNum = 2;
-	centerX = 500 + width / 2;
+	centerX = 600 + width / 2;
 	centerY = 500 + height / 2;
 	vx = 10;
 	vy = 0;

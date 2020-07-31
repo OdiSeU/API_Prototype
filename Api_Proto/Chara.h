@@ -5,7 +5,7 @@
 #define CharaH 30
 #define CHARACTERSPEED 250 // 캐릭터 좌우 속도
 #define Gravity 0.23 // 중력
-#define JumpP 0.075 // 점프 파워
+#define JumpP 0.2 // 점프 파워
 
 enum {DOWN, UP, LEFT, RIGHT};
 
