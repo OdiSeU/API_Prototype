@@ -6,9 +6,7 @@
 #include "Map.h"
 
 Character Player(CharaW, CharaH); // 캐릭 선언
-Map PlayGround;
-//맵 id
-int Mapnum = 0;
+Map PlayGround; // 맵 선언
 
 // 루프 관련
 bool g_bLoop = true;
@@ -30,31 +28,67 @@ void Run()
 	g_fDeltatime = (tTime.QuadPart - g_tTime.QuadPart) / (float)g_tsecond.QuadPart;
 	g_tTime = tTime;
 	g_hDC = GetDC(g_hWnd);
-	//여기에 만든거 합치기
-	int borderX = PlayGround.getWidth(Mapnum) * SIZE_OF_MAPWIDTH + MAP_START_POINT_X;
-	int borderY = PlayGround.getHeight(Mapnum) * SIZE_OF_MAPHEIGHT + MAP_START_POINT_Y;
+
+	PlayGround.drawBorder(g_hDC);
+	PlayGround.drawObject(g_hDC);
 
 	Player.MVSpeed = CHARACTERSPEED * g_fDeltatime;
+	Player.JumpPower = 400 * g_fDeltatime;
 
 	Player.MVLeft(g_hDC);
 	Player.MVRight(g_hDC);
-	Player.update(g_hDC);
+	
+
+	//Player.Jump(g_hDC, g_fDeltatime);
+	// 점프, 함수로 넣으면 실행시 지랄나서 일단 빼둠
+	if ((GetAsyncKeyState(VK_SPACE) & 0x0001))
+	{
+		JumpedY = Player.getTop() - JUMPHEIGHT;
+		Player.JumpStat = JUMPUP;
+		if (JumpedY <= 100)
+		{
+			JumpedY = 100 + CharaH / 2;
+		}
+	}
+	if (JumpedY < Player.centerY)
+	{
+		Player.clear(g_hDC);
+		Player.JumpStat = JUMPUP;
+		Player.centerY = Player.centerY - Player.JumpPower;
+		Player.vy = 0;
+	}
+	if (JumpedY >= Player.centerY)
+	{
+		Player.JumpStat = JUMPDOWN;
+		JumpedY = 10000;
+		Player.update(g_hDC, g_fDeltatime);
+	}
 
 	if (MAP_START_POINT_X > Player.getLeft())
 	{
 		Player.centerX = MAP_START_POINT_X + CharaW / 2;
 	}
-	if (MAP_START_POINT_Y > Player.getTop())
+	if (MAP_START_POINT_Y > Player.getTop()) // 천장 방지
 	{
 		Player.centerY = MAP_START_POINT_Y + CharaH / 2;	
 	}
-	if (borderX < Player.getRight())
+	if (PlayGround.borderX < Player.getRight())
 	{
-		Player.centerX = borderX - CharaW / 2;
+		Player.centerX = PlayGround.borderX - CharaW / 2;
 	}
-	if (borderY < Player.getBottom())
+	if (PlayGround.borderY < Player.getBottom()) // 바닥 방지
 	{
-		Player.centerY = borderY - CharaH / 2;
+		Player.centerY = PlayGround.borderY - CharaH / 2;
+		Player.vy = 0;
+	}
+	Player.MapXY = { (int)(Player.centerX - MAP_START_POINT_X) / SIZE_OF_MAPWIDTH , (int)(Player.centerY + CharaH / 2 - MAP_START_POINT_Y - 1.f) / SIZE_OF_MAPHEIGHT };
+	if (Player.JumpStat == JUMPDOWN && (MAP_START_POINT_Y + (Player.MapXY.y + 1) * SIZE_OF_MAPHEIGHT) - Player.centerY <= CharaH / 2 )
+	{
+		if (PlayGround.matrix[PlayGround.mapId][Player.MapXY.y + 1][(int)((Player.getLeft() - (float)MAP_START_POINT_X) / (float)SIZE_OF_MAPWIDTH)] == 2  || PlayGround.matrix[PlayGround.mapId][Player.MapXY.y + 1][(int)((Player.getRight() - (float)MAP_START_POINT_X) / (float)SIZE_OF_MAPWIDTH)] == 2)
+		{
+			Player.centerY = (MAP_START_POINT_Y + (Player.MapXY.y + 1) * SIZE_OF_MAPHEIGHT) - CharaH / 2;
+			Player.vy = 0;
+		}
 	}
 	Player.draw(g_hDC);
 	ReleaseDC(g_hWnd, g_hDC);
@@ -104,7 +138,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, //WINAPI : 윈도
 	QueryPerformanceFrequency(&g_tsecond);
 	QueryPerformanceCounter(&g_tTime);
 
-	while (g_bLoop)
+ 	while (g_bLoop)
 	{
 		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
 		{
@@ -136,20 +170,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 
 		hdc = BeginPaint(hwnd, &ps);
 
-		for (int i = 0; i < PlayGround.getHeight(Mapnum); i++)
-		{
-			for (int j = 0; j < PlayGround.getWidth(Mapnum); j++)
-			{
-				Rectangle(hdc, MAP_START_POINT_X + j * SIZE_OF_MAPWIDTH, MAP_START_POINT_Y + i * SIZE_OF_MAPHEIGHT,
-					MAP_START_POINT_X + j * SIZE_OF_MAPWIDTH + SIZE_OF_MAPWIDTH, MAP_START_POINT_Y + i * SIZE_OF_MAPHEIGHT + SIZE_OF_MAPHEIGHT);
-			}
-		}
-
 		EndPaint(hwnd, &ps);
-		break;
-
-	case WM_KEYDOWN:
-		
 		break;
 	case WM_DESTROY:
 		g_bLoop = false;

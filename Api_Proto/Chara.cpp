@@ -1,5 +1,5 @@
 #include "Chara.h"
-
+#include "Map.h"
 Character::Character(int width, int height)
 {
 	centerX = 200 + width / 2;
@@ -8,9 +8,10 @@ Character::Character(int width, int height)
 	vy = 0;
 	Heart = 10;
 	Shield = 3;
-	JumpPower = 30;
+	JumpPower = 400;
 	AttackSpeed = 1;
 	Weapon = 0;
+	JumpStat = JUMPDOWN;
 }
 
 /*
@@ -48,7 +49,6 @@ void Character::MVLeft(HDC hdc)
 
 void Character::clear(HDC hdc)
 {
-	HBRUSH NewBrush, OldBrush;
 	HPEN NewPen, OldPen;
 	NewPen = CreatePen(PS_NULL, 3, RGB(255, 255, 255));
 	OldPen = (HPEN)SelectObject(hdc, NewPen);
@@ -59,13 +59,32 @@ void Character::clear(HDC hdc)
 	DeleteObject(NewPen); // 펜 해제
 }
 
-void Character::Jump(HDC hdc, float delta_t)
-{
-	vy -= JumpPower;
+void Character::Jump(HDC hdc, float delta) // 미완
+{	
+	//JumpPower = JumpPower - 0.1 * delta;
+	JumpPower = 400 * delta;
+	if (GetAsyncKeyState(VK_SPACE) & 0x0001)
+	{
+		JumpedY = centerY - JUMPHEIGHT; // JUMPHEIGHT이 점프 높이 결정
+	}
+	if (JumpedY < centerY)
+	{
+		JumpStat = JUMPUP;
+		clear(hdc);
+		centerY = centerY - JumpPower;
+		vy = 0;
+	}
+	if (JumpedY >= centerY)
+	{
+		JumpedY = 10000;
+		JumpStat = JUMPDOWN;
+	}
+	update(hdc, delta);
 }
 
-void Character::update(HDC hdc)
+void Character::update(HDC hdc, float delta)
 {
-	vy += 0.98;
-	centerY += vy;
+	clear(hdc);
+	vy = vy + 0.23 * delta;
+	centerY = centerY + vy;
 }

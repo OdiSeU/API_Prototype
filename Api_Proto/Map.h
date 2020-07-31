@@ -13,12 +13,19 @@
 
 class Map
 {
+public:
+	int charX;
+	int charY;
+	int mapId;
+	int borderX;
+	int borderY;
+	POINT mapSizeNow;
 	enum { Deadlock = 1, Floor };
 	unsigned char matrix[5][MAX_OF_MAPHEIGHT][MAX_OF_MAPWIDTH] =
-	{ { 
+	{ {
 		{1,1,1,1,1,1,1,1,1,1},
 		{1,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,1},
+		{1,2,0,0,0,0,0,0,0,1},
 		{1,0,0,0,2,2,2,0,0,1},
 		{1,0,0,0,0,0,0,0,0,1},
 		{1,0,0,0,0,0,0,0,0,1},
@@ -31,7 +38,7 @@ class Map
 		{
 		{1,1,1,1,1,1,1,1,1,1},
 		{1,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,1},
+		{1,2,0,0,0,0,0,0,0,1},
 		{1,0,0,2,2,2,2,2,0,1},
 		{1,0,0,0,0,0,0,0,0,1},
 		{1,0,0,0,0,0,0,0,0,1},
@@ -43,7 +50,7 @@ class Map
 	};
 public:
 	Map();
-	int getWidth(int num) 
+	int getWidth(int num)
 	{
 		int count = 0;
 		for (int i = 0; matrix[num][0][i] == 1; i++)
@@ -61,5 +68,8 @@ public:
 		}
 		return count;
 	}
+	void drawMap(HDC hdc, int);
+	void drawBorder(HDC hdc);
+	void drawObject(HDC hdc);
 };
 
