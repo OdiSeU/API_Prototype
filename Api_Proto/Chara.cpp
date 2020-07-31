@@ -2,6 +2,8 @@
 
 Character::Character(int width, int height)
 {
+	jumpNum = 2;
+	jumped = false;
 	centerX = 200 + width / 2;
 	centerY = 200 + height / 2;
 	vx = 10;

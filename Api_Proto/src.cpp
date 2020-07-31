@@ -44,22 +44,17 @@ void Run()
 	Player.MVRight(g_hDC);
 	
 	// 점프, 함수로 넣으면 실행시 지랄나서 일단 빼둠
-	if ((GetAsyncKeyState(VK_SPACE) & 0x8000) && jumped == false)
+	if ((GetAsyncKeyState(VK_SPACE) & 0x0001) && Player.jumpNum >= 1)
 	{
-		Player.JumpPower = 600 * g_fDeltatime;
-		Player.vy = Player.JumpPower;
-		jumped = true;
+		Player.JumpPower = 0.1;
+		Player.vy = -Player.JumpPower;
+		Player.jumpNum -= 1;
 	}
-	if (jumped == true)
-	{
-		Player.vy = Player.vy - Gravity * g_fDeltatime;
-		Player.clear(g_hDC);
-		Player.centerY = Player.centerY - Player.vy;
-	}
-	if (jumped == false)
-	{
-		Player.update(g_hDC, g_fDeltatime);
-	}
+	Player.vy = Player.vy + Gravity * g_fDeltatime;
+	Player.clear(g_hDC);
+	Player.centerY = Player.centerY + Player.vy;
+
+
 	
 	/*
 	clear(hdc);
@@ -75,7 +70,6 @@ void Run()
 	{
 		Player.centerY = MAP_START_POINT_Y + CharaH / 2;
 		Player.vy = 0;
-		jumped = false;
 	}
 	if (borderX < Player.getRight())
 	{
@@ -85,7 +79,7 @@ void Run()
 	{
 		Player.centerY = borderY - CharaH / 2;
 		Player.vy = 0;
-		jumped = false;
+		Player.jumpNum = 2;
 	}
 	Player.draw(g_hDC);
 	ReleaseDC(g_hWnd, g_hDC);

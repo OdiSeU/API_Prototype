@@ -7,11 +7,11 @@
 #define CHARACTERSPEED 200
 #define Gravity 0.23
 
-static bool jumped = false;
-
 class Character
 {
 public:
+	int jumpNum;
+	bool jumped;
 	float centerX, centerY;
 	float vx, vy;
 	float MVSpeed;
