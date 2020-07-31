@@ -29,29 +29,17 @@ void Run()
 	g_tTime = tTime;
 	g_hDC = GetDC(g_hWnd);
 
-	PlayGround.drawBorder(g_hDC);
-	PlayGround.drawObject(g_hDC);
+	PlayGround.drawBorder(g_hDC); // 테두리 그리기
+	PlayGround.drawObject(g_hDC); // 물건 그리기
 
 	Player.MVSpeed = CHARACTERSPEED * g_fDeltatime;
 
-	Player.MVLeft(g_hDC);
-	Player.MVRight(g_hDC);	
+	Player.MVLeft(g_hDC); // 왼쪽
+	Player.MVRight(g_hDC); // 오른쪽	
+	Player.MVJump(g_hDC); // 점프
+	Player.Grav(g_hDC, g_fDeltatime); // 중력
 
-	if ((GetAsyncKeyState(VK_SPACE) & 0x0001) && Player.jumpNum >= 1)
-	{
-		Player.vy = -Player.JumpPower;
-		Player.jumpNum--;
-		Player.MVStat = UP;
-	}
-	Player.vy = Player.vy + Gravity * g_fDeltatime;
-	if (Player.vy > 0)
-	{
-		Player.MVStat = DOWN;
-	}
-	Player.clear(g_hDC);
-	Player.centerY = Player.centerY + Player.vy;
-
-	if (MAP_START_POINT_X > Player.getLeft())
+	if (MAP_START_POINT_X > Player.getLeft()) // 왼쪽 벽 방지
 	{
 		Player.centerX = MAP_START_POINT_X + CharaW / 2;
 	}
@@ -60,7 +48,7 @@ void Run()
 		Player.centerY = MAP_START_POINT_Y + CharaH / 2;	
 		Player.vy = 0;
 	}
-	if (PlayGround.borderX < Player.getRight())
+	if (PlayGround.borderX < Player.getRight()) // 오른쪽 벽 방지
 	{
 		Player.centerX = PlayGround.borderX - CharaW / 2;
 	}
@@ -74,7 +62,7 @@ void Run()
 	// 장애물 충돌 처리
 	int MindexX = (Player.centerX - MAP_START_POINT_X) / SIZE_OF_MAPWIDTH;
 	int MindexY = (Player.getBottom() - MAP_START_POINT_Y - 1.f) / SIZE_OF_MAPHEIGHT;
-	if (Player.MVStat == DOWN && (MAP_START_POINT_Y + (MindexY + 1) * SIZE_OF_MAPHEIGHT) <= Player.getBottom() )
+	if (Player.YStat == DOWN && (MAP_START_POINT_Y + (MindexY + 1) * SIZE_OF_MAPHEIGHT) <= Player.getBottom() )
 	{
 		if (PlayGround.matrix[PlayGround.mapId][MindexY + 1][(int)((Player.getLeft() - (float)MAP_START_POINT_X) / (float)SIZE_OF_MAPWIDTH)] == 2 || PlayGround.matrix[PlayGround.mapId][MindexY + 1][(int)((Player.getRight() - (float)MAP_START_POINT_X) / (float)SIZE_OF_MAPWIDTH)] == 2)
 		{

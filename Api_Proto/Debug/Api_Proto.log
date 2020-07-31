@@ -1,14 +1,7 @@
-﻿  Chara.cpp
-C:\Users\tongm\OneDrive\바탕 화면\Api_Proto\Chara.cpp(6,16): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\바탕 화면\Api_Proto\Chara.cpp(7,16): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\바탕 화면\Api_Proto\Chara.cpp(12,19): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
-C:\Users\tongm\OneDrive\바탕 화면\Api_Proto\Chara.cpp(21,59): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\바탕 화면\Api_Proto\Chara.cpp(21,46): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\바탕 화면\Api_Proto\Chara.cpp(21,34): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\바탕 화면\Api_Proto\Chara.cpp(21,24): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\바탕 화면\Api_Proto\Chara.cpp(48,74): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\바탕 화면\Api_Proto\Chara.cpp(48,57): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\바탕 화면\Api_Proto\Chara.cpp(48,41): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\바탕 화면\Api_Proto\Chara.cpp(48,27): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\바탕 화면\Api_Proto\Chara.cpp(57,10): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  Api_Proto.vcxproj -> C:\Users\tongm\OneDrive\바탕 화면\Debug\Api_Proto.exe
+﻿  src.cpp
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(53,39): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(57,39): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(63,14): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(64,14): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(69,77): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Api_Proto.vcxproj -> C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Debug\Api_Proto.exe

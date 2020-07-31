@@ -12,7 +12,8 @@ Character::Character(int width, int height)
 	JumpPower = JumpP;
 	AttackSpeed = 1;
 	Weapon = 0;
-	MVStat = NULL;
+	YStat = NULL;
+	XStat = NULL;
 	MVSpeed = NULL;
 }
 
@@ -27,6 +28,7 @@ void Character::MVRight(HDC hdc)
 	{
 		clear(hdc);
 		centerX = centerX + MVSpeed;
+		XStat = RIGHT;
 	}
 }
 
@@ -36,6 +38,17 @@ void Character::MVLeft(HDC hdc)
 	{
 		clear(hdc);
 		centerX = centerX - MVSpeed;
+		XStat = LEFT;
+	}
+}
+
+void Character::MVJump(HDC hdc)
+{
+	if ((GetAsyncKeyState(VK_SPACE) & 0x0001) && jumpNum >= 1)
+	{
+		vy = -JumpPower;
+		jumpNum--;
+		YStat = UP;
 	}
 }
 
@@ -51,9 +64,13 @@ void Character::clear(HDC hdc)
 	DeleteObject(NewPen); // 펜 해제
 }
 
-void Character::update(HDC hdc, float delta)
+void Character::Grav(HDC hdc, float delta) // 중력
 {
+	vy = vy + Gravity * delta; // 중력 가속도
+	if (vy >= 0)
+	{
+		YStat = DOWN;
+	}
 	clear(hdc);
-	vy = vy + Gravity * delta;
 	centerY = centerY + vy;
 }
