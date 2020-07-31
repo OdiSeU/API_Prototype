@@ -11,7 +11,7 @@ Character::Character(int width, int height)
 	JumpPower = 400;
 	AttackSpeed = 1;
 	Weapon = 0;
-	JumpStat = JUMPDOWN;
+	MVStat = NULL;
 }
 
 /*
@@ -69,7 +69,7 @@ void Character::Jump(HDC hdc, float delta) // 미완
 	}
 	if (JumpedY < centerY)
 	{
-		JumpStat = JUMPUP;
+		MVStat = JUMPUP;
 		clear(hdc);
 		centerY = centerY - JumpPower;
 		vy = 0;
@@ -77,7 +77,7 @@ void Character::Jump(HDC hdc, float delta) // 미완
 	if (JumpedY >= centerY)
 	{
 		JumpedY = 10000;
-		JumpStat = JUMPDOWN;
+		MVStat = JUMPDOWN;
 	}
 	update(hdc, delta);
 }

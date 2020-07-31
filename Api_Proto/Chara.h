@@ -14,8 +14,6 @@ static float JumpedY = 10000; // а║гагр y
 class Character
 {
 public:
-	int MapLX, MapRX;
-	POINT MapXY;
 	float centerX, centerY;
 	float vx, vy;
 	float MVSpeed;
@@ -24,7 +22,7 @@ public:
 	float JumpPower;
 	float AttackSpeed;
 	int Weapon;
-	short JumpStat;
+	short MVStat;
 
 public:
 	Character(int, int);

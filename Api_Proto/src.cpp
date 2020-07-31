@@ -44,7 +44,7 @@ void Run()
 	if ((GetAsyncKeyState(VK_SPACE) & 0x0001))
 	{
 		JumpedY = Player.getTop() - JUMPHEIGHT;
-		Player.JumpStat = JUMPUP;
+		Player.MVStat = JUMPUP;
 		if (JumpedY <= 100)
 		{
 			JumpedY = 100 + CharaH / 2;
@@ -53,13 +53,13 @@ void Run()
 	if (JumpedY < Player.centerY)
 	{
 		Player.clear(g_hDC);
-		Player.JumpStat = JUMPUP;
+		Player.MVStat = JUMPUP;
 		Player.centerY = Player.centerY - Player.JumpPower;
 		Player.vy = 0;
 	}
 	if (JumpedY >= Player.centerY)
 	{
-		Player.JumpStat = JUMPDOWN;
+		Player.MVStat = JUMPDOWN;
 		JumpedY = 10000;
 		Player.update(g_hDC, g_fDeltatime);
 	}
@@ -81,15 +81,17 @@ void Run()
 		Player.centerY = PlayGround.borderY - CharaH / 2;
 		Player.vy = 0;
 	}
-	Player.MapXY = { (int)(Player.centerX - MAP_START_POINT_X) / SIZE_OF_MAPWIDTH , (int)(Player.centerY + CharaH / 2 - MAP_START_POINT_Y - 1.f) / SIZE_OF_MAPHEIGHT };
-	if (Player.JumpStat == JUMPDOWN && (MAP_START_POINT_Y + (Player.MapXY.y + 1) * SIZE_OF_MAPHEIGHT) - Player.centerY <= CharaH / 2 )
+	int MindexX = (Player.centerX - MAP_START_POINT_X) / SIZE_OF_MAPWIDTH;
+	int MindexY = (Player.getBottom() - MAP_START_POINT_Y - 1.f) / SIZE_OF_MAPHEIGHT;
+	if (Player.MVStat == JUMPDOWN && (MAP_START_POINT_Y + (MindexY + 1) * SIZE_OF_MAPHEIGHT) <= Player.getBottom() )
 	{
-		if (PlayGround.matrix[PlayGround.mapId][Player.MapXY.y + 1][(int)((Player.getLeft() - (float)MAP_START_POINT_X) / (float)SIZE_OF_MAPWIDTH)] == 2  || PlayGround.matrix[PlayGround.mapId][Player.MapXY.y + 1][(int)((Player.getRight() - (float)MAP_START_POINT_X) / (float)SIZE_OF_MAPWIDTH)] == 2)
+		if (PlayGround.matrix[PlayGround.mapId][MindexY + 1][(int)((Player.getLeft() - (float)MAP_START_POINT_X) / (float)SIZE_OF_MAPWIDTH)] == 2 || PlayGround.matrix[PlayGround.mapId][MindexY + 1][(int)((Player.getRight() - (float)MAP_START_POINT_X) / (float)SIZE_OF_MAPWIDTH)] == 2)
 		{
-			Player.centerY = (MAP_START_POINT_Y + (Player.MapXY.y + 1) * SIZE_OF_MAPHEIGHT) - CharaH / 2;
+			Player.centerY = (MAP_START_POINT_Y + (MindexY + 1) * SIZE_OF_MAPHEIGHT) - CharaH / 2;
 			Player.vy = 0;
 		}
 	}
+	
 	Player.draw(g_hDC);
 	ReleaseDC(g_hWnd, g_hDC);
 }
