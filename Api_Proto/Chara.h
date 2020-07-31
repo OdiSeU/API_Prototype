@@ -1,12 +1,13 @@
 #include <Windows.h>
+#include <iostream>
 
 #pragma once
 #define CharaW 30
 #define CharaH 30
 #define CHARACTERSPEED 200
-#define JUMPHEIGHT 50
+#define Gravity 0.23
 
-static float JumpedY = 10000; // а║гагр y
+static bool jumped = false;
 
 class Character
 {

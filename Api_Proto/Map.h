@@ -64,5 +64,35 @@ public:
 	void drawMap(HDC hdc, int);
 	void drawBorder(HDC hdc, int);
 	void drawObject(HDC hdc, int Mapnum);
+	/*
+	unsigned char checker(int mapnum, float x, float y, int *a, int *b) // 캐릭터 좌표 어디 속해있는지 체크
+	{
+		int indexX = (x - MAP_START_POINT_X);
+		int indexY = (y - MAP_START_POINT_Y);
+		if (indexX % SIZE_OF_MAPWIDTH == 0)
+		{
+			indexX = indexX / SIZE_OF_MAPWIDTH - 1;
+		}
+		else
+		{
+			indexX = indexX / SIZE_OF_MAPWIDTH;
+		}
+		a = &indexX;
+		if (indexY % MAX_OF_MAPHEIGHT == 0)
+		{
+			indexY = indexY / MAX_OF_MAPHEIGHT - 1;
+		}
+		else
+		{
+			indexY = indexY / MAX_OF_MAPHEIGHT;
+		}
+		b = &indexY;
+		return matrix[mapnum][indexY][indexX];
+	}
+	void getCenter(int a, int b)
+	{
+	
+	}
+	*/
 };
 

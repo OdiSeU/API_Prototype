@@ -60,28 +60,24 @@ void Character::clear(HDC hdc)
 
 void Character::Jump(HDC hdc, float delta) // 미완
 {	
-	//JumpPower = JumpPower - 0.1 * delta;
-	JumpPower = 400 * delta;
-	if (GetAsyncKeyState(VK_SPACE) & 0x0001)
+	if (jumped == true)
 	{
-		JumpedY = centerY - 90; // 90이 점프 높이 결정
-	}
-	if (JumpedY < centerY)
-	{
-		clear(hdc);
-		centerY = centerY - JumpPower;
-		vy = 0;
-	}
-	if (JumpedY >= centerY)
-	{
-		JumpedY = 10000;
-		update(hdc, delta);
+		if (JumpPower > 0)
+		{
+			JumpPower = JumpPower - 0.23 * delta;
+			clear(hdc);
+			centerY = centerY - JumpPower;
+		}
+		if (JumpPower <= 0)
+		{
+			update(hdc, delta);
+		}
 	}
 }
 
 void Character::update(HDC hdc, float delta)
 {
 	clear(hdc);
-	vy = vy + 0.098 * delta;
+	vy = vy + Gravity * delta;
 	centerY = centerY + vy;
 }

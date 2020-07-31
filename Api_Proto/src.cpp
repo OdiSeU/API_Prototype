@@ -39,31 +39,33 @@ void Run()
 	PlayGround.drawObject(g_hDC, Mapnum);
 
 	Player.MVSpeed = CHARACTERSPEED * g_fDeltatime;
-	Player.JumpPower = 400 * g_fDeltatime;
 
 	Player.MVLeft(g_hDC);
 	Player.MVRight(g_hDC);
 	
 	// 점프, 함수로 넣으면 실행시 지랄나서 일단 빼둠
-	if ((GetAsyncKeyState(VK_SPACE) & 0x0001))
+	if ((GetAsyncKeyState(VK_SPACE) & 0x8000) && jumped == false)
 	{
-		JumpedY = Player.getTop() - JUMPHEIGHT;
-		if (JumpedY <= 100)
-		{
-			JumpedY = 100 + CharaH / 2;
-		}
+		Player.JumpPower = 600 * g_fDeltatime;
+		Player.vy = Player.JumpPower;
+		jumped = true;
 	}
-	if (JumpedY < Player.centerY)
+	if (jumped == true)
 	{
+		Player.vy = Player.vy - Gravity * g_fDeltatime;
 		Player.clear(g_hDC);
-		Player.centerY = Player.centerY - Player.JumpPower;
-		Player.vy = 0;
+		Player.centerY = Player.centerY - Player.vy;
 	}
-	if (JumpedY >= Player.centerY)
+	if (jumped == false)
 	{
-		JumpedY = 10000;
 		Player.update(g_hDC, g_fDeltatime);
 	}
+	
+	/*
+	clear(hdc);
+	vy = vy + Gravity * delta;
+	centerY = centerY + vy;
+	*/
 
 	if (MAP_START_POINT_X > Player.getLeft())
 	{
@@ -71,7 +73,9 @@ void Run()
 	}
 	if (MAP_START_POINT_Y > Player.getTop()) // 천장 방지
 	{
-		Player.centerY = MAP_START_POINT_Y + CharaH / 2;	
+		Player.centerY = MAP_START_POINT_Y + CharaH / 2;
+		Player.vy = 0;
+		jumped = false;
 	}
 	if (borderX < Player.getRight())
 	{
@@ -81,6 +85,7 @@ void Run()
 	{
 		Player.centerY = borderY - CharaH / 2;
 		Player.vy = 0;
+		jumped = false;
 	}
 	Player.draw(g_hDC);
 	ReleaseDC(g_hWnd, g_hDC);
