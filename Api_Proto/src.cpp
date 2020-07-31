@@ -1,0 +1,177 @@
+#include <windows.h>
+#include <cmath>
+#include "Chara.h"
+#include "Resol.h"
+#include "Proj.h"
+#include "Map.h"
+
+Character Player(CharaW, CharaH); // 캐릭 선언
+Map PlayGround; // 맵 선언
+
+// 루프 관련
+bool g_bLoop = true;
+
+// 시간 측정
+LARGE_INTEGER g_tsecond;
+LARGE_INTEGER g_tTime;
+float g_fDeltatime;
+
+// 전역 핸들
+HDC g_hDC;
+HWND g_hWnd;
+
+void Run()
+{
+	LARGE_INTEGER tTime;
+	QueryPerformanceCounter(&tTime);
+
+	g_fDeltatime = (tTime.QuadPart - g_tTime.QuadPart) / (float)g_tsecond.QuadPart;
+	g_tTime = tTime;
+	g_hDC = GetDC(g_hWnd);
+
+	PlayGround.drawBorder(g_hDC);
+	PlayGround.drawObject(g_hDC);
+
+	Player.MVSpeed = CHARACTERSPEED * g_fDeltatime;
+
+	Player.MVLeft(g_hDC);
+	Player.MVRight(g_hDC);	
+
+	if ((GetAsyncKeyState(VK_SPACE) & 0x0001) && Player.jumpNum >= 1)
+	{
+		Player.vy = -Player.JumpPower;
+		Player.jumpNum--;
+		Player.MVStat = UP;
+	}
+	Player.vy = Player.vy + Gravity * g_fDeltatime;
+	if (Player.vy > 0)
+	{
+		Player.MVStat = DOWN;
+	}
+	Player.clear(g_hDC);
+	Player.centerY = Player.centerY + Player.vy;
+
+	if (MAP_START_POINT_X > Player.getLeft())
+	{
+		Player.centerX = MAP_START_POINT_X + CharaW / 2;
+	}
+	if (MAP_START_POINT_Y > Player.getTop()) // 천장 방지
+	{
+		Player.centerY = MAP_START_POINT_Y + CharaH / 2;	
+		Player.vy = 0;
+	}
+	if (PlayGround.borderX < Player.getRight())
+	{
+		Player.centerX = PlayGround.borderX - CharaW / 2;
+	}
+	if (PlayGround.borderY < Player.getBottom()) // 바닥 방지
+	{
+		Player.centerY = PlayGround.borderY - CharaH / 2;
+		Player.vy = 0;
+		Player.jumpNum = 2;
+	}
+
+	// 장애물 충돌 처리
+	int MindexX = (Player.centerX - MAP_START_POINT_X) / SIZE_OF_MAPWIDTH;
+	int MindexY = (Player.getBottom() - MAP_START_POINT_Y - 1.f) / SIZE_OF_MAPHEIGHT;
+	if (Player.MVStat == DOWN && (MAP_START_POINT_Y + (MindexY + 1) * SIZE_OF_MAPHEIGHT) <= Player.getBottom() )
+	{
+		if (PlayGround.matrix[PlayGround.mapId][MindexY + 1][(int)((Player.getLeft() - (float)MAP_START_POINT_X) / (float)SIZE_OF_MAPWIDTH)] == 2 || PlayGround.matrix[PlayGround.mapId][MindexY + 1][(int)((Player.getRight() - (float)MAP_START_POINT_X) / (float)SIZE_OF_MAPWIDTH)] == 2)
+		{
+			Player.centerY = (MAP_START_POINT_Y + (MindexY + 1) * SIZE_OF_MAPHEIGHT) - CharaH / 2;
+			Player.vy = 0;
+			Player.jumpNum = 2;
+		}
+	}
+	
+	Player.draw(g_hDC);
+	ReleaseDC(g_hWnd, g_hDC);
+}
+
+LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg,
+	WPARAM wParam, LPARAM lParam);
+
+LPCTSTR lpszClass = TEXT("Api Sample"); // 타이틀 이름
+
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, //WINAPI : 윈도우 프로그램이라는 의미
+	LPSTR lpszCmdLine, int nCmdShow) //hInstance : 운영체제의 커널이 응용 프로그램에 부여한 ID
+{ //szCmdLine : 커멘트라인 상에서 프로그램 구동 시 전달된 문자열
+	HWND hwnd; //iCmdShow : 윈도우가 화면에 출력될 형태
+	MSG msg;
+
+	WNDCLASS WndClass; //WndClass 라는 구조체 정의 
+	WndClass.style = CS_HREDRAW | CS_VREDRAW; //출력스타일 : 수직/수평의 변화시 다시 그림
+	WndClass.lpfnWndProc = WndProc; //프로시저 함수명
+	WndClass.cbClsExtra = 0; //O/S 사용 여분 메모리 (Class)
+	WndClass.cbWndExtra = 0; //O/s 사용 여분 메모리 (Window)
+	WndClass.hInstance = hInstance; //응용 프로그램 ID
+	WndClass.hIcon = LoadIcon(NULL, IDI_APPLICATION); //아이콘 유형
+	WndClass.hCursor = LoadCursor(NULL, IDC_ARROW); //커서 유형
+	WndClass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);//배경색   
+	WndClass.lpszMenuName = NULL; //메뉴 이름
+	WndClass.lpszClassName = lpszClass; //클래스 이름
+	RegisterClass(&WndClass); //앞서 정의한 윈도우 클래스의 주소
+
+	hwnd = CreateWindow(lpszClass, //윈도우가 생성되면 핸들(hwnd)이 반환
+		lpszClass, //윈도우 클래스, 타이틀 이름
+		WS_OVERLAPPEDWINDOW, //윈도우 스타일
+		CW_USEDEFAULT, //윈도우 위치, x좌표
+		CW_USEDEFAULT, //윈도우 위치, y좌표
+		CW_USEDEFAULT, //윈도우 폭   
+		CW_USEDEFAULT, //윈도우 높이   
+		NULL, //부모 윈도우 핸들 
+		NULL, //메뉴 핸들
+		hInstance,     //응용 프로그램 ID
+		NULL      //생성된 윈도우 정보
+	);
+	ShowWindow(hwnd, nCmdShow); //윈도우의 화면 출력
+	UpdateWindow(hwnd); //O/S 에 WM_PAINT 메시지 전송
+
+	g_hWnd = hwnd;
+
+	QueryPerformanceFrequency(&g_tsecond);
+	QueryPerformanceCounter(&g_tTime);
+
+ 	while (g_bLoop)
+	{
+		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+		{
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+		else
+		{
+			Run();
+		}
+	}
+	return (int)msg.wParam;
+}
+
+HDC hdc;
+
+
+LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
+{
+
+	PAINTSTRUCT ps;
+
+	switch (iMsg)
+	{
+	case WM_CREATE:
+		break;
+
+	case WM_PAINT:
+
+		hdc = BeginPaint(hwnd, &ps);
+
+		EndPaint(hwnd, &ps);
+		break;
+	case WM_DESTROY:
+		g_bLoop = false;
+		PostQuitMessage(0);
+		break;
+	default:
+		return DefWindowProc(hwnd, iMsg, wParam, lParam); //CASE에서 정의되지 않은 메시지는 커널이 처리하도록 메시지 전달
+	}
+	return 0;
+}
