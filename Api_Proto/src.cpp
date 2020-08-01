@@ -74,6 +74,7 @@ void Run()
 // 더블 버퍼링 추가
 void Run()
 {
+	
 	LARGE_INTEGER tTime;
 	QueryPerformanceCounter(&tTime);
 
@@ -84,7 +85,10 @@ void Run()
 	HDC bufferDC = CreateCompatibleDC(g_hDC);
 	hbitmap = CreateCompatibleBitmap(g_hDC, Crect.right, Crect.bottom);
 	oldbitmap = (HBITMAP)SelectObject(bufferDC, hbitmap);
+	HBRUSH NewB = (HBRUSH)CreateSolidBrush(RGB(255, 255, 255)); // 배경색 브러쉬
+	HBRUSH OldB = (HBRUSH)SelectObject(bufferDC, NewB);
 
+	FillRect(bufferDC, &Crect, NewB);
 	PlayGround.drawBorder(bufferDC); // 테두리 그리기
 	PlayGround.drawObject(bufferDC); // 물건 그리기
 
@@ -121,6 +125,8 @@ void Run()
 	Player.draw(bufferDC);
 
 	BitBlt(g_hDC, 0, 0, Crect.right, Crect.bottom, bufferDC, 0, 0, SRCCOPY);
+	SelectObject(bufferDC, OldB);
+	DeleteObject(NewB);
 	DeleteObject(SelectObject(bufferDC, oldbitmap)); // 종이 원래대로 한 후 제거
 	DeleteDC(bufferDC); // hMemDC 제거
 
