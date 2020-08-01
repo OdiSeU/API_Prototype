@@ -207,3 +207,12 @@ void Map::Collision(Character* Player)
 		}
 	}
 }
+
+void Map::mapChanger(int Map)
+{
+	mapId = Map;
+	mapSizeNow.x = getWidth(mapId); // 해당 맵의 너비
+	mapSizeNow.y = getHeight(mapId); // 해당 맵의 높이
+	borderX = mapSizeNow.x * SIZE_OF_MAPWIDTH + MAP_START_POINT_X; // 맵 전체 너비
+	borderY = mapSizeNow.y * SIZE_OF_MAPHEIGHT + MAP_START_POINT_Y; // 맵 전체 높이
+}

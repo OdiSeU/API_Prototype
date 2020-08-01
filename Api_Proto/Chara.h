@@ -1,11 +1,11 @@
 #include <Windows.h>
 
 #pragma once
-#define CharaW 30
-#define CharaH 30
+#define CharaW 20 // 캐릭터 너비
+#define CharaH 39 // 캐릭터 높이
 #define CHARACTERSPEED 250 // 캐릭터 좌우 속도
-#define Gravity 1.8 // 중력 1.8
-#define JumpP 0.7 // 점프 파워 0.7
+#define Gravity 1.9 // 중력
+#define JumpP 0.8 // 점프 파워
 
 enum {DOWN, UP, LEFT, RIGHT};
 
