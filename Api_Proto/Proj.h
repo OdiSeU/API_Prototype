@@ -6,7 +6,7 @@ class Projectile
 {
 	POINT Tcord;
 	short Type;
-	float Distance;
+	float Distance; 
 	float Height;
 	float vx, vy;
 public:
