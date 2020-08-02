@@ -1,5 +1,6 @@
 #include "Chara.h"
 #include "Map.h"
+#include <time.h>
 Character::Character(int width, int height)
 {
 	jumpNum = 2;
@@ -15,6 +16,9 @@ Character::Character(int width, int height)
 	YStat = NULL;
 	XStat = NULL;
 	MVSpeed = NULL;
+
+	// 진 수정
+	isAttack = false;
 }
 
 void Character::draw(HDC hdc)
@@ -73,4 +77,13 @@ void Character::Grav(HDC hdc, float delta) // 중력
 	}
 	clear(hdc);
 	centerY = centerY + vy;
+}
+
+void Character::attack() {
+	if (0 && !isAttack)
+	{
+		vy = -JumpPower;
+		jumpNum--;
+		YStat = UP;
+	}
 }

@@ -23,6 +23,9 @@ public:
 	int Weapon;
 	short YStat; // 위 아래 상태
 	short XStat; // 좌 우 상태
+
+	// 진 수정
+	bool isAttack; //공격 상태 체크
 public:
 	Character(int, int);
 	float getTop() { return centerY - CharaH / 2; }
@@ -35,4 +38,7 @@ public:
 	void MVJump(HDC hdc);
 	void clear(HDC hdc);
 	void Grav(HDC hdc, float delta);
+
+	// 진 수정
+	void attack();
 };

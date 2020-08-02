@@ -98,6 +98,7 @@ void Run()
 	Player.MVRight(bufferDC); // 오른쪽	
 	Player.MVJump(bufferDC); // 점프
 	Player.Grav(bufferDC, g_fDeltatime); // 중력
+	Player.attack();
 
 	if (MAP_START_POINT_X > Player.getLeft()) // 왼쪽 벽 방지
 	{
@@ -183,6 +184,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, //WINAPI : 윈도
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
+			Run();
 		}
 		else
 		{
@@ -198,6 +200,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 {
 
 	PAINTSTRUCT ps;
+	// 진 추가
+	g_hWnd = hwnd;
 
 	switch (iMsg)
 	{
@@ -214,6 +218,13 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		g_bLoop = false;
 		PostQuitMessage(0);
 		break;
+
+	// 진 추가
+	case WM_LBUTTONDOWN:
+		unsigned int mx, my;
+		mx = LOWORD(lParam);
+		my = HIWORD(lParam);
+
 	default:
 		return DefWindowProc(hwnd, iMsg, wParam, lParam); //CASE에서 정의되지 않은 메시지는 커널이 처리하도록 메시지 전달
 	}
