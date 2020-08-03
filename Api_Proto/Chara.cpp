@@ -2,27 +2,20 @@
 #include "Map.h"
 Character::Character(int width, int height)
 {
-	centerX = 200 + width / 2;
-	centerY = 200 + height / 2;
+	jumpNum = 2;
+	centerX = 700 + width / 2;
+	centerY = 500 + height / 2;
 	vx = 10;
 	vy = 0;
 	Heart = 10;
 	Shield = 3;
-	JumpPower = 400;
+	JumpPower = JumpP;
 	AttackSpeed = 1;
 	Weapon = 0;
-	MVStat = NULL;
+	YStat = NULL;
+	XStat = NULL;
+	MVSpeed = NULL;
 }
-
-/*
-void Character::is_valid(RECT *point)
-{
-	point->left = centerX - CharaW;
-	point->right = centerX + CharaW;
-	point->bottom = centerY + CharaH;
-	point->top = centerY - CharaH;
-}
-*/
 
 void Character::draw(HDC hdc)
 {
@@ -35,6 +28,7 @@ void Character::MVRight(HDC hdc)
 	{
 		clear(hdc);
 		centerX = centerX + MVSpeed;
+		XStat = RIGHT;
 	}
 }
 
@@ -44,6 +38,17 @@ void Character::MVLeft(HDC hdc)
 	{
 		clear(hdc);
 		centerX = centerX - MVSpeed;
+		XStat = LEFT;
+	}
+}
+
+void Character::MVJump(HDC hdc)
+{
+	if ((GetAsyncKeyState(VK_SPACE) & 0x0001) && jumpNum >= 1)
+	{
+		vy = -JumpPower;
+		jumpNum--;
+		YStat = UP;
 	}
 }
 
@@ -59,32 +64,19 @@ void Character::clear(HDC hdc)
 	DeleteObject(NewPen); // 펜 해제
 }
 
-void Character::Jump(HDC hdc, float delta) // 미완
-{	
-	//JumpPower = JumpPower - 0.1 * delta;
-	JumpPower = 400 * delta;
-	if (GetAsyncKeyState(VK_SPACE) & 0x0001)
-	{
-		JumpedY = centerY - JUMPHEIGHT; // JUMPHEIGHT이 점프 높이 결정
-	}
-	if (JumpedY < centerY)
-	{
-		MVStat = JUMPUP;
-		clear(hdc);
-		centerY = centerY - JumpPower;
-		vy = 0;
-	}
-	if (JumpedY >= centerY)
-	{
-		JumpedY = 10000;
-		MVStat = JUMPDOWN;
-	}
-	update(hdc, delta);
-}
-
-void Character::update(HDC hdc, float delta)
+void Character::Grav(HDC hdc, float delta) // 중력
 {
+	vy = vy + Gravity * delta; // 중력 가속도
+	if (vy >= 0)
+	{
+		YStat = DOWN;
+	}
 	clear(hdc);
-	vy = vy + 0.23 * delta;
 	centerY = centerY + vy;
+}
+//신민수 추가
+void Character::NextStagePosition(int x, int y)
+{
+	centerX = x;
+	centerY = y;
 }

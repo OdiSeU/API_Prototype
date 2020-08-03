@@ -1,7 +1,50 @@
-﻿  src.cpp
-C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(77,39): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(81,39): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(84,14): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(85,14): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(90,77): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  Api_Proto.vcxproj -> C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Debug\Api_Proto.exe
+﻿  Chara.cpp
+C:\Users\신민수\Desktop\오리\Api_Proto\Chara.cpp(6,16): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\Chara.cpp(7,16): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\Chara.cpp(12,19): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\Chara.cpp(22,59): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\Chara.cpp(22,46): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\Chara.cpp(22,34): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\Chara.cpp(22,24): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\Chara.cpp(61,74): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\Chara.cpp(61,57): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\Chara.cpp(61,41): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\Chara.cpp(61,27): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\Chara.cpp(69,10): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\Chara.cpp(80,12): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\Chara.cpp(81,12): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Map.cpp
+C:\Users\신민수\Desktop\오리\Api_Proto\Map.cpp(158,14): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\Map.cpp(159,14): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\Map.cpp(165,78): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\Map.cpp(172,78): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\Map.cpp(180,78): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\Map.cpp(185,59): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\Map.cpp(188,72): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\Map.cpp(194,57): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\Map.cpp(200,73): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\Map.cpp(209,78): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\Map.cpp(214,59): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\Map.cpp(218,72): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\Map.cpp(227,77): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\Map.cpp(232,58): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\Map.cpp(236,71): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\Map.cpp(274,44): warning C4244: '+=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\Map.cpp(275,29): warning C4244: '=': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Proj.cpp
+C:\Users\신민수\Desktop\오리\Api_Proto\Proj.cpp(10,18): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\Proj.cpp(11,25): warning C4244: '=': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\Proj.cpp(23,20): warning C4244: '=': 'float'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\Proj.cpp(24,20): warning C4244: '=': 'float'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Resol.cpp
+  src.cpp
+C:\Users\신민수\Desktop\오리\Api_Proto\src.cpp(103,73): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\src.cpp(117,68): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\src.cpp(117,43): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\src.cpp(127,49): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\src.cpp(131,49): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\src.cpp(136,39): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\신민수\Desktop\오리\Api_Proto\src.cpp(140,39): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  WindowScreen.cpp
+  코드를 생성하고 있습니다...
+  Api_Proto.vcxproj -> C:\Users\신민수\Desktop\오리\Debug\Api_Proto.exe

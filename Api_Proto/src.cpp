@@ -4,12 +4,13 @@
 #include "Resol.h"
 #include "Proj.h"
 #include "Map.h"
-
-Character Player(CharaW, CharaH); // 캐릭 선언
-Map PlayGround; // 맵 선언
+#include "WindowScreen.h"
 
 // 루프 관련
 bool g_bLoop = true;
+
+// 더블 버퍼링 비트맵 선언
+HBITMAP hbitmap, oldbitmap;
 
 // 시간 측정
 LARGE_INTEGER g_tsecond;
@@ -20,6 +21,12 @@ float g_fDeltatime;
 HDC g_hDC;
 HWND g_hWnd;
 
+Screen WindowScreen; //윈도우 화면  신민수 추가
+Character Player(CharaW, CharaH); // 캐릭 선언
+Map PlayGround(WindowScreen.adjustRect); // 맵 선언
+Map oldMap(WindowScreen.adjustRect);
+
+/*
 void Run()
 {
 	LARGE_INTEGER tTime;
@@ -29,50 +36,26 @@ void Run()
 	g_tTime = tTime;
 	g_hDC = GetDC(g_hWnd);
 
-	PlayGround.drawBorder(g_hDC);
-	PlayGround.drawObject(g_hDC);
+	PlayGround.drawBorder(g_hDC); // 테두리 그리기
+	PlayGround.drawObject(g_hDC); // 물건 그리기
 
 	Player.MVSpeed = CHARACTERSPEED * g_fDeltatime;
-	Player.JumpPower = 400 * g_fDeltatime;
 
-	Player.MVLeft(g_hDC);
-	Player.MVRight(g_hDC);
-	
+	Player.MVLeft(g_hDC); // 왼쪽
+	Player.MVRight(g_hDC); // 오른쪽	
+	Player.MVJump(g_hDC); // 점프
+	Player.Grav(g_hDC, g_fDeltatime); // 중력
 
-	//Player.Jump(g_hDC, g_fDeltatime);
-	// 점프, 함수로 넣으면 실행시 지랄나서 일단 빼둠
-	if ((GetAsyncKeyState(VK_SPACE) & 0x0001))
-	{
-		JumpedY = Player.getTop() - JUMPHEIGHT;
-		Player.MVStat = JUMPUP;
-		if (JumpedY <= 100)
-		{
-			JumpedY = 100 + CharaH / 2;
-		}
-	}
-	if (JumpedY < Player.centerY)
-	{
-		Player.clear(g_hDC);
-		Player.MVStat = JUMPUP;
-		Player.centerY = Player.centerY - Player.JumpPower;
-		Player.vy = 0;
-	}
-	if (JumpedY >= Player.centerY)
-	{
-		Player.MVStat = JUMPDOWN;
-		JumpedY = 10000;
-		Player.update(g_hDC, g_fDeltatime);
-	}
-
-	if (MAP_START_POINT_X > Player.getLeft())
+	if (MAP_START_POINT_X > Player.getLeft()) // 왼쪽 벽 방지
 	{
 		Player.centerX = MAP_START_POINT_X + CharaW / 2;
 	}
 	if (MAP_START_POINT_Y > Player.getTop()) // 천장 방지
 	{
 		Player.centerY = MAP_START_POINT_Y + CharaH / 2;	
+		Player.vy = 0;
 	}
-	if (PlayGround.borderX < Player.getRight())
+	if (PlayGround.borderX < Player.getRight()) // 오른쪽 벽 방지
 	{
 		Player.centerX = PlayGround.borderX - CharaW / 2;
 	}
@@ -80,19 +63,97 @@ void Run()
 	{
 		Player.centerY = PlayGround.borderY - CharaH / 2;
 		Player.vy = 0;
+		Player.jumpNum = 2;
 	}
-	int MindexX = (Player.centerX - MAP_START_POINT_X) / SIZE_OF_MAPWIDTH;
-	int MindexY = (Player.getBottom() - MAP_START_POINT_Y - 1.f) / SIZE_OF_MAPHEIGHT;
-	if (Player.MVStat == JUMPDOWN && (MAP_START_POINT_Y + (MindexY + 1) * SIZE_OF_MAPHEIGHT) <= Player.getBottom() )
-	{
-		if (PlayGround.matrix[PlayGround.mapId][MindexY + 1][(int)((Player.getLeft() - (float)MAP_START_POINT_X) / (float)SIZE_OF_MAPWIDTH)] == 2 || PlayGround.matrix[PlayGround.mapId][MindexY + 1][(int)((Player.getRight() - (float)MAP_START_POINT_X) / (float)SIZE_OF_MAPWIDTH)] == 2)
-		{
-			Player.centerY = (MAP_START_POINT_Y + (MindexY + 1) * SIZE_OF_MAPHEIGHT) - CharaH / 2;
-			Player.vy = 0;
-		}
-	}
+
+	// 장애물 충돌 처리
+	PlayGround.Collision(&Player);
 	
 	Player.draw(g_hDC);
+	ReleaseDC(g_hWnd, g_hDC);d
+}
+*/
+
+void Run()
+{
+	LARGE_INTEGER tTime;
+	QueryPerformanceCounter(&tTime);
+
+	g_fDeltatime = (tTime.QuadPart - g_tTime.QuadPart) / (float)g_tsecond.QuadPart;
+	g_tTime = tTime;
+	g_hDC = GetDC(g_hWnd);
+
+	HDC bufferDC = CreateCompatibleDC(g_hDC);
+	hbitmap = CreateCompatibleBitmap(g_hDC, Crect.right, Crect.bottom);
+	oldbitmap = (HBITMAP)SelectObject(bufferDC, hbitmap);
+	HBRUSH NewB = (HBRUSH)CreateSolidBrush(RGB(255, 255, 255)); // 배경색 브러쉬
+	HBRUSH OldB = (HBRUSH)SelectObject(bufferDC, NewB);
+
+	FillRect(bufferDC, &Crect, NewB);
+	Player.MVSpeed = CHARACTERSPEED * g_fDeltatime;
+
+	if (PlayGround.matrix[PlayGround.mapId][(int)(Player.centerY - PlayGround.MAP_START_POINT_Y) / PlayGround.SIZE_OF_MAPHEIGHT]
+		[(int)(Player.centerX - PlayGround.MAP_START_POINT_X) / PlayGround.SIZE_OF_MAPWIDTH] == PlayGround.DoorOpen
+		&& (GetAsyncKeyState('W') & 0x8000) && PlayGround.changedAnime == false)
+	{
+		oldMap = PlayGround;
+		PlayGround.changer(WindowScreen.adjustRect);
+		PlayGround.changedAnime = true;
+		oldMap.changedAnime = true;
+		Player.NextStagePosition(PlayGround.MAP_START_POINT_X + CharaW, Player.centerY);
+		Player.draw(bufferDC);
+	}
+	else
+	{
+		PlayGround.openNextStage(); //다음스테이지 조건 충족 확인
+		PlayGround.drawBorder(bufferDC); // 테두리 그리기
+		PlayGround.drawObject(bufferDC); // 물건 그리기
+	}
+
+	if (PlayGround.changedAnime)
+	{
+		PlayGround.changeAnimetion(bufferDC, WindowScreen.adjustRect, g_fDeltatime);
+		oldMap.changeAnimetion(bufferDC, WindowScreen.adjustRect, g_fDeltatime);
+		Player.NextStagePosition(Player.centerX - PlayGround.buff, Player.centerY);
+	}
+
+	Player.MVLeft(bufferDC); // 왼쪽
+	Player.MVRight(bufferDC); // 오른쪽	
+	Player.MVJump(bufferDC); // 점프
+	Player.Grav(bufferDC, g_fDeltatime); // 중력
+
+	if (PlayGround.MAP_START_POINT_X > Player.getLeft()) // 왼쪽 벽 방지
+	{
+		Player.centerX = PlayGround.MAP_START_POINT_X + CharaW / 2;
+	}
+	if (PlayGround.MAP_START_POINT_Y > Player.getTop()) // 천장 방지
+	{
+		Player.centerY = PlayGround.MAP_START_POINT_Y + CharaH / 2;
+		Player.vy = 0;
+	}
+	if (PlayGround.borderX < Player.getRight()) // 오른쪽 벽 방지
+	{
+		Player.centerX = PlayGround.borderX - CharaW / 2;
+	}
+	if (PlayGround.borderY < Player.getBottom()) // 바닥 방지
+	{
+		Player.centerY = PlayGround.borderY - CharaH / 2;
+		Player.vy = 0;
+		Player.jumpNum = 2;
+	}
+
+	// 장애물 충돌 처리
+	PlayGround.Collision(&Player);
+	//신민수 추가
+	//여기까지
+	Player.draw(bufferDC);
+
+	BitBlt(g_hDC, 0, 0, Crect.right, Crect.bottom, bufferDC, 0, 0, SRCCOPY);
+	SelectObject(bufferDC, OldB);
+	DeleteObject(NewB);
+	DeleteObject(SelectObject(bufferDC, oldbitmap)); // 종이 원래대로 한 후 제거
+	DeleteDC(bufferDC); // hMemDC 제거
+
 	ReleaseDC(g_hWnd, g_hDC);
 }
 
@@ -125,8 +186,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, //WINAPI : 윈도
 		WS_OVERLAPPEDWINDOW, //윈도우 스타일
 		CW_USEDEFAULT, //윈도우 위치, x좌표
 		CW_USEDEFAULT, //윈도우 위치, y좌표
-		CW_USEDEFAULT, //윈도우 폭   
-		CW_USEDEFAULT, //윈도우 높이   
+		WindowScreen.width, //윈도우 폭   신민수 추가
+		WindowScreen.height, //윈도우 높이   신민수 추가
 		NULL, //부모 윈도우 핸들 
 		NULL, //메뉴 핸들
 		hInstance,     //응용 프로그램 ID
@@ -157,7 +218,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, //WINAPI : 윈도
 
 HDC hdc;
 
-
 LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 {
 
@@ -166,10 +226,10 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	switch (iMsg)
 	{
 	case WM_CREATE:
+		GetClientRect(hwnd, &Crect);
 		break;
 
 	case WM_PAINT:
-
 		hdc = BeginPaint(hwnd, &ps);
 
 		EndPaint(hwnd, &ps);
