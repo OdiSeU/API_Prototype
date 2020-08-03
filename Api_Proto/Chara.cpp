@@ -1,33 +1,33 @@
+#include <vector>
 #include "Chara.h"
+#include "Proj.h"
+using namespace std;
 
 Character::Character(int width, int height)
 {
+	Projnum = 3;
 	jumpNum = 2;
-	jumped = false;
-	centerX = 200 + width / 2;
-	centerY = 200 + height / 2;
+	centerX = 700 + width / 2;
+	centerY = 500 + height / 2;
 	vx = 10;
 	vy = 0;
 	Heart = 10;
 	Shield = 3;
-	JumpPower = 30;
+	JumpPower = JumpP;
 	AttackSpeed = 1;
 	Weapon = 0;
+	YStat = NULL;
+	XStat = NULL;
+	MVSpeed = NULL;
 }
-
-/*
-void Character::is_valid(RECT *point)
-{
-	point->left = centerX - CharaW;
-	point->right = centerX + CharaW;
-	point->bottom = centerY + CharaH;
-	point->top = centerY - CharaH;
-}
-*/
 
 void Character::draw(HDC hdc)
 {
 	Rectangle(hdc, getLeft(), getTop(), getRight(), getBottom());
+	for (int i = 0;i < Thowable.size();i++)
+	{
+		Thowable[i].draw(hdc);
+	}
 }
 
 void Character::MVRight(HDC hdc)
@@ -36,6 +36,7 @@ void Character::MVRight(HDC hdc)
 	{
 		clear(hdc);
 		centerX = centerX + MVSpeed;
+		XStat = RIGHT;
 	}
 }
 
@@ -45,6 +46,17 @@ void Character::MVLeft(HDC hdc)
 	{
 		clear(hdc);
 		centerX = centerX - MVSpeed;
+		XStat = LEFT;
+	}
+}
+
+void Character::MVJump(HDC hdc)
+{
+	if ((GetAsyncKeyState(VK_SPACE) & 0x0001) && jumpNum >= 1)
+	{
+		vy = -JumpPower;
+		jumpNum--;
+		YStat = UP;
 	}
 }
 
@@ -60,26 +72,21 @@ void Character::clear(HDC hdc)
 	DeleteObject(NewPen); // 펜 해제
 }
 
-void Character::Jump(HDC hdc, float delta) // 미완
-{	
-	if (jumped == true)
+void Character::Grav(HDC hdc, float delta) // 중력
+{
+	vy = vy + Gravity * delta; // 중력 가속도
+	if (vy >= 0)
 	{
-		if (JumpPower > 0)
-		{
-			JumpPower = JumpPower - 0.23 * delta;
-			clear(hdc);
-			centerY = centerY - JumpPower;
-		}
-		if (JumpPower <= 0)
-		{
-			update(hdc, delta);
-		}
+		YStat = DOWN;
 	}
+	//clear(hdc);
+	centerY = centerY + vy;
 }
 
-void Character::update(HDC hdc, float delta)
+void Character::UpdateProj(HDC hdc, float delta)
 {
-	clear(hdc);
-	vy = vy + Gravity * delta;
-	centerY = centerY + vy;
+	for (int i = 0;i < Thowable.size();i++)
+	{
+		Thowable[i].Update(hdc, delta);
+	}
 }
