@@ -15,13 +15,24 @@ void Map::Reset(RECT winRect)
 	mapSizeNow.x = getWidth(mapId); // ÇØ´ç ¸ÊÀÇ ³Êºñ
 	mapSizeNow.y = getHeight(mapId); // ÇØ´ç ¸ÊÀÇ ³ôÀÌ
 	MaxSize = { 100, 100, (winRect.right - winRect.left - 100), (winRect.bottom - winRect.top - 100) };
-	MAP_START_POINT_X = MaxSize.left;
-	MAP_START_POINT_Y = MaxSize.top;
-	SIZE_OF_MAPWIDTH = (MaxSize.right - MaxSize.left) / mapSizeNow.x;
-	SIZE_OF_MAPHEIGHT = (MaxSize.bottom - MaxSize.top) / mapSizeNow.y;
+	update();
+	stageMoveSpeed = 0;
+}
+
+void Map::update()
+{
+	MAX_MAP_START_POINT_X = MaxSize.left;
+	MAX_MAP_START_POINT_Y = MaxSize.top;
+	SIZE_OF_MAPWIDTH = (MaxSize.right - MaxSize.left) / MAX_OF_MAPWIDTH;
+	SIZE_OF_MAPHEIGHT = (MaxSize.bottom - MaxSize.top) / MAX_OF_MAPHEIGHT;
+
+	MAP_START_POINT_X = MaxSize.left + ((MaxSize.right - MaxSize.left) - (SIZE_OF_MAPWIDTH * mapSizeNow.x)) / 2;
+	MAP_START_POINT_Y = MaxSize.top + ((MaxSize.bottom - MaxSize.top) - (SIZE_OF_MAPHEIGHT * mapSizeNow.y)) / 2;
+
+	maxBorderX = MAX_OF_MAPWIDTH * SIZE_OF_MAPWIDTH + MAX_MAP_START_POINT_X; // ÃÒ´ë ¸Ê ÀüÃ¼ ³Êºñ
+	maxBorderY = MAX_OF_MAPHEIGHT * SIZE_OF_MAPHEIGHT + MAX_MAP_START_POINT_Y; // ÃÖ´ë ¸Ê ÀüÃ¼ ³ôÀÌ
 	borderX = mapSizeNow.x * SIZE_OF_MAPWIDTH + MAP_START_POINT_X; // ¸Ê ÀüÃ¼ ³Êºñ
 	borderY = mapSizeNow.y * SIZE_OF_MAPHEIGHT + MAP_START_POINT_Y; // ¸Ê ÀüÃ¼ ³ôÀÌ
-	stageMoveSpeed = 0;
 }
 
 void Map::drawMap(HDC hdc, int mapId)
@@ -36,18 +47,42 @@ void Map::drawMap(HDC hdc, int mapId)
 	}
 }
 
-void Map::drawBorder(HDC hdc)
+void drawBackground(HDC hdc, RECT border, RECT winRect)
 {
 	HBRUSH NewB, OldB;
-	NewB = (HBRUSH)GetStockObject(NULL_BRUSH);
+	NewB = (HBRUSH)GetStockObject(WHITE_BRUSH);
 	OldB = (HBRUSH)SelectObject(hdc, NewB);
-	
-	int width = getWidth(mapId) * SIZE_OF_MAPWIDTH + MAP_START_POINT_X;
-	int height = getHeight(mapId) * SIZE_OF_MAPHEIGHT + MAP_START_POINT_Y;
-	Rectangle(hdc, MAP_START_POINT_X, MAP_START_POINT_Y, width, height);
+	HPEN NewPen = CreatePen(PS_SOLID, 1, NULL_PEN);
+	HPEN OldPen = (HPEN)SelectObject(hdc, NewPen);
+
+	Rectangle(hdc, winRect.left, winRect.top, winRect.right, border.top); //»ó´Ü
+	Rectangle(hdc, winRect.left, border.top, border.left, border.bottom); //ÁÂÃø
+	Rectangle(hdc, border.right, border.top, winRect.right, border.bottom); //¿ìÃø
+	Rectangle(hdc, winRect.left, border.bottom, winRect.right, winRect.bottom); //¿ìÃø
 
 	SelectObject(hdc, OldB);
 	DeleteObject(NewB);
+	SelectObject(hdc, OldPen);
+	DeleteObject(NewPen); // Ææ ÇØÁ¦
+}
+
+void Map::drawBorder(HDC hdc)
+{
+	HBRUSH NewB, OldB;
+	NewB = (HBRUSH)GetStockObject(WHITE_BRUSH);
+	OldB = (HBRUSH)SelectObject(hdc, NewB);
+	HPEN NewPen = CreatePen(PS_SOLID, 1, NULL_PEN);
+	HPEN OldPen = (HPEN)SelectObject(hdc, NewPen);
+	
+	int width = getWidth(mapId) * SIZE_OF_MAPWIDTH + MAP_START_POINT_X;
+	int height = getHeight(mapId) * SIZE_OF_MAPHEIGHT + MAP_START_POINT_Y;
+	Rectangle(hdc, MAX_MAP_START_POINT_X, MAX_MAP_START_POINT_Y, MaxSize.right, MaxSize.bottom);
+	Rectangle(hdc, MAP_START_POINT_X, MAP_START_POINT_Y, borderX, borderY);
+
+	SelectObject(hdc, OldB);
+	DeleteObject(NewB);
+	SelectObject(hdc, OldPen);
+	DeleteObject(NewPen); // Ææ ÇØÁ¦
 }
 
 void Map::drawObject(HDC hdc)
@@ -103,56 +138,6 @@ void Map::drawRect(HDC hdc,int x, int y, COLORREF rgb)
 	DeleteObject(NewPen); // Ææ ÇØÁ¦
 }
 
-/*
-void Map::Collision(Character *Player)
-{
-	int MindexY = (Player->getBottom() - MAP_START_POINT_Y - 1) / SIZE_OF_MAPHEIGHT;
-	int MindexX = (Player->getLeft() - MAP_START_POINT_X - 1) / SIZE_OF_MAPWIDTH;
-	if (Player->YStat == DOWN && (MAP_START_POINT_Y + (MindexY + 1) * SIZE_OF_MAPHEIGHT) <= Player->getBottom())
-	{
-		if (matrix[mapId][MindexY + 1][(int)((Player->getLeft() - (float)MAP_START_POINT_X) / (float)SIZE_OF_MAPWIDTH)] == 2
-			|| matrix[mapId][MindexY + 1][(int)((Player->getRight() - (float)MAP_START_POINT_X) / (float)SIZE_OF_MAPWIDTH)] == 2)
-		{
-			Player->centerY = (MAP_START_POINT_Y + (MindexY + 1) * SIZE_OF_MAPHEIGHT) - CharaH / 2;
-			Player->vy = 0;
-			Player->jumpNum = 2;
-		}
-		else if (matrix[mapId][MindexY + 1][(int)((Player->getLeft() - (float)MAP_START_POINT_X) / (float)SIZE_OF_MAPWIDTH)] == 3
-			|| matrix[mapId][MindexY + 1][(int)((Player->getRight() - (float)MAP_START_POINT_X) / (float)SIZE_OF_MAPWIDTH)] == 3)
-		{
-			Player->centerY = (MAP_START_POINT_Y + (MindexY + 1) * SIZE_OF_MAPHEIGHT) - CharaH / 2;
-			Player->vy = 0;
-			Player->jumpNum = 2;
-		}
-	}
-	else if (Player->YStat == UP && (MAP_START_POINT_Y + (MindexY) * SIZE_OF_MAPHEIGHT) >= Player->getTop()) // ºí·Ï 3Àº ¾È¿Ã¶ó°¡Áü
-	{
-		if (matrix[mapId][MindexY - 1][(int)((Player->getLeft() - (float)MAP_START_POINT_X) / (float)SIZE_OF_MAPWIDTH)] == 3
-			|| matrix[mapId][MindexY - 1][(int)((Player->getRight() - (float)MAP_START_POINT_X) / (float)SIZE_OF_MAPWIDTH)] == 3)
-		{
-			Player->centerY = (MAP_START_POINT_Y + (MindexY) * SIZE_OF_MAPHEIGHT) + CharaH / 2;
-			Player->vy = 0;
-		}
-	}
-	else if (Player->XStat == LEFT && (MAP_START_POINT_X + (MindexX) * SIZE_OF_MAPWIDTH) <= Player->getLeft())
-	{
-		if (matrix[mapId][(int)((Player->getTop() - (float)MAP_START_POINT_Y) / (float)SIZE_OF_MAPHEIGHT)][MindexX] == 3
-			|| matrix[mapId][(int)((Player->getBottom() - (float)MAP_START_POINT_Y) / (float)SIZE_OF_MAPHEIGHT)][MindexX] == 3)
-		{
-			Player->centerX = (MAP_START_POINT_X + (MindexX + 1) * SIZE_OF_MAPWIDTH) + CharaW / 2;
-		}
-	}
-	else if (Player->XStat == RIGHT && (MAP_START_POINT_X + (MindexX + 2) * SIZE_OF_MAPWIDTH) >= Player->getRight())
-	{
-		MindexX = (Player->getRight() - MAP_START_POINT_X - 1) / SIZE_OF_MAPWIDTH;
-		if (matrix[mapId][(int)((Player->getTop() - (float)MAP_START_POINT_Y) / (float)SIZE_OF_MAPHEIGHT)][MindexX] == 3
-			|| matrix[mapId][(int)((Player->getBottom() - (float)MAP_START_POINT_Y) / (float)SIZE_OF_MAPHEIGHT)][MindexX] == 3)
-		{
-			Player->centerX = (MAP_START_POINT_X + (MindexX) * SIZE_OF_MAPWIDTH) - CharaW / 2;
-		}
-	}
-}
-*/
 void Map::Collision(Character* Player)
 {
 	int MindexY = (Player->getBottom() - MAP_START_POINT_Y - 1) / SIZE_OF_MAPHEIGHT;
@@ -260,34 +245,24 @@ void Map::changer(RECT winRect)
 	can_NextStage = false;
 	mapSizeNow.x = getWidth(mapId); // ÇØ´ç ¸ÊÀÇ ³Êºñ
 	mapSizeNow.y = getHeight(mapId); // ÇØ´ç ¸ÊÀÇ ³ôÀÌ
-	MaxSize = { borderX, 100, 2 * borderX - 100, (winRect.bottom - winRect.top - 100) };
-	MAP_START_POINT_X = MaxSize.left;
-	MAP_START_POINT_Y = MaxSize.top;
-	SIZE_OF_MAPWIDTH = (MaxSize.right - MaxSize.left) / mapSizeNow.x;
-	SIZE_OF_MAPHEIGHT = (MaxSize.bottom - MaxSize.top) / mapSizeNow.y;
-	borderX = mapSizeNow.x * SIZE_OF_MAPWIDTH + MAP_START_POINT_X; // ¸Ê ÀüÃ¼ ³Êºñ
-	borderY = mapSizeNow.y * SIZE_OF_MAPHEIGHT + MAP_START_POINT_Y; // ¸Ê ÀüÃ¼ ³ôÀÌ
+	MaxSize = { maxBorderX, MAX_MAP_START_POINT_Y, 2 * maxBorderX - MAX_MAP_START_POINT_X, (winRect.bottom - winRect.top - MAX_MAP_START_POINT_Y) };
+	update();
 }
 
 void Map::changeAnimetion(HDC hdc, RECT winRect, float delta)
 {
 	stageMoveSpeed += delta * STAGE_MOVE_SPEED;
-	buff = sin(stageMoveSpeed) * (borderX - MAP_START_POINT_X);
+	buff = sin(stageMoveSpeed) * (maxBorderX - MAX_MAP_START_POINT_X);
 	MaxSize.left -= buff;
 	MaxSize.right -= buff;
 
-	MAP_START_POINT_X = MaxSize.left;
-	MAP_START_POINT_Y = MaxSize.top;
-	SIZE_OF_MAPWIDTH = (MaxSize.right - MaxSize.left) / mapSizeNow.x;
-	SIZE_OF_MAPHEIGHT = (MaxSize.bottom - MaxSize.top) / mapSizeNow.y;
-	borderX = mapSizeNow.x * SIZE_OF_MAPWIDTH + MAP_START_POINT_X; // ¸Ê ÀüÃ¼ ³Êºñ
-	borderY = mapSizeNow.y * SIZE_OF_MAPHEIGHT + MAP_START_POINT_Y; // ¸Ê ÀüÃ¼ ³ôÀÌ
+	update();
 	drawBorder(hdc);
 	drawObject(hdc);
 	MaxSize.left += buff;
 	MaxSize.right += buff;
-
-	if (sin(stageMoveSpeed) >= 0.99)
+	
+	if (sin(stageMoveSpeed) >= 0.9999)
 	{
 		changedAnime = false;
 		Reset(winRect);

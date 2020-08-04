@@ -5,9 +5,9 @@
 #pragma once
 // ¸Ê »ç°¢Çü °³¼ö
 #define MAX_OF_MAPWIDTH 40
-#define MAX_OF_MAPHEIGHT 40
+#define MAX_OF_MAPHEIGHT 20
 
-#define STAGE_MOVE_SPEED 3.14/2
+#define STAGE_MOVE_SPEED 3.14
 
 class Map
 {
@@ -19,10 +19,16 @@ public:
 	int SIZE_OF_MAPWIDTH;
 	int SIZE_OF_MAPHEIGHT;
 	// ¸Ê ±×¸®±â ½ÃÀÛ ÁÂÇ¥ (left, top)
+	int MAX_MAP_START_POINT_X;
+	int MAX_MAP_START_POINT_Y;
 	int MAP_START_POINT_X;
 	int MAP_START_POINT_Y;
 	RECT MaxSize; //¸ðµç ¸ÊÀº ¿©±â¿¡ ¸ÂÃç¼­ ±×·ÁÁü
 	int mapId;
+	// ¸Ê ÃÖ´ëÅ©±â ¿Ü°û
+	int maxBorderX;
+	int maxBorderY;
+	// ¸Ê Å©±â
 	int borderX;
 	int borderY;
 	int stageCount;
@@ -102,6 +108,6 @@ public:
 	void changer(RECT winRect);
 	void changeAnimetion(HDC hdc, RECT winRect, float delta);
 	void Reset(RECT winRect);
-
+	void update();
 };
 
