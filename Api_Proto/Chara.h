@@ -1,4 +1,5 @@
 #include <Windows.h>
+#include "Weapon.h"
 
 #pragma once
 #define CharaW 20 // 캐릭터 너비
@@ -20,7 +21,7 @@ public:
 	int Shield; // 방어막
 	float JumpPower; // 점프 파워
 	float AttackSpeed; // 공격 속도
-	int Weapon;
+	Weapon weapon; //무기
 	short YStat; // 위 아래 상태
 	short XStat; // 좌 우 상태
 
@@ -40,5 +41,11 @@ public:
 	void Grav(HDC hdc, float delta);
 
 	// 진 수정
-	void attack();
+	void attackStart(HWND hwnd, unsigned int mx, unsigned int my);
+	void CALLBACK attacking(HWND hwnd, unsigned int mx, unsigned int my);
+	void attackEnd(HWND hwnd, unsigned int mx, unsigned int my);
+	void throwStart(HWND hwnd, unsigned int mx, unsigned int my);
+	void CALLBACK throwing(HWND hwnd, unsigned int mx, unsigned int my);
+	void throwEnd(HWND hwnd, unsigned int mx, unsigned int my);
+	// 진 수정
 };

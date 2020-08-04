@@ -1,4 +1,107 @@
-﻿  src.cpp
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\src.cpp(114,39): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\src.cpp(118,39): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  Api_Proto.vcxproj -> C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Debug\Api_Proto.exe
+﻿  Chara.cpp
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Shape.h(35,28): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Shape.h(44,32): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Shape.h(45,30): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(13,40): error C2061: 구문 오류: 식별자 'Character'
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(18,27): error C2065: 'player': 선언되지 않은 식별자입니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(18,48): error C2065: 'player': 선언되지 않은 식별자입니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(18,1): error C2660: 'Shape::setRect': 함수는 4개의 인수를 사용하지 않습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Shape.h(26,10): message : 'Shape::setRect' 선언을 참조하십시오.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(22,17): error C2065: 'combo': 선언되지 않은 식별자입니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(24,33): error C2065: 'player': 선언되지 않은 식별자입니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(24,54): error C2065: 'player': 선언되지 않은 식별자입니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(24,1): error C2660: 'Shape::setSector': 함수는 4개의 인수를 사용하지 않습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Shape.h(37,10): message : 'Shape::setSector' 선언을 참조하십시오.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(26,22): error C2065: 'combo': 선언되지 않은 식별자입니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(28,33): error C2065: 'player': 선언되지 않은 식별자입니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(28,54): error C2065: 'player': 선언되지 않은 식별자입니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(28,1): error C2660: 'Shape::setSector': 함수는 4개의 인수를 사용하지 않습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Shape.h(37,10): message : 'Shape::setSector' 선언을 참조하십시오.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(30,22): error C2065: 'combo': 선언되지 않은 식별자입니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(32,31): error C2065: 'player': 선언되지 않은 식별자입니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(32,52): error C2065: 'player': 선언되지 않은 식별자입니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(32,1): error C2660: 'Shape::setRect': 함수는 4개의 인수를 사용하지 않습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Shape.h(26,10): message : 'Shape::setRect' 선언을 참조하십시오.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(7,16): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(8,16): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(13,19): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(15,15): error C2679: 이항 '=': 오른쪽 피연산자로 'int' 형식을 사용하는 연산자가 없거나 허용되는 변환이 없습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(48,1): message : 'Weapon &Weapon::operator =(Weapon &&)'일 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(48,1): message : 또는       'Weapon &Weapon::operator =(const Weapon &)'
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(15,15): message : 인수 목록 '(Weapon, int)'을(를) 일치시키는 동안
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(27,59): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(27,46): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(27,34): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(27,24): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(66,74): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(66,57): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(66,41): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(66,27): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(74,10): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(86,21): error C2059: 구문 오류: ')'
+  Map.cpp
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Shape.h(35,28): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Shape.h(44,32): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Shape.h(45,30): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(13,40): error C2061: 구문 오류: 식별자 'Character'
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(18,27): error C2065: 'player': 선언되지 않은 식별자입니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(18,48): error C2065: 'player': 선언되지 않은 식별자입니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(18,1): error C2660: 'Shape::setRect': 함수는 4개의 인수를 사용하지 않습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Shape.h(26,10): message : 'Shape::setRect' 선언을 참조하십시오.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(22,17): error C2065: 'combo': 선언되지 않은 식별자입니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(24,33): error C2065: 'player': 선언되지 않은 식별자입니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(24,54): error C2065: 'player': 선언되지 않은 식별자입니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(24,1): error C2660: 'Shape::setSector': 함수는 4개의 인수를 사용하지 않습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Shape.h(37,10): message : 'Shape::setSector' 선언을 참조하십시오.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(26,22): error C2065: 'combo': 선언되지 않은 식별자입니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(28,33): error C2065: 'player': 선언되지 않은 식별자입니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(28,54): error C2065: 'player': 선언되지 않은 식별자입니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(28,1): error C2660: 'Shape::setSector': 함수는 4개의 인수를 사용하지 않습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Shape.h(37,10): message : 'Shape::setSector' 선언을 참조하십시오.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(30,22): error C2065: 'combo': 선언되지 않은 식별자입니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(32,31): error C2065: 'player': 선언되지 않은 식별자입니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(32,52): error C2065: 'player': 선언되지 않은 식별자입니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(32,1): error C2660: 'Shape::setRect': 함수는 4개의 인수를 사용하지 않습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Shape.h(26,10): message : 'Shape::setRect' 선언을 참조하십시오.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Map.cpp(128,14): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Map.cpp(129,14): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Map.cpp(135,78): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Map.cpp(142,78): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Map.cpp(150,78): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Map.cpp(155,59): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Map.cpp(158,72): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Map.cpp(164,57): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Map.cpp(170,73): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Map.cpp(179,78): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Map.cpp(184,59): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Map.cpp(188,72): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Map.cpp(197,77): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Map.cpp(202,58): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Map.cpp(206,71): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  src.cpp
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Shape.h(35,28): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Shape.h(44,32): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Shape.h(45,30): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(13,40): error C2061: 구문 오류: 식별자 'Character'
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(18,27): error C2065: 'player': 선언되지 않은 식별자입니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(18,48): error C2065: 'player': 선언되지 않은 식별자입니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(18,1): error C2660: 'Shape::setRect': 함수는 4개의 인수를 사용하지 않습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Shape.h(26,10): message : 'Shape::setRect' 선언을 참조하십시오.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(22,17): error C2065: 'combo': 선언되지 않은 식별자입니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(24,33): error C2065: 'player': 선언되지 않은 식별자입니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(24,54): error C2065: 'player': 선언되지 않은 식별자입니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(24,1): error C2660: 'Shape::setSector': 함수는 4개의 인수를 사용하지 않습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Shape.h(37,10): message : 'Shape::setSector' 선언을 참조하십시오.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(26,22): error C2065: 'combo': 선언되지 않은 식별자입니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(28,33): error C2065: 'player': 선언되지 않은 식별자입니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(28,54): error C2065: 'player': 선언되지 않은 식별자입니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(28,1): error C2660: 'Shape::setSector': 함수는 4개의 인수를 사용하지 않습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Shape.h(37,10): message : 'Shape::setSector' 선언을 참조하십시오.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(30,22): error C2065: 'combo': 선언되지 않은 식별자입니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(32,31): error C2065: 'player': 선언되지 않은 식별자입니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(32,52): error C2065: 'player': 선언되지 않은 식별자입니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.h(32,1): error C2660: 'Shape::setRect': 함수는 4개의 인수를 사용하지 않습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Shape.h(26,10): message : 'Shape::setRect' 선언을 참조하십시오.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\src.cpp(113,39): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\src.cpp(117,39): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  코드를 생성하고 있습니다...

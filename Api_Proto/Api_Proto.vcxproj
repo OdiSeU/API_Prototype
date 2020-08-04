@@ -144,6 +144,7 @@
     <ClCompile Include="Proj.cpp" />
     <ClCompile Include="Resol.cpp" />
     <ClCompile Include="src.cpp" />
+    <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Chara.h" />

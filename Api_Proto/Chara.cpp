@@ -12,13 +12,14 @@ Character::Character(int width, int height)
 	Shield = 3;
 	JumpPower = JumpP;
 	AttackSpeed = 1;
-	Weapon = 0;
+	weapon = Weapon();
 	YStat = NULL;
 	XStat = NULL;
 	MVSpeed = NULL;
 
 	// 진 수정
 	isAttack = false;
+	// 진 수정
 }
 
 void Character::draw(HDC hdc)
@@ -79,11 +80,26 @@ void Character::Grav(HDC hdc, float delta) // 중력
 	centerY = centerY + vy;
 }
 
-void Character::attack() {
-	if (0 && !isAttack)
-	{
-		vy = -JumpPower;
-		jumpNum--;
-		YStat = UP;
+// 진 수정
+void Character::attackStart(HWND hwnd, unsigned int mx, unsigned int my) {
+	if (!isAttack) {
+		SetTimer(hwnd, 1, weapon->Delay, attacking);
+		//animation
 	}
 }
+void CALLBACK Character::attacking(HWND hwnd, unsigned int mx, unsigned int my) {
+
+}
+void Character::attackEnd(HWND hwnd, unsigned int mx, unsigned int my) {
+	
+}
+void Character::throwStart(HWND hwnd, unsigned int mx, unsigned int my) {
+	
+}
+void Character::throwing(HWND hwnd, unsigned int mx, unsigned int my) {
+
+}
+void Character::throwEnd(HWND hwnd, unsigned int mx, unsigned int my) {
+
+}
+// 진 수정
