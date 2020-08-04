@@ -243,7 +243,7 @@ void Map::ProjColl(HDC hdc, Character* Player)
 			Player->Thowable.erase(Player->Thowable.begin() + i--);
 			Player->Projnum++;
 		}
-		else if (matrix[mapId][MindexY][MindexX] == 2 || matrix[mapId][MindexY][MindexX] == 3)
+		else if (matrix[mapId][MindexY][MindexX] == 3)
 		{
 			Player->Thowable.erase(Player->Thowable.begin() + i--);
 			Player->Projnum++;

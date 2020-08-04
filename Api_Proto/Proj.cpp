@@ -2,6 +2,29 @@
 #include <cmath>
 #include "Proj.h"
 
+// 던지는 파워 고정
+Projectile::Projectile(float Cx, float Cy, float Mx, float My, int type)
+{
+	Type = type;
+	if (Type == Arrowhead)
+	{
+		pWidth = 8; pHeight = 8;
+	}
+	else if (Type == Ball)
+	{
+		pWidth = 15; pHeight = 15;
+	}
+	centerX = Cx; centerY = Cy;
+	Distance = sqrt(pow(centerX - Mx, 2) + pow(centerY - My, 2));
+	float Height = My - centerY;
+	float Width = Mx - centerX;
+	Sin = Height / Distance;
+	Cos = Width / Distance;
+	vx = 1000 * Cos;
+	vy = 0.4 * Sin;
+}
+
+/*
 Projectile::Projectile(float Cx, float Cy, float Mx, float My, int type)
 {
 	Type = type;
@@ -20,8 +43,9 @@ Projectile::Projectile(float Cx, float Cy, float Mx, float My, int type)
 	Sin = Height / Distance;
 	Cos = Width / Distance;
 	vx = Distance * Cos;
-	vy = Distance * 0.005 * Sin;
+	vy = Distance * 0.002 * Sin;
 }
+*/
 
 void Projectile::setProj(float Cx, float Cy, float Mx, float My)
 {
