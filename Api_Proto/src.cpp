@@ -1,12 +1,25 @@
 #include <windows.h>
 #include <vector>
 #include <cmath>
+#include <list>
 #include "Chara.h"
 #include "Resol.h"
 #include "Proj.h"
 #include "Map.h"
+#include "Weapon.h"
 #include "WindowScreen.h"
 using namespace std;
+
+typedef struct _EventStruct
+{
+	float px, py;    //플레이어 위치
+	float mx, my;    //마우스 위치
+	float leftTime; //시작까지 남은시간
+	float mtTime;    //진행 시간
+	Weapon weapon;    //무기 객체
+}EventStruct;
+
+list<EventStruct*> eventList;    //이벤트 처리 리스트
 
 Character Player(CharaW, CharaH); // 캐릭 선언
 
@@ -149,6 +162,27 @@ void Run()
 		PlayGround.ProjColl(bufferDC, &Player);
 		PlayGround.Collision(&Player);
 	*/
+
+	for (list<EventStruct*>::iterator it = eventList.begin(); it != eventList.end(); it++)
+	{
+		if ((*it)->leftTime > 0)
+		{
+			(*it)->leftTime -= g_fDeltatime * 1;
+		}
+		else
+		{
+			if ((*it)->mtTime > 0)
+			{
+				(*it)->mtTime -= g_fDeltatime * 1;
+				//eventStart
+			}
+			else
+			{
+				eventList.erase(it);
+				//eventEnd
+			}
+		}
+	}
 
 	// 플레이어 갱신
 	Player.draw(bufferDC);
