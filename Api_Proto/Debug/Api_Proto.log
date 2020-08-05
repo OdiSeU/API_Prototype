@@ -1,17 +1,4 @@
-﻿  Proj.cpp
-C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Proj.cpp(24,11): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Proj.cpp(59,24): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Proj.cpp(67,64): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Proj.cpp(67,51): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Proj.cpp(67,38): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Proj.cpp(67,25): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Proj.cpp(75,10): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Proj.cpp(82,90): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Proj.cpp(82,68): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Proj.cpp(82,45): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Proj.cpp(82,25): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  src.cpp
-C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(77,40): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(81,40): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  코드를 생성하고 있습니다...
+﻿  src.cpp
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(76,40): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(80,40): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   Api_Proto.vcxproj -> C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Debug\Api_Proto.exe
