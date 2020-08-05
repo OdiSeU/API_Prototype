@@ -1,7 +1,11 @@
+#include <vector>
 #include "Chara.h"
-#include "Map.h"
+#include "Proj.h"
+using namespace std;
+
 Character::Character(int width, int height)
 {
+	Projnum = 3;
 	jumpNum = 2;
 	centerX = 700 + width / 2;
 	centerY = 500 + height / 2;
@@ -20,6 +24,10 @@ Character::Character(int width, int height)
 void Character::draw(HDC hdc)
 {
 	Rectangle(hdc, getLeft(), getTop(), getRight(), getBottom());
+	for (int i = 0;i < Thowable.size();i++)
+	{
+		Thowable[i].draw(hdc);
+	}
 }
 
 void Character::MVRight(HDC hdc)
@@ -71,6 +79,20 @@ void Character::Grav(HDC hdc, float delta) // ม฿ทย
 	{
 		YStat = DOWN;
 	}
-	clear(hdc);
+	//clear(hdc);
 	centerY = centerY + vy;
+}
+
+void Character::UpdateProj(HDC hdc, float delta)
+{
+	for (int i = 0;i < Thowable.size();i++)
+	{
+		Thowable[i].Update(hdc, delta);
+	}
+}
+
+void Character::NextStagePosition(int x, int y)
+{
+	centerX = x;
+	centerY = y;
 }
