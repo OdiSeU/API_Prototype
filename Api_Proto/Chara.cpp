@@ -17,9 +17,13 @@ Character::Character(int width, int height)
 	XStat = NULL;
 	MVSpeed = NULL;
 
+<<<<<<< Updated upstream
 	// 진 수정
 	isAttack = false;
 	// 진 수정
+=======
+	isAttack = false;
+>>>>>>> Stashed changes
 }
 
 void Character::draw(HDC hdc)
@@ -87,6 +91,7 @@ void Character::attackStart(HWND hwnd, unsigned int mx, unsigned int my) {
 		//animation
 	}
 }
+<<<<<<< Updated upstream
 void CALLBACK Character::attacking(HWND hwnd, unsigned int mx, unsigned int my) {
 
 }
@@ -103,3 +108,25 @@ void Character::throwEnd(HWND hwnd, unsigned int mx, unsigned int my) {
 
 }
 // 진 수정
+=======
+
+void Character::attackStart(HWND hwnd, unsigned int mx, unsigned int my) 
+{
+	if (!isAttack) {
+		isAttack = true;
+		SetTimer(hwnd, 1, weapon.Delay, (TIMERPROC)timerProc(hwnd, NULL, NULL, NULL, ));
+		//animation
+	}
+}
+
+void Character::attackEnd(HWND hwnd, unsigned int mx, unsigned int my) 
+{
+	isAttack = false;
+}
+
+
+void CALLBACK timerProc(HWND hwnd, UINT uMsg, UINT idEvent, DWORD dwTime, Character target)
+{
+
+}
+>>>>>>> Stashed changes

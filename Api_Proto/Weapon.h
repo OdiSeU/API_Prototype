@@ -6,11 +6,11 @@ enum { Fist = 0, Sword, Arrow };
 
 class Weapon
 {
+public:
 	int Weapontype;
 	Shape Range;
 	float Delay;
 	float Attacked;
-public:
 	Weapon();
 	void setWeapontype(int a, float Cx, float Cy, int combo = 0);
 	int getWeapon()

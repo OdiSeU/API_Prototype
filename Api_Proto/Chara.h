@@ -1,5 +1,12 @@
 #include <Windows.h>
+<<<<<<< Updated upstream
 #include "Weapon.h"
+=======
+#include <vector>
+#include "Proj.h"
+#include "Weapon.h"
+using namespace std;
+>>>>>>> Stashed changes
 
 #pragma once
 #define CharaW 20 // 캐릭터 너비
@@ -21,12 +28,19 @@ public:
 	int Shield; // 방어막
 	float JumpPower; // 점프 파워
 	float AttackSpeed; // 공격 속도
+<<<<<<< Updated upstream
 	Weapon weapon; //무기
 	short YStat; // 위 아래 상태
 	short XStat; // 좌 우 상태
 
 	// 진 수정
 	bool isAttack; //공격 상태 체크
+=======
+	Weapon weapon;
+	short YStat; // 위 아래 상태
+	short XStat; // 좌 우 상태
+	bool isAttack;
+>>>>>>> Stashed changes
 public:
 	Character(int, int);
 	float getTop() { return centerY - CharaH / 2; }
@@ -39,6 +53,7 @@ public:
 	void MVJump(HDC hdc);
 	void clear(HDC hdc);
 	void Grav(HDC hdc, float delta);
+<<<<<<< Updated upstream
 
 	// 진 수정
 	void attackStart(HWND hwnd, unsigned int mx, unsigned int my);
@@ -48,4 +63,10 @@ public:
 	void CALLBACK throwing(HWND hwnd, unsigned int mx, unsigned int my);
 	void throwEnd(HWND hwnd, unsigned int mx, unsigned int my);
 	// 진 수정
+=======
+	void UpdateProj(HDC hdc, float delta);
+
+	void attackStart(HWND hwnd, unsigned int mx, unsigned int my);
+	void attackEnd(HWND hwnd, unsigned int mx, unsigned int my);
+>>>>>>> Stashed changes
 };

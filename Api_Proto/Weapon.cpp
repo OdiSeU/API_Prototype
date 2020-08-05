@@ -1,7 +1,7 @@
 #include "Weapon.h"
 #include "Shape.h"
 
-Weapon::Weapon() { Weapontype = Fist; Range.setZero(); }
+Weapon::Weapon() { Weapontype = Fist; Range.setZero(); Delay = 0.3; Attacked = 1; }
 
 void Weapon::setWeapontype(int a, float Cx, float Cy, int combo)
 {

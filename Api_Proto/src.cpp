@@ -1,5 +1,6 @@
 #include <windows.h>
 #include <cmath>
+#include <list>
 #include "Chara.h"
 #include "Resol.h"
 #include "Proj.h"
@@ -63,6 +64,7 @@ void Run()
 		Player.jumpNum = 2;
 	}
 
+<<<<<<< Updated upstream
 	// 장애물 충돌 처리
 	PlayGround.Collision(&Player);
 	
@@ -70,6 +72,18 @@ void Run()
 	ReleaseDC(g_hWnd, g_hDC);
 }
 */
+=======
+typedef struct EventStruct
+{
+	float px, py;	//플레이어 위치
+	float mx, my;	//마우스 위치
+	float leftTime; //시작까지 남은시간
+	float mtTime;	//진행 시간
+	Weapon weapon;	//무기 객체
+}EventStruct;
+
+list<EventStruct> eventList;	//이벤트 처리 리스트
+>>>>>>> Stashed changes
 
 // 더블 버퍼링 추가
 void Run()
@@ -117,6 +131,28 @@ void Run()
 		Player.centerY = PlayGround.borderY - CharaH / 2;
 		Player.vy = 0;
 		Player.jumpNum = 2;
+	}
+
+	//이벤트 리스트 갱신
+	for (list<EventStruct*>::iterator it = eventList.begin(); it != intList.end(); it++)
+	{
+		if (eventList[it].leftTime > 0)
+		{
+			eventList[it].leftTime -= g_fDeltatime * 1;
+		}
+		else
+		{
+			if (eventList[it].mtTime > 0)
+			{
+				eventList[it].mtTime -= g_fDeltatime * 1;
+				//eventStart
+			}
+			else
+			{
+				eventList[it].erase(it);
+				//eventEnd
+			}
+		}
 	}
 
 	// 장애물 충돌 처리
@@ -218,7 +254,23 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 
 	// 진 추가 //
 	case WM_LBUTTONDOWN:
+<<<<<<< Updated upstream
 		Player.attackStart(hwnd, LOWORD(lParam), HIWORD(lParam));
+=======
+		mX = LOWORD(lParam);
+		mY = HIWORD(lParam);
+		Player.attackStart(hwnd, mX, mY);
+		break;
+
+	case WM_RBUTTONDOWN:
+		mX = LOWORD(lParam);
+		mY = HIWORD(lParam);
+		if (Player.Projnum > 0)
+		{
+			Player.Thowable.push_back(Projectile(Player.centerX, Player.centerY, mX, mY, Arrowhead));
+			Player.Projnum--;
+		}
+>>>>>>> Stashed changes
 		break;
 
 	case WM_RBUTTONDOWN:
