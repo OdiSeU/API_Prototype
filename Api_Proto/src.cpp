@@ -5,6 +5,23 @@
 #include "Resol.h"
 #include "Proj.h"
 #include "Map.h"
+<<<<<<< Updated upstream
+=======
+#include "Weapon.h"
+#include "WindowScreen.h"
+using namespace std;
+
+typedef struct _EventStruct
+{
+	float pX, pY;    //플레이어 위치
+	float mX, mY;    //마우스 위치
+	float leftTime; //시작까지 남은시간
+	float progTime;    //진행 시간
+	Weapon weapon;    //무기 객체
+}EventStruct;
+
+list<EventStruct> eventList;    //이벤트 처리 리스트
+>>>>>>> Stashed changes
 
 Character Player(CharaW, CharaH); // 캐릭 선언
 Map PlayGround; // 맵 선언
@@ -24,7 +41,56 @@ float g_fDeltatime;
 HDC g_hDC;
 HWND g_hWnd;
 
+<<<<<<< Updated upstream
 /*
+=======
+// 맵 전연 변수
+Screen WindowScreen; //윈도우 화면  신민수 추가
+Map PlayGround(WindowScreen.rect); // 맵 선언
+Map oldMap(WindowScreen.rect);
+RECT border = PlayGround.MaxSize;
+
+// 마우스 좌표
+float mX, mY;
+
+void startAttack(EventStruct target) 
+{
+	PAINTSTRUCT ps;
+	HDC hdc = GetDC(g_hWnd);
+	Motion motion = target.weapon.getMotion();
+	switch (target.weapon.getWeaponType())
+	{
+	case Arrow:
+		break;
+	default:
+		if (motion.shape == 'r')
+		{
+			Rectangle(hdc,
+				motion.centerX - motion.Hwidth,
+				motion.centerY - motion.Hheight,
+				motion.centerX + motion.Hwidth,
+				motion.centerY + motion.Hheight
+			);
+		}
+		if (motion.shape == 's')
+		{
+			Pie(hdc,
+				motion.centerX - motion.Radius,
+				motion.centerY - motion.Radius,
+				motion.centerX + motion.Radius,
+				motion.centerY + motion.Radius,
+				motion.centerX + motion.Radius * cos(motion.startAngle),
+				motion.centerY - motion.Radius * sin(motion.startAngle),
+				motion.centerX + motion.Radius * cos(motion.endAngle),
+				motion.centerY - motion.Radius * sin(motion.endAngle)
+			);
+		}
+		break;
+	}
+	EndPaint(g_hWnd, &ps);
+}
+
+>>>>>>> Stashed changes
 void Run()
 {
 	LARGE_INTEGER tTime;
@@ -63,6 +129,76 @@ void Run()
 		Player.vy = 0;
 		Player.jumpNum = 2;
 	}
+<<<<<<< Updated upstream
+=======
+	QueryPerformanceCounter(&g_tTime);
+	/*
+	Player.MVLeft(bufferDC); // 왼쪽
+		Player.MVRight(bufferDC); // 오른쪽	
+		Player.MVJump(bufferDC); // 점프
+		Player.Grav(bufferDC, g_fDeltatime); // 중력
+
+		// 투사체
+		Player.UpdateProj(bufferDC, g_fDeltatime);
+
+		if (MAP_START_POINT_X > Player.getLeft()) // 왼쪽 벽 방지
+		{
+			Player.centerX = MAP_START_POINT_X + CharaW / 2;
+		}
+		if (MAP_START_POINT_Y > Player.getTop()) // 천장 방지
+		{
+			Player.centerY = MAP_START_POINT_Y + CharaH / 2;
+			Player.vy = 0;
+		}
+		if (PlayGround.borderX < Player.getRight()) // 오른쪽 벽 방지
+		{
+			Player.centerX = PlayGround.borderX - CharaW / 2;
+		}
+		if (PlayGround.borderY < Player.getBottom()) // 바닥 방지
+		{
+			Player.centerY = PlayGround.borderY - CharaH / 2;
+			Player.vy = 0;
+			Player.jumpNum = 2;
+		}
+
+		// 장애물 충돌 처리
+		PlayGround.ProjColl(bufferDC, &Player);
+		PlayGround.Collision(&Player);
+	*/
+
+	for (list<EventStruct>::iterator it = eventList.begin(); it != eventList.end(); it++)
+	{
+		if ((it)->leftTime > 0)
+		{
+			(it)->leftTime -= g_fDeltatime * 1;
+		}
+		else
+		{
+			if ((it)->progTime > 0)
+			{
+				(it)->progTime -= g_fDeltatime * 1;
+				//eventStart
+				startAttack(*it);
+			}
+			else
+			{
+				eventList.erase(it);
+				//eventEnd
+			}
+		}
+	}
+
+	// 플레이어 갱신
+	Player.draw(bufferDC);
+
+	drawBackground(bufferDC, border, WindowScreen.rect);
+
+	BitBlt(g_hDC, 0, 0, Crect.right, Crect.bottom, bufferDC, 0, 0, SRCCOPY);
+	SelectObject(bufferDC, OldB);
+	DeleteObject(NewB);
+	DeleteObject(SelectObject(bufferDC, oldbitmap)); // 종이 원래대로 한 후 제거
+	DeleteDC(bufferDC); // hMemDC 제거
+>>>>>>> Stashed changes
 
 <<<<<<< Updated upstream
 	// 장애물 충돌 처리
@@ -235,6 +371,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 {
 
 	PAINTSTRUCT ps;
+	EventStruct eventStruct;
 
 	switch (iMsg)
 	{
@@ -255,11 +392,24 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	// 진 추가 //
 	case WM_LBUTTONDOWN:
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		Player.attackStart(hwnd, LOWORD(lParam), HIWORD(lParam));
 =======
 		mX = LOWORD(lParam);
 		mY = HIWORD(lParam);
 		Player.attackStart(hwnd, mX, mY);
+=======
+		//EventStruct eventStruct; ????
+		eventStruct.mX = LOWORD(lParam);
+		eventStruct.mY = HIWORD(lParam);
+		eventStruct.pX = Player.centerX;
+		eventStruct.pY = Player.centerY;
+		eventStruct.weapon = Player.weapon;
+		eventStruct.leftTime = Player.weapon.getDealy();
+		eventStruct.progTime = Player.weapon.getAtkSpeed();
+		eventList.push_back(eventStruct);
+
+>>>>>>> Stashed changes
 		break;
 
 	case WM_RBUTTONDOWN:

@@ -1,4 +1,5 @@
-#include "Shape.h"
+#include <vector>
+#include "Motion.h"
 
 #pragma once
 
@@ -8,14 +9,19 @@ class Weapon
 {
 public:
 	int Weapontype;
+<<<<<<< Updated upstream
 	Shape Range;
 	float Delay;
 	float Attacked;
+=======
+	vector<Motion> rangeArr;
+	int combo;
+public:
+>>>>>>> Stashed changes
 	Weapon();
-	void setWeapontype(int a, float Cx, float Cy, int combo = 0);
-	int getWeapon()
-	{
-		return Weapontype;
-	}
-	Shape getShape();
+	void setWeaponType(int a, float Cx, float Cy);
+	int getWeaponType();
+	float getDealy();
+	float getAtkSpeed();
+	Motion getMotion();
 };

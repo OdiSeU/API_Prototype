@@ -3,6 +3,7 @@
 #include "Weapon.h"
 =======
 #include <vector>
+#include "Weapon.h"
 #include "Proj.h"
 #include "Weapon.h"
 using namespace std;
@@ -29,6 +30,7 @@ public:
 	float JumpPower; // 점프 파워
 	float AttackSpeed; // 공격 속도
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	Weapon weapon; //무기
 	short YStat; // 위 아래 상태
 	short XStat; // 좌 우 상태
@@ -36,6 +38,8 @@ public:
 	// 진 수정
 	bool isAttack; //공격 상태 체크
 =======
+=======
+>>>>>>> Stashed changes
 	Weapon weapon;
 	short YStat; // 위 아래 상태
 	short XStat; // 좌 우 상태

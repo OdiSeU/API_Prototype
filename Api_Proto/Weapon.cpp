@@ -1,42 +1,71 @@
 #include "Weapon.h"
-#include "Shape.h"
 
+<<<<<<< Updated upstream
 Weapon::Weapon() { Weapontype = Fist; Range.setZero(); Delay = 0.3; Attacked = 1; }
+=======
+Weapon::Weapon() {
+	Weapontype = Fist;
+	Motion range;
+	range.setZero();
+	range.Delay = 0.3;
+	range.AtkSpeed = 0.5;
+	rangeArr.clear();
+	rangeArr.push_back(range);
+}
+>>>>>>> Stashed changes
 
-void Weapon::setWeapontype(int a, float Cx, float Cy, int combo)
+void Weapon::setWeaponType(int a, float Cx, float Cy)
 {
 	Weapontype = a;
-	if (Weapontype == Fist)
+	Motion range;
+	rangeArr.clear();
+	switch (Weapontype)
 	{
-		Range.setRect(Cx + 10, Cy, 3, 3, 0);
-		Delay = 0.3; Attacked = 0.5;
-	}
-	else if (Weapontype == Sword)
-	{
-		if (combo == 0)
-		{
-			Range.setSector(Cx + 10, Cy, 12, 120, 0);
-			Delay = 0.3; Attacked = 0.5;
-		}
-		else if (combo == 1)
-		{
-			Range.setSector(Cx + 10, Cy, 12, 30, -30);
-			Delay = 0.3; Attacked = 0.5;
-		}
-		else if (combo == 2)
-		{
-			Range.setRect(Cx + 10, Cy, 1, 10, 0);
-			Delay = 0.3; Attacked = 0.5;
-		}
-	}
-	else if (Weapontype == Arrow)
-	{
-		Range.setZero();
-		Delay = 0.3; Attacked = 0.5;
+	case Fist:
+		range.setRect(Cx + 10, Cy, 3, 3, 0);
+		range.Delay = 0.3;
+		range.AtkSpeed = 0.5;
+		break;
+	case Sword:
+		range.setSector(Cx + 10, Cy, 12, 120, 0);
+		range.Delay = 0.3;
+		range.AtkSpeed = 0.5;
+		rangeArr.push_back(range);
+
+		range.setSector(Cx + 10, Cy, 12, 30, -30);
+		range.Delay = 0.3;
+		range.AtkSpeed = 0.5;
+		rangeArr.push_back(range);
+
+		range.setRect(Cx + 10, Cy, 1, 10, 0);
+		range.Delay = 0.3;
+		range.AtkSpeed = 0.5;
+		rangeArr.push_back(range);
+		break;
+	case Arrow:
+		range.setZero();
+		range.Delay = 0.3;
+		range.AtkSpeed = 0.5;
+		rangeArr.push_back(range);
+		break;
 	}
 }
-
-Shape Weapon::getShape()
+int Weapon::getWeaponType()
 {
-	return Range;
+	return Weapontype;
+}
+
+float Weapon::getDealy()
+{
+	return rangeArr[combo].Delay;
+}
+
+float Weapon::getAtkSpeed()
+{
+	return rangeArr[combo].AtkSpeed;
+}
+
+Motion Weapon::getMotion()
+{
+	return rangeArr[combo];
 }

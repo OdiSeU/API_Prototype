@@ -151,7 +151,7 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="Proj.h" />
     <ClInclude Include="Resol.h" />
-    <ClInclude Include="Shape.h" />
+    <ClInclude Include="Motion.h" />
     <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
