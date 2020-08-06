@@ -1,8 +1,11 @@
+#include <vector>
 #include "Chara.h"
-#include "Map.h"
-#include <time.h>
+#include "Proj.h"
+using namespace std;
+
 Character::Character(int width, int height)
 {
+	Projnum = 3;
 	jumpNum = 2;
 	centerX = 700 + width / 2;
 	centerY = 500 + height / 2;
@@ -12,23 +15,18 @@ Character::Character(int width, int height)
 	Shield = 3;
 	JumpPower = JumpP;
 	AttackSpeed = 1;
-	weapon = Weapon();
 	YStat = NULL;
 	XStat = NULL;
 	MVSpeed = NULL;
-
-<<<<<<< Updated upstream
-	// 진 수정
-	isAttack = false;
-	// 진 수정
-=======
-	isAttack = false;
->>>>>>> Stashed changes
 }
 
 void Character::draw(HDC hdc)
 {
 	Rectangle(hdc, getLeft(), getTop(), getRight(), getBottom());
+	for (int i = 0;i < Thowable.size();i++)
+	{
+		Thowable[i].draw(hdc);
+	}
 }
 
 void Character::MVRight(HDC hdc)
@@ -80,53 +78,20 @@ void Character::Grav(HDC hdc, float delta) // 중력
 	{
 		YStat = DOWN;
 	}
-	clear(hdc);
+	//clear(hdc);
 	centerY = centerY + vy;
 }
 
-// 진 수정
-void Character::attackStart(HWND hwnd, unsigned int mx, unsigned int my) {
-	if (!isAttack) {
-		SetTimer(hwnd, 1, weapon->Delay, attacking);
-		//animation
-	}
-}
-<<<<<<< Updated upstream
-void CALLBACK Character::attacking(HWND hwnd, unsigned int mx, unsigned int my) {
-
-}
-void Character::attackEnd(HWND hwnd, unsigned int mx, unsigned int my) {
-	
-}
-void Character::throwStart(HWND hwnd, unsigned int mx, unsigned int my) {
-	
-}
-void Character::throwing(HWND hwnd, unsigned int mx, unsigned int my) {
-
-}
-void Character::throwEnd(HWND hwnd, unsigned int mx, unsigned int my) {
-
-}
-// 진 수정
-=======
-
-void Character::attackStart(HWND hwnd, unsigned int mx, unsigned int my) 
+void Character::UpdateProj(HDC hdc, float delta)
 {
-	if (!isAttack) {
-		isAttack = true;
-		SetTimer(hwnd, 1, weapon.Delay, (TIMERPROC)timerProc(hwnd, NULL, NULL, NULL, ));
-		//animation
+	for (int i = 0;i < Thowable.size();i++)
+	{
+		Thowable[i].Update(hdc, delta);
 	}
 }
 
-void Character::attackEnd(HWND hwnd, unsigned int mx, unsigned int my) 
+void Character::NextStagePosition(int x, int y)
 {
-	isAttack = false;
+	centerX = x;
+	centerY = y;
 }
-
-
-void CALLBACK timerProc(HWND hwnd, UINT uMsg, UINT idEvent, DWORD dwTime, Character target)
-{
-
-}
->>>>>>> Stashed changes

@@ -1,8 +1,5 @@
 #include "Weapon.h"
 
-<<<<<<< Updated upstream
-Weapon::Weapon() { Weapontype = Fist; Range.setZero(); Delay = 0.3; Attacked = 1; }
-=======
 Weapon::Weapon() {
 	Weapontype = Fist;
 	Motion range;
@@ -12,7 +9,6 @@ Weapon::Weapon() {
 	rangeArr.clear();
 	rangeArr.push_back(range);
 }
->>>>>>> Stashed changes
 
 void Weapon::setWeaponType(int a, float Cx, float Cy)
 {
