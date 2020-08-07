@@ -1,7 +1,7 @@
 #include "Weapon.h"
 
 Weapon::Weapon() {
-	setWeaponType(Fist);
+	setWeaponType(Sword);
 }
 void Weapon::setWeaponType(int type) {
 	Motion range;
@@ -11,30 +11,30 @@ void Weapon::setWeaponType(int type) {
 	{
 	case Fist:
 		range.setRect(0, 0, 3, 3, 0);
-		range.Delay = 0.3;
-		range.AtkSpeed = 0.5;
+		range.Delay = 0.1;
+		range.AtkSpeed = 0.3;
 		rangeArr.push_back(range);
 		break;
 	case Sword:
-		range.setSector(0, 0, 12, 120, 0);
-		range.Delay = 0.3;
-		range.AtkSpeed = 0.5;
+		range.setSector(0, 0, 12, -120, 0);
+		range.Delay = 0.1;
+		range.AtkSpeed = 0.3;
 		rangeArr.push_back(range);
 
-		range.setSector(0, 0, 12, 30, -30);
-		range.Delay = 0.3;
-		range.AtkSpeed = 0.5;
+		range.setSector(0, 0, 12, -30, 30);
+		range.Delay = 0.1;
+		range.AtkSpeed = 0.3;
 		rangeArr.push_back(range);
 
-		range.setRect(0, 0, 1, 10, 0);
-		range.Delay = 0.3;
-		range.AtkSpeed = 0.5;
+		range.setRect(0, 0, 10, 1, 0);
+		range.Delay = 0.1;
+		range.AtkSpeed = 0.3;
 		rangeArr.push_back(range);
 		break;
 	case Arrow:
 		range.setZero();
-		range.Delay = 0.3;
-		range.AtkSpeed = 0.5;
+		range.Delay = 0.1;
+		range.AtkSpeed = 0.3;
 		rangeArr.push_back(range);
 		break;
 	}
@@ -62,6 +62,7 @@ void Weapon::setWeaponPos(float x, float y)
 		break;
 	}
 }
+
 int Weapon::getWeaponType()
 {
 	return Weapontype;
@@ -80,4 +81,9 @@ float Weapon::getAtkSpeed()
 Motion Weapon::getMotion()
 {
 	return rangeArr[combo];
+}
+
+void Weapon::addCombo()
+{
+	combo = (combo + 1) % rangeArr.size();
 }

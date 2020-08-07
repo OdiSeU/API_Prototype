@@ -1,10 +1,21 @@
-﻿  Weapon.cpp
+﻿  Chara.cpp
 C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Motion.h(42,22): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Motion.h(54,26): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Motion.h(55,24): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.cpp(14,20): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.cpp(20,20): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.cpp(25,20): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.cpp(30,20): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.cpp(36,20): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(10,16): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(11,16): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(16,19): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(25,59): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(25,46): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(25,34): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(25,24): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(26,19): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(68,74): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(68,57): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(68,41): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(68,27): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(76,10): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(87,19): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(95,12): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(96,12): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   Api_Proto.vcxproj -> C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Debug\Api_Proto.exe

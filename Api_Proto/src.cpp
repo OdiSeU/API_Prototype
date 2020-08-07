@@ -199,9 +199,13 @@ void Run()
 		PlayGround.ProjColl(bufferDC, &Player);
 		PlayGround.Collision(&Player);
 	*/
-
+	if (Player.delay > 0)
+	{
+		Player.delay -= g_fDeltatime * 1;
+	}
 	for (int it=0; it<eventList.size(); it++)
 	{
+		eventList[it].weapon.setWeaponPos(Player.centerX, Player.centerY);
 		if (eventList[it].leftTime > 0)
 		{
 			eventList[it].leftTime -= g_fDeltatime * 1;
@@ -389,15 +393,20 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		break;
 
 	case WM_LBUTTONDOWN:
-		eventStruct.mx = LOWORD(lParam);
-		eventStruct.my = HIWORD(lParam);
-		eventStruct.px = Player.centerX;
-		eventStruct.py = Player.centerY;
-		eventStruct.weapon = Player.weapon;
-		eventStruct.leftTime = Player.weapon.getDealy();
-		eventStruct.progTime = Player.weapon.getAtkSpeed();
-		eventList.push_back(eventStruct);
 		Player.weapon.setWeaponPos(Player.centerX, Player.centerY);
+		if (Player.delay <= 0) {
+			Player.delay = Player.weapon.getDealy() + Player.weapon.getAtkSpeed();
+			eventStruct.mx = LOWORD(lParam);
+			eventStruct.my = HIWORD(lParam);
+			eventStruct.px = Player.centerX;
+			eventStruct.py = Player.centerY;
+			eventStruct.weapon = Player.weapon;
+			eventStruct.leftTime = Player.weapon.getDealy();
+			eventStruct.progTime = Player.weapon.getAtkSpeed();
+			eventList.push_back(eventStruct);
+
+			Player.weapon.addCombo();
+		}
 		break;
 		
 	case WM_RBUTTONDOWN:

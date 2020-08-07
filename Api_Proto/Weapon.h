@@ -18,4 +18,5 @@ public:
 	float getDealy();
 	float getAtkSpeed();
 	Motion getMotion();
+	void addCombo();
 };
