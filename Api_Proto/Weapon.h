@@ -12,7 +12,8 @@ public:
 	int combo;
 
 	Weapon();
-	void setWeaponType(int a, float Cx, float Cy);
+	void setWeaponType(int type);
+	void setWeaponPos(float x, float y);
 	int getWeaponType();
 	float getDealy();
 	float getAtkSpeed();

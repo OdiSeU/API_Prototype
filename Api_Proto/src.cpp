@@ -19,7 +19,7 @@ typedef struct _EventStruct
 	Weapon weapon;    //무기 객체
 }EventStruct;
 
-list<EventStruct> eventList;    //이벤트 처리 리스트
+vector<EventStruct> eventList;    //이벤트 처리 리스트
 
 Character Player(CharaW, CharaH); // 캐릭 선언
 
@@ -47,10 +47,9 @@ RECT border = PlayGround.MaxSize;
 // 마우스 좌표
 float mX, mY;
 
-void startAttack(EventStruct target)
+void startAttack(EventStruct target, HDC hdc)
 {
 	PAINTSTRUCT ps;
-	HDC hdc = GetDC(g_hWnd);
 	Motion motion = target.weapon.getMotion();
 	switch (target.weapon.getWeaponType())
 	{
@@ -201,22 +200,22 @@ void Run()
 		PlayGround.Collision(&Player);
 	*/
 
-	for (list<EventStruct>::iterator it = eventList.begin(); it != eventList.end(); it++)
+	for (int it=0; it<eventList.size(); it++)
 	{
-		if ((it)->leftTime > 0)
+		if (eventList[it].leftTime > 0)
 		{
-			(it)->leftTime -= g_fDeltatime * 1;
+			eventList[it].leftTime -= g_fDeltatime * 1;
 		}
 		else
 		{
-			if ((it)->progTime > 0)
+			if (eventList[it].progTime > 0)
 			{
-				(it)->progTime -= g_fDeltatime * 1;
-				startAttack(*it);
+				eventList[it].progTime -= g_fDeltatime * 1;
+				startAttack(eventList[it], bufferDC);
 			}
 			else
 			{
-				eventList.erase(it);
+				eventList.erase(eventList.begin()+it);
 				//eventEnd
 			}
 		}
@@ -398,6 +397,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		eventStruct.leftTime = Player.weapon.getDealy();
 		eventStruct.progTime = Player.weapon.getAtkSpeed();
 		eventList.push_back(eventStruct);
+		Player.weapon.setWeaponPos(Player.centerX, Player.centerY);
 		break;
 		
 	case WM_RBUTTONDOWN:

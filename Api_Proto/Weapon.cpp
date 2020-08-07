@@ -1,39 +1,32 @@
 #include "Weapon.h"
 
 Weapon::Weapon() {
-	Weapontype = Fist;
-	Motion range;
-	range.setZero();
-	range.Delay = 0.3;
-	range.AtkSpeed = 0.5;
-	rangeArr.clear();
-	rangeArr.push_back(range);
+	setWeaponType(Fist);
 }
-
-void Weapon::setWeaponType(int a, float Cx, float Cy)
-{
-	Weapontype = a;
+void Weapon::setWeaponType(int type) {
 	Motion range;
 	rangeArr.clear();
+	Weapontype = type;
 	switch (Weapontype)
 	{
 	case Fist:
-		range.setRect(Cx + 10, Cy, 3, 3, 0);
+		range.setRect(0, 0, 3, 3, 0);
 		range.Delay = 0.3;
 		range.AtkSpeed = 0.5;
+		rangeArr.push_back(range);
 		break;
 	case Sword:
-		range.setSector(Cx + 10, Cy, 12, 120, 0);
+		range.setSector(0, 0, 12, 120, 0);
 		range.Delay = 0.3;
 		range.AtkSpeed = 0.5;
 		rangeArr.push_back(range);
 
-		range.setSector(Cx + 10, Cy, 12, 30, -30);
+		range.setSector(0, 0, 12, 30, -30);
 		range.Delay = 0.3;
 		range.AtkSpeed = 0.5;
 		rangeArr.push_back(range);
 
-		range.setRect(Cx + 10, Cy, 1, 10, 0);
+		range.setRect(0, 0, 1, 10, 0);
 		range.Delay = 0.3;
 		range.AtkSpeed = 0.5;
 		rangeArr.push_back(range);
@@ -43,6 +36,29 @@ void Weapon::setWeaponType(int a, float Cx, float Cy)
 		range.Delay = 0.3;
 		range.AtkSpeed = 0.5;
 		rangeArr.push_back(range);
+		break;
+	}
+}
+
+void Weapon::setWeaponPos(float x, float y)
+{
+	switch (Weapontype)
+	{
+	case Fist:
+		rangeArr[0].centerX = x+10;
+		rangeArr[0].centerY = y;
+		break;
+	case Sword:
+		rangeArr[0].centerX = x+10;
+		rangeArr[0].centerY = y;
+		rangeArr[1].centerX = x+10;
+		rangeArr[1].centerY = y;
+		rangeArr[2].centerX = x+10;
+		rangeArr[2].centerY = y;
+		break;
+	case Arrow:
+		rangeArr[0].centerX = x;
+		rangeArr[0].centerY = y;
 		break;
 	}
 }

@@ -1,25 +1,10 @@
-﻿  src.cpp
-C:\Programming\C++\Winform_Project\임시\Api_Proto\Motion.h(42,22): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\임시\Api_Proto\Motion.h(54,26): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\임시\Api_Proto\Motion.h(55,24): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\임시\Api_Proto\src.cpp(66,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\임시\Api_Proto\src.cpp(65,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\임시\Api_Proto\src.cpp(64,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\임시\Api_Proto\src.cpp(63,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\임시\Api_Proto\src.cpp(80,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\임시\Api_Proto\src.cpp(79,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\임시\Api_Proto\src.cpp(78,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\임시\Api_Proto\src.cpp(77,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\임시\Api_Proto\src.cpp(76,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\임시\Api_Proto\src.cpp(75,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\임시\Api_Proto\src.cpp(74,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\임시\Api_Proto\src.cpp(73,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\임시\Api_Proto\src.cpp(52,14): warning C4101: 'ps' :참조되지 않은 지역 변수입니다.
-C:\Programming\C++\Winform_Project\임시\Api_Proto\src.cpp(114,73): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\임시\Api_Proto\src.cpp(128,68): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\임시\Api_Proto\src.cpp(128,43): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\임시\Api_Proto\src.cpp(146,50): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\임시\Api_Proto\src.cpp(150,50): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\임시\Api_Proto\src.cpp(155,40): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\임시\Api_Proto\src.cpp(159,40): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  Api_Proto.vcxproj -> C:\Programming\C++\Winform_Project\임시\Debug\Api_Proto.exe
+﻿  Weapon.cpp
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Motion.h(42,22): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Motion.h(54,26): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Motion.h(55,24): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.cpp(14,20): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.cpp(20,20): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.cpp(25,20): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.cpp(30,20): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Weapon.cpp(36,20): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+  Api_Proto.vcxproj -> C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Debug\Api_Proto.exe
