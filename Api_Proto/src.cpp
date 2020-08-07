@@ -6,7 +6,7 @@
 #include "Resol.h"
 #include "Proj.h"
 #include "Map.h"
-#include "Weapon.h"
+#include "Weapon.h" 
 #include "WindowScreen.h"
 using namespace std;
 
