@@ -2,6 +2,7 @@
 #include <vector>
 #include <cmath>
 #include <list>
+#include <time.h>
 #include "Chara.h"
 #include "Resol.h"
 #include "Proj.h"
@@ -10,7 +11,7 @@
 #include "WindowScreen.h"
 using namespace std;
 
-#define FIXED_FRAME 0.016
+#pragma comment(lib, "winmm.lib");
 
 typedef struct _EventStruct
 {
@@ -32,16 +33,12 @@ bool g_bLoop = true;
 HBITMAP hbitmap, oldbitmap;
 
 // 시간 측정
-LARGE_INTEGER g_tsecond;
-LARGE_INTEGER g_tTime;
-float g_fDeltatime;
+DWORD dwOldGameTime = 0, dwCurrentGameTime = 0;
+FLOAT rDeltaTime = 0.0f, rAccumlationTime = 0.0f;
 
 // 전역 핸들
 HDC g_hDC;
 HWND g_hWnd;
-
-// 고정 버퍼링 변수
-float fTime = 0;
 
 // 맵 전연 변수
 Screen WindowScreen; //윈도우 화면  신민수 추가
@@ -51,6 +48,34 @@ RECT border = PlayGround.MaxSize;
 
 // 마우스 좌표
 float mX, mY;
+
+
+/*
+DWORD dwOldGameTime = 0, dwCurrentGameTime = 0;
+DWORD dwOldGameTime = dwCurrentGameTime = ::timeGetTime();
+FLOAT rDeltaTime = 0.0f, rAccumlationTime = 0.0f;
+
+// DeltaTime은 이전 프레임과 현재 프레임의 시간 간격을 의미하고
+// AccumlationTime은 DeltaTime이 누적된 것을 의미합니다.
+
+bool bGameLoop = true;
+while (bGameLoop)
+{
+	dwCurrentGameTime = ::timeGetTime();
+	rDeltaTime       = static_cast<float>(dwCurrentGameTime - dwOldGameTime) / 1000;
+	dwOldGameTime    = dwCurrentGameTime;
+	rAccumlationTime += rDeltaTime;
+
+	if (rAccumlationTime > 0.016f) // 60FPS 기준, 1 / 60.0f
+	{
+		rAccumlationTime = 0.0f;
+
+		// 실제로 게임 루틴을 처리하는 부분
+		OnUpdate();
+		OnRender();
+	}
+}
+*/
 
 void startAttack(EventStruct target, HDC hdc)
 {
@@ -90,63 +115,57 @@ void startAttack(EventStruct target, HDC hdc)
 }
 
 void Run()
-{
-	
-	LARGE_INTEGER tTime;
-	QueryPerformanceCounter(&tTime);
+{	
+	dwCurrentGameTime = timeGetTime();
+	rDeltaTime = static_cast<float>(dwCurrentGameTime - dwOldGameTime) / 1000;
+	dwOldGameTime = dwCurrentGameTime;
+	rAccumlationTime += rDeltaTime;
 
-	//g_fDeltatime = (tTime.QuadPart - g_tTime.QuadPart) / (float)g_tsecond.QuadPart;
-	fTime += (tTime.QuadPart - g_tTime.QuadPart) / (float)g_tsecond.QuadPart;
-	if (fTime < FIXED_FRAME) return;
-	fTime = 0;
-	g_hDC = GetDC(g_hWnd);
-
-	HDC bufferDC = CreateCompatibleDC(g_hDC);
-	hbitmap = CreateCompatibleBitmap(g_hDC, Crect.right, Crect.bottom);
-	oldbitmap = (HBITMAP)SelectObject(bufferDC, hbitmap);
-	HBRUSH NewB = (HBRUSH)CreateSolidBrush(RGB(255,255,255)); // 배경색 브러쉬
-	HBRUSH OldB = (HBRUSH)SelectObject(bufferDC, NewB);
-
-	FillRect(bufferDC, &Crect, NewB);
-	Player.MVSpeed = CHARACTERSPEED * FIXED_FRAME;
-
-	if (PlayGround.matrix[PlayGround.mapId][(int)((Player.centerY - PlayGround.MAP_START_POINT_Y) / PlayGround.SIZE_OF_MAPHEIGHT)]
-		[(int)((Player.centerX - PlayGround.MAP_START_POINT_X) / PlayGround.SIZE_OF_MAPWIDTH)] == PlayGround.DoorOpen
-		&& (GetAsyncKeyState('W') & 0x8000) && PlayGround.changedAnime == false)
+	if (rAccumlationTime > 0.016f) // 60FPS 기준, 1 / 60.0f
 	{
-		oldMap = PlayGround;
-		PlayGround.changer(WindowScreen.rect);
-		PlayGround.changedAnime = true;
-		oldMap.changedAnime = true;
-		Player.NextStagePosition(PlayGround.MAP_START_POINT_X + CharaW, Player.centerY);
-		Player.draw(bufferDC);
-	}
-	else
-	{
-		PlayGround.openNextStage(); //다음스테이지 조건 충족 확인
-		PlayGround.drawBorder(bufferDC); // 테두리 그리기
-		PlayGround.drawObject(bufferDC); // 물건 그리기
-	}
+		g_hDC = GetDC(g_hWnd);
 
-	if (PlayGround.changedAnime)
-	{
-		PlayGround.changeAnimetion(bufferDC, WindowScreen.rect, FIXED_FRAME);
-		oldMap.changeAnimetion(bufferDC, WindowScreen.rect, FIXED_FRAME);
-		Player.NextStagePosition(Player.centerX - PlayGround.buff, Player.centerY);
-	}
+		HDC bufferDC = CreateCompatibleDC(g_hDC);
+		hbitmap = CreateCompatibleBitmap(g_hDC, Crect.right, Crect.bottom);
+		oldbitmap = (HBITMAP)SelectObject(bufferDC, hbitmap);
+		HBRUSH NewB = (HBRUSH)CreateSolidBrush(RGB(255, 255, 255)); // 배경색 브러쉬
+		HBRUSH OldB = (HBRUSH)SelectObject(bufferDC, NewB);
 
-	float size = 4;
-	float term = FIXED_FRAME / size;
-	float starter = term;
-	while (size > 0)
-	{
+		FillRect(bufferDC, &Crect, NewB);
+		Player.MVSpeed = CHARACTERSPEED * 0.016f;
+
+		if (PlayGround.matrix[PlayGround.mapId][(int)((Player.centerY - PlayGround.MAP_START_POINT_Y) / PlayGround.SIZE_OF_MAPHEIGHT)]
+			[(int)((Player.centerX - PlayGround.MAP_START_POINT_X) / PlayGround.SIZE_OF_MAPWIDTH)] == PlayGround.DoorOpen
+			&& (GetAsyncKeyState('W') & 0x8000) && PlayGround.changedAnime == false)
+		{
+			oldMap = PlayGround;
+			PlayGround.changer(WindowScreen.rect);
+			PlayGround.changedAnime = true;
+			oldMap.changedAnime = true;
+			Player.NextStagePosition(PlayGround.MAP_START_POINT_X + CharaW, Player.centerY);
+			Player.draw(bufferDC);
+		}
+		else
+		{
+			PlayGround.openNextStage(); //다음스테이지 조건 충족 확인
+			PlayGround.drawBorder(bufferDC); // 테두리 그리기
+			PlayGround.drawObject(bufferDC); // 물건 그리기
+		}
+
+		if (PlayGround.changedAnime)
+		{
+			PlayGround.changeAnimetion(bufferDC, WindowScreen.rect, 0.016f);
+			oldMap.changeAnimetion(bufferDC, WindowScreen.rect, 0.016f);
+			Player.NextStagePosition(Player.centerX - PlayGround.buff, Player.centerY);
+		}
+
 		Player.MVLeft(bufferDC); // 왼쪽
 		Player.MVRight(bufferDC); // 오른쪽	
 		Player.MVJump(bufferDC); // 점프
-		Player.Grav(bufferDC, starter); // 중력
+		Player.Grav(bufferDC, 0.016f); // 중력
 
 		// 투사체
-		Player.UpdateProj(bufferDC, starter);
+		Player.UpdateProj(bufferDC, 0.016f);
 
 		if (PlayGround.MAP_START_POINT_X > Player.getLeft()) // 왼쪽 벽 방지
 		{
@@ -171,156 +190,47 @@ void Run()
 		// 장애물 충돌 처리
 		PlayGround.ProjColl(bufferDC, &Player);
 		PlayGround.Collision(&Player);
-		starter = starter + term; size--;
-	}
-	QueryPerformanceCounter(&g_tTime);
-	/*
-	Player.MVLeft(bufferDC); // 왼쪽
-		Player.MVRight(bufferDC); // 오른쪽	
-		Player.MVJump(bufferDC); // 점프
-		Player.Grav(bufferDC, g_fDeltatime); // 중력
 
-		// 투사체
-		Player.UpdateProj(bufferDC, g_fDeltatime);
-
-		if (MAP_START_POINT_X > Player.getLeft()) // 왼쪽 벽 방지
+		if (Player.delay > 0)
 		{
-			Player.centerX = MAP_START_POINT_X + CharaW / 2;
+			Player.delay -= 0.016f * 1;
 		}
-		if (MAP_START_POINT_Y > Player.getTop()) // 천장 방지
+		for (int it = 0; it < eventList.size(); it++)
 		{
-			Player.centerY = MAP_START_POINT_Y + CharaH / 2;
-			Player.vy = 0;
-		}
-		if (PlayGround.borderX < Player.getRight()) // 오른쪽 벽 방지
-		{
-			Player.centerX = PlayGround.borderX - CharaW / 2;
-		}
-		if (PlayGround.borderY < Player.getBottom()) // 바닥 방지
-		{
-			Player.centerY = PlayGround.borderY - CharaH / 2;
-			Player.vy = 0;
-			Player.jumpNum = 2;
-		}
-
-		// 장애물 충돌 처리
-		PlayGround.ProjColl(bufferDC, &Player);
-		PlayGround.Collision(&Player);
-	*/
-	if (Player.delay > 0)
-	{
-		Player.delay -= FIXED_FRAME * 1;
-	}
-	for (int it=0; it<eventList.size(); it++)
-	{
-		eventList[it].weapon.setWeaponPos(Player.centerX, Player.centerY);
-		if (eventList[it].leftTime > 0)
-		{
-			eventList[it].leftTime -= FIXED_FRAME * 1;
-		}
-		else
-		{
-			if (eventList[it].progTime > 0)
+			eventList[it].weapon.setWeaponPos(Player.centerX, Player.centerY);
+			if (eventList[it].leftTime > 0)
 			{
-				eventList[it].progTime -= FIXED_FRAME * 1;
-				startAttack(eventList[it], bufferDC);
+				eventList[it].leftTime -= 0.016f * 1;
 			}
 			else
 			{
-				eventList.erase(eventList.begin()+it);
-				//eventEnd
+				if (eventList[it].progTime > 0)
+				{
+					eventList[it].progTime -= 0.016f * 1;
+					startAttack(eventList[it], bufferDC);
+				}
+				else
+				{
+					eventList.erase(eventList.begin() + it);
+					//eventEnd
+				}
 			}
 		}
+
+		// 플레이어 갱신
+		Player.draw(bufferDC);
+
+		drawBackground(bufferDC, border, WindowScreen.rect);
+
+		BitBlt(g_hDC, 0, 0, Crect.right, Crect.bottom, bufferDC, 0, 0, SRCCOPY);
+		SelectObject(bufferDC, OldB);
+		DeleteObject(NewB);
+		DeleteObject(SelectObject(bufferDC, oldbitmap)); // 종이 원래대로 한 후 제거
+		DeleteDC(bufferDC); // hMemDC 제거
+
+		ReleaseDC(g_hWnd, g_hDC);
 	}
-
-	// 플레이어 갱신
-	Player.draw(bufferDC);
-
-	drawBackground(bufferDC, border, WindowScreen.rect);
-
-	BitBlt(g_hDC, 0, 0, Crect.right, Crect.bottom, bufferDC, 0, 0, SRCCOPY);
-	SelectObject(bufferDC, OldB);
-	DeleteObject(NewB);
-	DeleteObject(SelectObject(bufferDC, oldbitmap)); // 종이 원래대로 한 후 제거
-	DeleteDC(bufferDC); // hMemDC 제거
-
-	ReleaseDC(g_hWnd, g_hDC);
 }
-
-/*
-void Run()
-{
-
-	LARGE_INTEGER tTime;
-	QueryPerformanceCounter(&tTime);
-
-	g_fDeltatime = (tTime.QuadPart - g_tTime.QuadPart) / (float)g_tsecond.QuadPart;
-	g_tTime = tTime;
-	g_hDC = GetDC(g_hWnd);
-
-	HDC bufferDC = CreateCompatibleDC(g_hDC);
-	hbitmap = CreateCompatibleBitmap(g_hDC, Crect.right, Crect.bottom);
-	oldbitmap = (HBITMAP)SelectObject(bufferDC, hbitmap);
-	HBRUSH NewB = (HBRUSH)CreateSolidBrush(RGB(255,255,255)); // 배경색 브러쉬
-	HBRUSH OldB = (HBRUSH)SelectObject(bufferDC, NewB);
-
-	FillRect(bufferDC, &Crect, NewB);
-	PlayGround.drawBorder(bufferDC); // 테두리 그리기
-	PlayGround.drawObject(bufferDC); // 물건 그리기
-
-	Player.MVSpeed = CHARACTERSPEED * g_fDeltatime;
-
-	float size = 4;
-	float term = g_fDeltatime / size;
-	float starter = term;
-	while (size > 0)
-	{
-		Player.MVLeft(bufferDC); // 왼쪽
-		Player.MVRight(bufferDC); // 오른쪽
-		Player.MVJump(bufferDC); // 점프
-		Player.Grav(bufferDC, starter); // 중력
-
-		// 투사체
-		Player.UpdateProj(bufferDC, starter);
-
-		if (MAP_START_POINT_X > Player.getLeft()) // 왼쪽 벽 방지
-		{
-			Player.centerX = MAP_START_POINT_X + CharaW / 2;
-		}
-		if (MAP_START_POINT_Y > Player.getTop()) // 천장 방지
-		{
-			Player.centerY = MAP_START_POINT_Y + CharaH / 2;
-			Player.vy = 0;
-		}
-		if (PlayGround.borderX < Player.getRight()) // 오른쪽 벽 방지
-		{
-			Player.centerX = PlayGround.borderX - CharaW / 2;
-		}
-		if (PlayGround.borderY < Player.getBottom()) // 바닥 방지
-		{
-			Player.centerY = PlayGround.borderY - CharaH / 2;
-			Player.vy = 0;
-			Player.jumpNum = 2;
-		}
-
-		// 장애물 충돌 처리
-		PlayGround.ProjColl(bufferDC, &Player);
-		PlayGround.Collision(&Player);
-		starter = starter + term; size--;
-	}
-
-	// 플레이어 갱신
-Player.draw(bufferDC);
-
-BitBlt(g_hDC, 0, 0, Crect.right, Crect.bottom, bufferDC, 0, 0, SRCCOPY);
-SelectObject(bufferDC, OldB);
-DeleteObject(NewB);
-DeleteObject(SelectObject(bufferDC, oldbitmap)); // 종이 원래대로 한 후 제거
-DeleteDC(bufferDC); // hMemDC 제거
-
-ReleaseDC(g_hWnd, g_hDC);
-}
-*/
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg,
 	WPARAM wParam, LPARAM lParam);
@@ -361,10 +271,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, //WINAPI : 윈도
 	ShowWindow(hwnd, nCmdShow); //윈도우의 화면 출력
 	UpdateWindow(hwnd); //O/S 에 WM_PAINT 메시지 전송
 
-	g_hWnd = hwnd;
+	dwOldGameTime = dwCurrentGameTime = timeGetTime();
 
-	QueryPerformanceFrequency(&g_tsecond);
-	QueryPerformanceCounter(&g_tTime);
+	g_hWnd = hwnd;
 
  	while (g_bLoop)
 	{
