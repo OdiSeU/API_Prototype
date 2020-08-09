@@ -6,7 +6,7 @@
 #include "Resol.h"
 #include "Proj.h"
 #include "Map.h"
-#include "Weapon.h" 
+#include "Weapon.h"
 #include "WindowScreen.h"
 using namespace std;
 
@@ -15,11 +15,11 @@ typedef struct _EventStruct
 	float px, py;    //플레이어 위치
 	float mx, my;    //마우스 위치
 	float leftTime; //시작까지 남은시간
-	float mtTime;    //진행 시간
+	float progTime;    //진행 시간
 	Weapon weapon;    //무기 객체
 }EventStruct;
 
-list<EventStruct*> eventList;    //이벤트 처리 리스트
+vector<EventStruct> eventList;    //이벤트 처리 리스트
 
 Character Player(CharaW, CharaH); // 캐릭 선언
 
@@ -46,6 +46,43 @@ RECT border = PlayGround.MaxSize;
 
 // 마우스 좌표
 float mX, mY;
+
+void startAttack(EventStruct target, HDC hdc)
+{
+	PAINTSTRUCT ps;
+	Motion motion = target.weapon.getMotion();
+	switch (target.weapon.getWeaponType())
+	{
+	case Arrow:
+		break;
+	default:
+		if (motion.shape == 'r')
+		{
+			Rectangle(hdc,
+				motion.centerX - motion.Hwidth,
+				motion.centerY - motion.Hheight,
+				motion.centerX + motion.Hwidth,
+				motion.centerY + motion.Hheight
+			);
+			// 적과 공격범위 충돌체크 추가
+		}
+		if (motion.shape == 's')
+		{
+			Pie(hdc,
+				motion.centerX - motion.Radius,
+				motion.centerY - motion.Radius,
+				motion.centerX + motion.Radius,
+				motion.centerY + motion.Radius,
+				motion.centerX + motion.Radius * cos(motion.startAngle),
+				motion.centerY - motion.Radius * sin(motion.startAngle),
+				motion.centerX + motion.Radius * cos(motion.endAngle),
+				motion.centerY - motion.Radius * sin(motion.endAngle)
+			);
+			// 적과 공격범위 충돌체크 추가
+		}
+		break;
+	}
+}
 
 void Run()
 {
@@ -162,23 +199,27 @@ void Run()
 		PlayGround.ProjColl(bufferDC, &Player);
 		PlayGround.Collision(&Player);
 	*/
-
-	for (list<EventStruct*>::iterator it = eventList.begin(); it != eventList.end(); it++)
+	if (Player.delay > 0)
 	{
-		if ((*it)->leftTime > 0)
+		Player.delay -= g_fDeltatime * 1;
+	}
+	for (int it=0; it<eventList.size(); it++)
+	{
+		eventList[it].weapon.setWeaponPos(Player.centerX, Player.centerY);
+		if (eventList[it].leftTime > 0)
 		{
-			(*it)->leftTime -= g_fDeltatime * 1;
+			eventList[it].leftTime -= g_fDeltatime * 1;
 		}
 		else
 		{
-			if ((*it)->mtTime > 0)
+			if (eventList[it].progTime > 0)
 			{
-				(*it)->mtTime -= g_fDeltatime * 1;
-				//eventStart
+				eventList[it].progTime -= g_fDeltatime * 1;
+				startAttack(eventList[it], bufferDC);
 			}
 			else
 			{
-				eventList.erase(it);
+				eventList.erase(eventList.begin()+it);
 				//eventEnd
 			}
 		}
@@ -336,8 +377,8 @@ HDC hdc;
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 {
-
 	PAINTSTRUCT ps;
+	EventStruct eventStruct;
 
 	switch (iMsg)
 	{
@@ -352,6 +393,23 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		break;
 
 	case WM_LBUTTONDOWN:
+		Player.weapon.setWeaponPos(Player.centerX, Player.centerY);
+		if (Player.delay <= 0) {
+			Player.delay = Player.weapon.getDealy() + Player.weapon.getAtkSpeed();
+			eventStruct.mx = LOWORD(lParam);
+			eventStruct.my = HIWORD(lParam);
+			eventStruct.px = Player.centerX;
+			eventStruct.py = Player.centerY;
+			eventStruct.weapon = Player.weapon;
+			eventStruct.leftTime = Player.weapon.getDealy();
+			eventStruct.progTime = Player.weapon.getAtkSpeed();
+			eventList.push_back(eventStruct);
+
+			Player.weapon.addCombo();
+		}
+		break;
+		
+	case WM_RBUTTONDOWN:
 		mX = LOWORD(lParam);
 		mY = HIWORD(lParam);
 		if (Player.Projnum > 0)

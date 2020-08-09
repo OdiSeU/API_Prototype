@@ -14,8 +14,7 @@ Character::Character(int width, int height)
 	Heart = 10;
 	Shield = 3;
 	JumpPower = JumpP;
-	AttackSpeed = 1;
-	Weapon = 0;
+	delay = 0;
 	YStat = NULL;
 	XStat = NULL;
 	MVSpeed = NULL;

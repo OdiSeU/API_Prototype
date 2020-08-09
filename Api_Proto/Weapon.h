@@ -1,21 +1,22 @@
-#include "Shape.h"
-
+#include "Motion.h"
+#include <vector>
 #pragma once
 
 enum {Fist = 0, Sword, Arrow};
 
 class Weapon
 {
-	int Weapontype;
-	Shape Range;
-	float Delay;
-	float Attacked;
 public:
+	int Weapontype;
+	std::vector<Motion> rangeArr;
+	int combo;
+
 	Weapon();
-	void setWeapontype(int a, float Cx, float Cy, int combo = 0);
-	int getWeapon()
-	{
-		return Weapontype;
-	}
-	Shape getShape();
+	void setWeaponType(int type);
+	void setWeaponPos(float x, float y);
+	int getWeaponType();
+	float getDealy();
+	float getAtkSpeed();
+	Motion getMotion();
+	void addCombo();
 };
