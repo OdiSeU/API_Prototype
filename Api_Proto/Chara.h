@@ -1,5 +1,6 @@
 #include <Windows.h>
 #include <vector>
+#include "Weapon.h"
 #include "Proj.h"
 using namespace std;
 
@@ -7,9 +8,9 @@ using namespace std;
 
 #define CharaW 20 // 캐릭터 너비
 #define CharaH 39 // 캐릭터 높이
-#define CHARACTERSPEED 250 // 캐릭터 좌우 속도
+#define CHARACTERSPEED 50 // 캐릭터 좌우 속도
 #define Gravity 1.9 // 중력
-#define JumpP 0.6 // 점프 파워
+#define JumpP 1.6 // 점프 파워
 
 enum {DOWN, UP, LEFT, RIGHT};
 
@@ -25,8 +26,8 @@ public:
 	int Heart; // 체력
 	int Shield; // 방어막
 	float JumpPower; // 점프 파워
-	float AttackSpeed; // 공격 속도
-	int Weapon;
+	float delay; // 
+	Weapon weapon;
 	short YStat; // 위 아래 상태
 	short XStat; // 좌 우 상태
 public:
