@@ -11,7 +11,7 @@
 #include "WindowScreen.h"
 using namespace std;
 
-#pragma comment(lib, "winmm.lib");
+#pragma comment(lib, "winmm.lib")
 
 typedef struct _EventStruct
 {
@@ -49,6 +49,7 @@ RECT border = PlayGround.MaxSize;
 // 마우스 좌표
 float mX, mY;
 
+#define FIXED 0.016f
 
 /*
 DWORD dwOldGameTime = 0, dwCurrentGameTime = 0;
@@ -117,12 +118,14 @@ void startAttack(EventStruct target, HDC hdc)
 void Run()
 {	
 	dwCurrentGameTime = timeGetTime();
-	rDeltaTime = static_cast<float>(dwCurrentGameTime - dwOldGameTime) / 1000;
+	rDeltaTime = (float)(dwCurrentGameTime - dwOldGameTime) / 1000;
 	dwOldGameTime = dwCurrentGameTime;
-	rAccumlationTime += rDeltaTime;
+	rAccumlationTime = rAccumlationTime + rDeltaTime;
 
-	if (rAccumlationTime > 0.016f) // 60FPS 기준, 1 / 60.0f
+	if (rAccumlationTime > FIXED) // 60FPS 기준, 1 / 60.0f
 	{
+		rAccumlationTime = 0;
+		
 		g_hDC = GetDC(g_hWnd);
 
 		HDC bufferDC = CreateCompatibleDC(g_hDC);
@@ -132,7 +135,7 @@ void Run()
 		HBRUSH OldB = (HBRUSH)SelectObject(bufferDC, NewB);
 
 		FillRect(bufferDC, &Crect, NewB);
-		Player.MVSpeed = CHARACTERSPEED * 0.016f;
+		Player.MVSpeed = CHARACTERSPEED * FIXED;
 
 		if (PlayGround.matrix[PlayGround.mapId][(int)((Player.centerY - PlayGround.MAP_START_POINT_Y) / PlayGround.SIZE_OF_MAPHEIGHT)]
 			[(int)((Player.centerX - PlayGround.MAP_START_POINT_X) / PlayGround.SIZE_OF_MAPWIDTH)] == PlayGround.DoorOpen
@@ -154,18 +157,18 @@ void Run()
 
 		if (PlayGround.changedAnime)
 		{
-			PlayGround.changeAnimetion(bufferDC, WindowScreen.rect, 0.016f);
-			oldMap.changeAnimetion(bufferDC, WindowScreen.rect, 0.016f);
+			PlayGround.changeAnimetion(bufferDC, WindowScreen.rect, FIXED);
+			oldMap.changeAnimetion(bufferDC, WindowScreen.rect, FIXED);
 			Player.NextStagePosition(Player.centerX - PlayGround.buff, Player.centerY);
 		}
 
 		Player.MVLeft(bufferDC); // 왼쪽
 		Player.MVRight(bufferDC); // 오른쪽	
 		Player.MVJump(bufferDC); // 점프
-		Player.Grav(bufferDC, 0.016f); // 중력
+		Player.Grav(bufferDC, FIXED); // 중력
 
 		// 투사체
-		Player.UpdateProj(bufferDC, 0.016f);
+		Player.UpdateProj(bufferDC, FIXED);
 
 		if (PlayGround.MAP_START_POINT_X > Player.getLeft()) // 왼쪽 벽 방지
 		{
@@ -193,20 +196,20 @@ void Run()
 
 		if (Player.delay > 0)
 		{
-			Player.delay -= 0.016f * 1;
+			Player.delay -= FIXED * 1;
 		}
 		for (int it = 0; it < eventList.size(); it++)
 		{
 			eventList[it].weapon.setWeaponPos(Player.centerX, Player.centerY);
 			if (eventList[it].leftTime > 0)
 			{
-				eventList[it].leftTime -= 0.016f * 1;
+				eventList[it].leftTime -= FIXED * 1;
 			}
 			else
 			{
 				if (eventList[it].progTime > 0)
 				{
-					eventList[it].progTime -= 0.016f * 1;
+					eventList[it].progTime -= FIXED * 1;
 					startAttack(eventList[it], bufferDC);
 				}
 				else
