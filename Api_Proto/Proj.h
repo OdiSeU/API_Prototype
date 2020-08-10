@@ -3,7 +3,7 @@
 
 #pragma once
 
-#define Gravi 1.9
+#define Gravi 35
 
 enum {Arrowhead = 0, Ball};
 

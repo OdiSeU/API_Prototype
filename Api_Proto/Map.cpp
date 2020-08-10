@@ -138,7 +138,7 @@ void Map::drawRect(HDC hdc, int x, int y, COLORREF rgb)
 	SelectObject(hdc, OldPen);
 	DeleteObject(NewPen); // 펜 해제
 }
-
+/*
 void Map::Collision(Character* Player)
 {
 	int MindexY = (Player->getBottom() - MAP_START_POINT_Y - 1) / SIZE_OF_MAPHEIGHT;
@@ -223,6 +223,105 @@ void Map::Collision(Character* Player)
 		}
 	}
 }
+*/
+
+void Map::Collision(Character* Player)
+{
+	if (Player->XStat == LEFT) // 왼쪽 이동
+	{
+		int bfCol = xToCol(Player->bfLeft); // 이전 캐릭터 왼쪽좌표 블록
+		int nowCol = xToCol(Player->getLeft()); // 현재 캐릭터 왼쪽좌표 블록
+		int nowRow = yToRow(Player->centerY); // 현재 캐릭터 중심좌표 블록
+		int nowTopRow = yToRow(Player->getTop()); // 현재 캐릭터 위쪽좌표 블록
+		int nowBottomRow = yToRow(Player->getBottom()); // 현재 캐릭터 아래쪽 블록
+
+		if (bfCol != nowCol) // 캐릭터 왼쪽좌표 블록에 변화가 있을 경우
+		{
+			//이전 캐릭터 왼쪽좌표 블록부터 현재좌표 블록까지 벽이 있는지 검사 후
+			for (int col = bfCol - 1; col >= nowCol; col--) 
+			{
+				// 벽 발견 시에 플레이어 좌표 수정
+				if (getBlockType(nowTopRow, col) == NonPassFloor ||
+					getBlockType(nowBottomRow, col) == NonPassFloor)
+				{
+					Player->centerX = getBlockRight(nowRow, col) + CharaW / 2 + 0.1;
+					break;
+				}
+			}
+		}
+	}
+	if (Player->XStat == RIGHT) // 오른쪽 이동
+	{
+		int bfCol = xToCol(Player->bfRight);
+		int nowCol = xToCol(Player->getRight());
+		int nowRow = yToRow(Player->centerY);
+		int nowTopRow = yToRow(Player->getTop());
+		int nowBottomRow = yToRow(Player->getBottom());
+
+		if (bfCol != nowCol)
+		{
+			for (int col = bfCol + 1; col <= nowCol; col++)
+			{
+				if (getBlockType(nowTopRow, col) == NonPassFloor ||
+					getBlockType(nowBottomRow, col) == NonPassFloor)
+				{
+					Player->centerX = getBlockLeft(nowRow, col) - CharaW / 2 - 0.1;
+					break;
+				}
+			}
+		}
+	}
+	if (Player->YStat == UP) // 위쪽 이동
+	{
+		int bfRow = yToRow(Player->bfTop); // 이전 캐릭터 위쪽좌표 블록
+		int nowRow = yToRow(Player->getTop()); // 현재 캐릭터 위쪽좌표 블록
+		int nowCol = xToCol(Player->centerX); // 현재 캐릭터 중심좌표 블록
+		int nowLeftCol = xToCol(Player->getLeft()); // 현재 캐릭터 왼쪽좌표 블록
+		int nowRightCol = xToCol(Player->getRight()); // 현재 캐릭터 오른쪽좌표 블록
+
+		if (bfRow != nowRow) // 캐릭터 위쪽좌표 블록에 변화가 있을 경우
+		{
+			//이전 캐릭터 위쪽좌표 블록부터 현재좌표 블록까지 벽이 있는지 검사 후
+			for (int row = bfRow - 1; row >= nowRow; row--)
+			{
+				// 벽 발견 시에 플레이어 좌표 수정 & 플레이어 VectorY 수정
+				if (getBlockType(row, nowLeftCol) == NonPassFloor ||
+					getBlockType(row, nowRightCol) == NonPassFloor)
+				{
+					Player->centerY = getBlockBottom(row, nowCol) + CharaH / 2 + 0.1;
+					Player->vy = 0;
+					break;
+				}
+			}
+		}
+	}
+	if (Player->YStat == DOWN) // 아래쪽 이동
+	{
+		int bfRow = yToRow(Player->bfBottom);
+		int nowRow = yToRow(Player->getBottom());
+
+		int nowCol = xToCol(Player->centerX);
+		int nowLeftCol = xToCol(Player->getLeft());
+		int nowRightCol = xToCol(Player->getRight());
+
+		if (bfRow != nowRow)
+		{
+			for (int row = bfRow + 1; row <= nowRow; row++)
+			{
+				// 벽 발견 시에 플레이어 좌표 수정 & 플레이어 VectorY 수정 & 플레이어 점프 횟수 초기화
+				if (getBlockType(row, nowLeftCol) == NonPassFloor || getBlockType(row, nowLeftCol) == PassFloor ||
+					getBlockType(row, nowRightCol) == NonPassFloor || getBlockType(row, nowRightCol) == PassFloor
+					)
+				{
+					Player->centerY = getBlockTop(row, nowCol) - CharaH / 2 - 0.1;
+					Player->vy = 0;
+					Player->jumpNum = 2;
+					break;
+				}
+			}
+		}
+	}
+}
 
 void Map::openNextStage()
 {
@@ -291,4 +390,36 @@ void Map::ProjColl(HDC hdc, Character* Player)
 			Player->Projnum++;
 		}
 	}
+}
+
+int Map::getBlockLeft(int row, int col)
+{
+	return MAP_START_POINT_X + col * SIZE_OF_MAPWIDTH;
+}
+int Map::getBlockTop(int row, int col)
+{
+	return MAP_START_POINT_Y + row * SIZE_OF_MAPHEIGHT;
+}
+int Map::getBlockBottom(int row, int col)
+{
+	return MAP_START_POINT_Y + (row + 1) * SIZE_OF_MAPHEIGHT;
+}
+int Map::getBlockRight(int row, int col)
+{
+	return MAP_START_POINT_X + (col + 1) * SIZE_OF_MAPWIDTH;
+}
+
+int Map::getBlockType(int row, int col)
+{
+	return matrix[mapId][row][col];
+}
+
+int Map::xToCol(float x)
+{
+	return ((int)x - MAP_START_POINT_X) / SIZE_OF_MAPWIDTH;
+}
+
+int Map::yToRow(float y)
+{
+	return ((int)y - MAP_START_POINT_Y) / SIZE_OF_MAPHEIGHT;
 }

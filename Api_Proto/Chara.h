@@ -9,8 +9,8 @@ using namespace std;
 #define CharaW 20 // 캐릭터 너비
 #define CharaH 39 // 캐릭터 높이
 #define CHARACTERSPEED 250 // 캐릭터 좌우 속도
-#define Gravity 1.9 // 중력
-#define JumpP 0.6 // 점프 파워
+#define Gravity 35 // 중력
+#define JumpP 10 // 점프 파워
 
 enum {DOWN, UP, LEFT, RIGHT};
 
@@ -20,6 +20,7 @@ public:
 	vector<Projectile> Thowable; // 투사체
 	int Projnum; // 투사체 숫자
 	int jumpNum; // 점프 가능 횟수
+	float bfLeft, bfTop, bfBottom, bfRight; // 이전 좌표
 	float centerX, centerY; // 중심 좌표
 	float vx, vy; // 좌우 벡터
 	float MVSpeed; // 캐릭터 좌우 속도

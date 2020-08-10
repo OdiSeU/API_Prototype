@@ -9,7 +9,11 @@ Character::Character(int width, int height)
 	jumpNum = 2;
 	centerX = 700 + width / 2;
 	centerY = 500 + height / 2;
-	vx = 10;
+	bfLeft = getLeft();
+	bfTop = getTop();
+	bfBottom = getBottom();
+	bfRight = getRight();
+	vx = 0;
 	vy = 0;
 	Heart = 10;
 	Shield = 3;
@@ -34,8 +38,10 @@ void Character::MVRight(HDC hdc)
 	if (GetAsyncKeyState('D') & 0x8000)
 	{
 		clear(hdc);
-		centerX = centerX + MVSpeed;
+		vx += MVSpeed;
+		centerX = centerX + vx;
 		XStat = RIGHT;
+		vx = 0;
 	}
 }
 
@@ -44,8 +50,10 @@ void Character::MVLeft(HDC hdc)
 	if (GetAsyncKeyState('A') & 0x8000)
 	{
 		clear(hdc);
-		centerX = centerX - MVSpeed;
+		vx -= MVSpeed;
+		centerX = centerX + vx;
 		XStat = LEFT;
+		vx = 0;
 	}
 }
 

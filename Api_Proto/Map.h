@@ -45,7 +45,7 @@ public:
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,0,0,0,0,0},
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 		{0,0,0,3,0,3,0,0,0,0,0,0,0,0,0,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,0,0,0,0,0,3,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,3,3,3,0,0,0,0,0},
 		{0,0,0,0,0,0,3,3,0,3,3,3,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0,0,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -106,11 +106,19 @@ public:
 	void drawBorder(HDC hdc);
 	void drawObject(HDC hdc);
 	void Collision(Character*);
+	void CollisionCheck(Character* Player, int bfRow, int bfCol, int nowRow, int nowCol);
 	void openNextStage();
 	void changer(RECT winRect);
 	void changeAnimetion(HDC hdc, RECT winRect, float delta);
 	void Reset(RECT winRect);
 	void update();
 	void ProjColl(HDC hdc, Character* Player);
+	int getBlockLeft(int row, int col);
+	int getBlockTop(int row, int col);
+	int getBlockBottom(int row, int col);
+	int getBlockRight(int row, int col);
+	int getBlockType(int row, int col);
+	int xToCol(float x);
+	int yToRow(float y);
 };
 
