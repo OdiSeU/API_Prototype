@@ -122,6 +122,8 @@ void Run()
 	dwOldGameTime = dwCurrentGameTime;
 	rAccumlationTime = rAccumlationTime + rDeltaTime;
 
+	PlayGround.Collision(&Player);
+
 	if (rAccumlationTime > FIXED) // 60FPS ±‚¡ÿ, 1 / 60.0f
 	{
 		rAccumlationTime = 0;
