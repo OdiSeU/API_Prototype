@@ -31,7 +31,7 @@ public:
     short YStat; // 위 아래 상태
     short XStat; // 좌 우 상태
 public:
-    Character(int, int);
+    Character(float x = 500, float y = 500);
     float getTop() { return centerY - CharaH / 2; }
     float getBottom() { return centerY + CharaH / 2; }
     float getRight() { return centerX + CharaW / 2; }

@@ -141,6 +141,26 @@ void Map::drawRect(HDC hdc, int x, int y, COLORREF rgb)
 
 void Map::Collision(Character* Player)
 {
+	if (MAP_START_POINT_X > Player->getLeft()) // 왼쪽 벽 방지
+	{
+		Player->centerX = MAP_START_POINT_X + Player->CharaW / 2;
+	}
+	if (MAP_START_POINT_Y > Player->getTop()) // 천장 방지
+	{
+		Player->centerY = MAP_START_POINT_Y + Player->CharaH / 2;
+		Player->vy = 0;
+	}
+	if (borderX < Player->getRight()) // 오른쪽 벽 방지
+	{
+		Player->centerX = borderX - Player->CharaW / 2;
+	}
+	if (borderY < Player->getBottom()) // 바닥 방지
+	{
+		Player->centerY = borderY - Player->CharaH / 2;
+		Player->vy = 0;
+		Player->jumpNum = 2;
+	}
+	
 	if (Player->YStat == UP) // 위쪽 이동
 	{
 		int bfRow = yToRow(Player->bfTop); // 이전 캐릭터 위쪽좌표 블록
@@ -158,7 +178,7 @@ void Map::Collision(Character* Player)
 				if (getBlockType(row, nowLeftCol) == NonPassFloor ||
 					getBlockType(row, nowRightCol) == NonPassFloor)
 				{
-					Player->centerY = getBlockBottom(row, nowCol) + CharaH / 2 + 0.1;
+					Player->centerY = getBlockBottom(row, nowCol) + Player->CharaH / 2 + 0.1;
 					Player->vy = 0;
 					break;
 				}
@@ -183,7 +203,7 @@ void Map::Collision(Character* Player)
 					getBlockType(row, nowRightCol) == NonPassFloor || getBlockType(row, nowRightCol) == PassFloor
 					)
 				{
-					Player->centerY = getBlockTop(row, nowCol) - CharaH / 2 - 0.1;
+					Player->centerY = getBlockTop(row, nowCol) - Player->CharaH / 2 - 0.1;
 					Player->vy = 0;
 					Player->jumpNum = 2;
 					break;
@@ -208,7 +228,7 @@ void Map::Collision(Character* Player)
 				if (getBlockType(nowTopRow, col) == NonPassFloor ||
 					getBlockType(nowBottomRow, col) == NonPassFloor)
 				{
-					Player->centerX = getBlockRight(nowRow, col) + CharaW / 2 + 0.1;
+					Player->centerX = getBlockRight(nowRow, col) + Player->CharaW / 2 + 0.1;
 					break;
 				}
 			}
@@ -229,7 +249,7 @@ void Map::Collision(Character* Player)
 				if (getBlockType(nowTopRow, col) == NonPassFloor ||
 					getBlockType(nowBottomRow, col) == NonPassFloor)
 				{
-					Player->centerX = getBlockLeft(nowRow, col) - CharaW / 2 - 0.1;
+					Player->centerX = getBlockLeft(nowRow, col) - Player->CharaW / 2 - 0.1;
 					break;
 				}
 			}
