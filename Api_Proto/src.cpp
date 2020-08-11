@@ -164,6 +164,12 @@ void Run()
 			Player.NextStagePosition(Player.centerX - PlayGround.buff, Player.centerY);
 		}
 
+
+		Player.bfLeft = Player.getLeft();
+		Player.bfTop = Player.getTop();
+		Player.bfBottom = Player.getBottom();
+		Player.bfRight = Player.getRight();
+
 		Player.MVLeft(bufferDC); // 왼쪽
 		Player.MVRight(bufferDC); // 오른쪽	
 		Player.MVJump(bufferDC); // 점프
