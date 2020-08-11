@@ -5,6 +5,11 @@ using namespace std;
 
 Character::Character(int width, int height)
 {
+	CharaW = 20; // 캐릭터 너비
+	CharaH = 39; // 캐릭터 높이
+	CHARACTERSPEED = 250; // 캐릭터 좌우 속도
+	Gravity = 35; // 중력
+	JumpP = 10; // 점프 파워
 	Projnum = 3;
 	jumpNum = 2;
 	centerX = 700 + width / 2;
@@ -37,7 +42,7 @@ void Character::MVRight(HDC hdc)
 {
 	if (GetAsyncKeyState('D') & 0x8000)
 	{
-		clear(hdc);
+		//clear(hdc);
 		vx += MVSpeed;
 		centerX = centerX + vx;
 		XStat = RIGHT;
@@ -49,7 +54,7 @@ void Character::MVLeft(HDC hdc)
 {
 	if (GetAsyncKeyState('A') & 0x8000)
 	{
-		clear(hdc);
+		//clear(hdc);
 		vx -= MVSpeed;
 		centerX = centerX + vx;
 		XStat = LEFT;
