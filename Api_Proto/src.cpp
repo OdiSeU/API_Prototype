@@ -24,7 +24,9 @@ typedef struct _EventStruct
 
 vector<EventStruct> eventList;    //이벤트 처리 리스트
 
-Character Player(CharaW, CharaH); // 캐릭 선언
+Character Player(500, 500); // 캐릭 선언
+
+Character Enemy(200, 200); // 적 선언
 
 // 루프 관련
 bool g_bLoop = true;
@@ -80,7 +82,7 @@ while (bGameLoop)
 
 void startAttack(EventStruct target, HDC hdc)
 {
-	PAINTSTRUCT ps;
+	//PAINTSTRUCT ps;
 	Motion motion = target.weapon.getMotion();
 	switch (target.weapon.getWeaponType())
 	{
@@ -123,6 +125,7 @@ void Run()
 	rAccumlationTime = rAccumlationTime + rDeltaTime;
 
 	PlayGround.Collision(&Player);
+	PlayGround.Collision(&Enemy);
 
 	if (rAccumlationTime > FIXED) // 60FPS 기준, 1 / 60.0f
 	{
@@ -137,7 +140,8 @@ void Run()
 		HBRUSH OldB = (HBRUSH)SelectObject(bufferDC, NewB);
 
 		FillRect(bufferDC, &Crect, NewB);
-		Player.MVSpeed = CHARACTERSPEED * FIXED;
+		Player.MVSpeed = Player.CHARACTERSPEED * FIXED;
+		Enemy.MVSpeed = Enemy.CHARACTERSPEED * FIXED;
 
 		if (PlayGround.matrix[PlayGround.mapId][(int)((Player.centerY - PlayGround.MAP_START_POINT_Y) / PlayGround.SIZE_OF_MAPHEIGHT)]
 			[(int)((Player.centerX - PlayGround.MAP_START_POINT_X) / PlayGround.SIZE_OF_MAPWIDTH)] == PlayGround.DoorOpen
@@ -147,7 +151,7 @@ void Run()
 			PlayGround.changer(WindowScreen.rect);
 			PlayGround.changedAnime = true;
 			oldMap.changedAnime = true;
-			Player.NextStagePosition(PlayGround.MAP_START_POINT_X + CharaW, Player.centerY);
+			Player.NextStagePosition(PlayGround.MAP_START_POINT_X + Player.CharaW, Player.centerY);
 			Player.draw(bufferDC);
 		}
 		else
@@ -170,37 +174,35 @@ void Run()
 		Player.bfBottom = Player.getBottom();
 		Player.bfRight = Player.getRight();
 
-		Player.MVLeft(bufferDC); // 왼쪽
-		Player.MVRight(bufferDC); // 오른쪽	
-		Player.MVJump(bufferDC); // 점프
+		Enemy.bfLeft = Enemy.getLeft();
+		Enemy.bfTop = Enemy.getTop();
+		Enemy.bfBottom = Enemy.getBottom();
+		Enemy.bfRight = Enemy.getRight();
+
+		if (GetAsyncKeyState('A') & 0x8000)
+		{
+			Player.MVLeft(bufferDC); // 왼쪽
+		}
+		if (GetAsyncKeyState('D') & 0x8000)
+		{
+			Player.MVRight(bufferDC); // 오른쪽	
+		}
+		if ((GetAsyncKeyState(VK_SPACE) & 0x0001) && Player.jumpNum >= 1)
+		{
+			Player.MVJump(bufferDC); // 점프
+		}
 		Player.Grav(bufferDC, FIXED); // 중력
+		Enemy.Grav(bufferDC, FIXED); // 중력
 
 		// 투사체
 		Player.UpdateProj(bufferDC, FIXED);
 
-		if (PlayGround.MAP_START_POINT_X > Player.getLeft()) // 왼쪽 벽 방지
-		{
-			Player.centerX = PlayGround.MAP_START_POINT_X + CharaW / 2;
-		}
-		if (PlayGround.MAP_START_POINT_Y > Player.getTop()) // 천장 방지
-		{
-			Player.centerY = PlayGround.MAP_START_POINT_Y + CharaH / 2;
-			Player.vy = 0;
-		}
-		if (PlayGround.borderX < Player.getRight()) // 오른쪽 벽 방지
-		{
-			Player.centerX = PlayGround.borderX - CharaW / 2;
-		}
-		if (PlayGround.borderY < Player.getBottom()) // 바닥 방지
-		{
-			Player.centerY = PlayGround.borderY - CharaH / 2;
-			Player.vy = 0;
-			Player.jumpNum = 2;
-		}
-
 		// 장애물 충돌 처리
 		PlayGround.ProjColl(bufferDC, &Player);
 		PlayGround.Collision(&Player);
+
+		// 적 충돌
+		PlayGround.Collision(&Enemy);
 
 		if (Player.delay > 0)
 		{
@@ -230,6 +232,9 @@ void Run()
 
 		// 플레이어 갱신
 		Player.draw(bufferDC);
+
+		// 적 갱신
+		Enemy.draw(bufferDC);
 
 		drawBackground(bufferDC, border, WindowScreen.rect);
 

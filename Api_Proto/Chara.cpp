@@ -3,12 +3,17 @@
 #include "Proj.h"
 using namespace std;
 
-Character::Character(int width, int height)
+Character::Character(float x, float y)
 {
+	CharaW = 20; // 캐릭터 너비
+	CharaH = 39; // 캐릭터 높이
+	CHARACTERSPEED = 250; // 캐릭터 좌우 속도
+	Gravity = 35; // 중력
+	JumpP = 10; // 점프 파워
 	Projnum = 3;
 	jumpNum = 2;
-	centerX = 700 + width / 2;
-	centerY = 500 + height / 2;
+	centerX = x + CharaW / 2;
+	centerY = y + CharaH / 2;
 	bfLeft = getLeft();
 	bfTop = getTop();
 	bfBottom = getBottom();
@@ -35,36 +40,27 @@ void Character::draw(HDC hdc)
 
 void Character::MVRight(HDC hdc)
 {
-	if (GetAsyncKeyState('D') & 0x8000)
-	{
-		clear(hdc);
+		//clear(hdc);
 		vx += MVSpeed;
 		centerX = centerX + vx;
 		XStat = RIGHT;
 		vx = 0;
-	}
 }
 
 void Character::MVLeft(HDC hdc)
 {
-	if (GetAsyncKeyState('A') & 0x8000)
-	{
-		clear(hdc);
-		vx -= MVSpeed;
-		centerX = centerX + vx;
-		XStat = LEFT;
-		vx = 0;
-	}
+	//clear(hdc);
+	vx -= MVSpeed;
+	centerX = centerX + vx;
+	XStat = LEFT;
+	vx = 0;
 }
 
 void Character::MVJump(HDC hdc)
 {
-	if ((GetAsyncKeyState(VK_SPACE) & 0x0001) && jumpNum >= 1)
-	{
-		vy = -JumpPower;
-		jumpNum--;
-		YStat = UP;
-	}
+	vy = -JumpPower;
+	jumpNum--;
+	YStat = UP;
 }
 
 void Character::clear(HDC hdc)

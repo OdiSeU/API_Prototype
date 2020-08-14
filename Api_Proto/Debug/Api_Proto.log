@@ -1,14 +1,14 @@
-﻿  Map.cpp
-C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Motion.h(42,22): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Motion.h(54,26): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Motion.h(55,24): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Map.cpp(248,64): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Map.cpp(270,63): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Map.cpp(294,65): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Map.cpp(319,62): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Map.cpp(357,44): warning C4244: '+=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Map.cpp(358,29): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Map.cpp(377,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Map.cpp(379,15): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Map.cpp(380,15): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  Api_Proto.vcxproj -> C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Debug\Api_Proto.exe
+﻿  Pathfinder.cpp
+C:\Users\Sms\Documents\GitHub\API_Prototype\Api_Proto\Motion.h(42,22): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\Sms\Documents\GitHub\API_Prototype\Api_Proto\Motion.h(54,26): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\Sms\Documents\GitHub\API_Prototype\Api_Proto\Motion.h(55,24): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\Sms\Documents\GitHub\API_Prototype\Api_Proto\Pathfinder.h(65,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\Sms\Documents\GitHub\API_Prototype\Api_Proto\Pathfinder.h(76,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\Sms\Documents\GitHub\API_Prototype\Api_Proto\Pathfinder.cpp(61,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\Sms\Documents\GitHub\API_Prototype\Api_Proto\Pathfinder.cpp(99,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\Sms\Documents\GitHub\API_Prototype\Api_Proto\Pathfinder.cpp(104,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\Sms\Documents\GitHub\API_Prototype\Api_Proto\Pathfinder.cpp(109,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\Sms\Documents\GitHub\API_Prototype\Api_Proto\Pathfinder.cpp(114,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\Sms\Documents\GitHub\API_Prototype\Api_Proto\Pathfinder.cpp(122,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\Sms\Documents\GitHub\API_Prototype\Api_Proto\Pathfinder.cpp(91): warning C4172: 지역 변수 또는 임시: Result의 주소를 반환하고 있습니다.
+  Api_Proto.vcxproj -> C:\Users\Sms\Documents\GitHub\API_Prototype\Debug\Api_Proto.exe
