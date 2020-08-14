@@ -1,14 +1,21 @@
-﻿  Pathfinder.cpp
-C:\Users\Sms\Documents\GitHub\API_Prototype\Api_Proto\Motion.h(42,22): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\Sms\Documents\GitHub\API_Prototype\Api_Proto\Motion.h(54,26): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\Sms\Documents\GitHub\API_Prototype\Api_Proto\Motion.h(55,24): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\Sms\Documents\GitHub\API_Prototype\Api_Proto\Pathfinder.h(65,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\Sms\Documents\GitHub\API_Prototype\Api_Proto\Pathfinder.h(76,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\Sms\Documents\GitHub\API_Prototype\Api_Proto\Pathfinder.cpp(61,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\Sms\Documents\GitHub\API_Prototype\Api_Proto\Pathfinder.cpp(99,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\Sms\Documents\GitHub\API_Prototype\Api_Proto\Pathfinder.cpp(104,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\Sms\Documents\GitHub\API_Prototype\Api_Proto\Pathfinder.cpp(109,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\Sms\Documents\GitHub\API_Prototype\Api_Proto\Pathfinder.cpp(114,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\Sms\Documents\GitHub\API_Prototype\Api_Proto\Pathfinder.cpp(122,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\Sms\Documents\GitHub\API_Prototype\Api_Proto\Pathfinder.cpp(91): warning C4172: 지역 변수 또는 임시: Result의 주소를 반환하고 있습니다.
-  Api_Proto.vcxproj -> C:\Users\Sms\Documents\GitHub\API_Prototype\Debug\Api_Proto.exe
+﻿  src.cpp
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Motion.h(42,22): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Motion.h(54,26): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Motion.h(55,24): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(98,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(97,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(96,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(95,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(112,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(111,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(110,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(109,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(108,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(107,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(106,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(105,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(154,81): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(168,69): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(168,44): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(212,23): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+  Api_Proto.vcxproj -> C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Debug\Api_Proto.exe
