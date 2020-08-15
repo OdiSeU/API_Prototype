@@ -1,4 +1,3 @@
-#include <Windows.h>
 #include <time.h>
 #include "Map.h"
 
@@ -138,139 +137,29 @@ void Map::drawRect(HDC hdc, int x, int y, COLORREF rgb)
 	SelectObject(hdc, OldPen);
 	DeleteObject(NewPen); // 펜 해제
 }
-/*
-void Map::Collision(Character* Player)
-{
-	int MindexY = (Player->getBottom() - MAP_START_POINT_Y - 1) / SIZE_OF_MAPHEIGHT;
-	int MindexX = (Player->getLeft() - MAP_START_POINT_X - 1) / SIZE_OF_MAPWIDTH;
-	if (Player->YStat == DOWN && (MAP_START_POINT_Y + (MindexY + 1) * SIZE_OF_MAPHEIGHT) <= Player->getBottom())
-	{
-		if (matrix[mapId][MindexY + 1][(int)((Player->getLeft() - (float)MAP_START_POINT_X) / (float)SIZE_OF_MAPWIDTH)] == 2
-			|| matrix[mapId][MindexY + 1][(int)((Player->getRight() - (float)MAP_START_POINT_X) / (float)SIZE_OF_MAPWIDTH)] == 2)
-		{
-			Player->centerY = (MAP_START_POINT_Y + (MindexY + 1) * SIZE_OF_MAPHEIGHT) - CharaH / 2;
-			Player->vy = 0;
-			Player->jumpNum = 2;
-		}
-		else if (matrix[mapId][MindexY + 1][(int)((Player->getLeft() - (float)MAP_START_POINT_X) / (float)SIZE_OF_MAPWIDTH)] == 3
-			|| matrix[mapId][MindexY + 1][(int)((Player->getRight() - (float)MAP_START_POINT_X) / (float)SIZE_OF_MAPWIDTH)] == 3)
-		{
-			Player->centerY = (MAP_START_POINT_Y + (MindexY + 1) * SIZE_OF_MAPHEIGHT) - CharaH / 2;
-			Player->vy = 0;
-			Player->jumpNum = 2;
-		}
-		if (Player->XStat == LEFT && (MAP_START_POINT_X + (MindexX)*SIZE_OF_MAPWIDTH) <= Player->getLeft())
-		{
-			if (matrix[mapId][MindexY][MindexX] == 3)
-			{
-				Player->centerX = (MAP_START_POINT_X + (MindexX + 1) * SIZE_OF_MAPWIDTH) + CharaW / 2;
-			}
-		}
-		else if (Player->XStat == RIGHT && (MAP_START_POINT_X + (MindexX + 2) * SIZE_OF_MAPWIDTH) >= Player->getRight())
-		{
-			MindexX = (Player->getRight() - MAP_START_POINT_X - 1) / SIZE_OF_MAPWIDTH;
-			if (matrix[mapId][MindexY][MindexX] == 3)
-			{
-				Player->centerX = (MAP_START_POINT_X + (MindexX)*SIZE_OF_MAPWIDTH) - CharaW / 2;
-			}
-		}
-	}
-	else if (Player->YStat == UP && (MAP_START_POINT_Y + (MindexY)*SIZE_OF_MAPHEIGHT) <= Player->getTop()) // 블록 3은 안올라가짐
-	{
-		MindexX = (Player->getLeft() - MAP_START_POINT_X - 1) / SIZE_OF_MAPWIDTH;
-		if (matrix[mapId][MindexY - 1][(int)((Player->getLeft() - (float)MAP_START_POINT_X) / (float)SIZE_OF_MAPWIDTH)] == 3
-			|| matrix[mapId][MindexY - 1][(int)((Player->getRight() - (float)MAP_START_POINT_X) / (float)SIZE_OF_MAPWIDTH)] == 3)
-		{
-			if ((MAP_START_POINT_Y + (MindexY)*SIZE_OF_MAPHEIGHT) == (int)Player->getTop())
-			{
-				Player->centerY = (MAP_START_POINT_Y + (MindexY)*SIZE_OF_MAPHEIGHT) + CharaH / 2;
-				Player->vy = 0;
-			}
-		}
-		if (Player->XStat == LEFT && (MAP_START_POINT_X + (MindexX)*SIZE_OF_MAPWIDTH) <= Player->getLeft())
-		{
-			if (matrix[mapId][(int)((Player->getTop() - (float)MAP_START_POINT_Y) / (float)SIZE_OF_MAPHEIGHT)][MindexX] == 3
-				|| matrix[mapId][(int)((Player->getBottom() - (float)MAP_START_POINT_Y) / (float)SIZE_OF_MAPHEIGHT)][MindexX] == 3)
-			{
-				Player->centerX = (MAP_START_POINT_X + (MindexX + 1) * SIZE_OF_MAPWIDTH) + CharaW / 2;
-			}
-		}
-		else if (Player->XStat == RIGHT && (MAP_START_POINT_X + (MindexX + 2) * SIZE_OF_MAPWIDTH) >= Player->getRight())
-		{
-			MindexX = (Player->getRight() - MAP_START_POINT_X - 1) / SIZE_OF_MAPWIDTH;
-			if (matrix[mapId][(int)((Player->getTop() - (float)MAP_START_POINT_Y) / (float)SIZE_OF_MAPHEIGHT)][MindexX] == 3
-				|| matrix[mapId][(int)((Player->getBottom() - (float)MAP_START_POINT_Y) / (float)SIZE_OF_MAPHEIGHT)][MindexX] == 3)
-			{
-				Player->centerX = (MAP_START_POINT_X + (MindexX)*SIZE_OF_MAPWIDTH) - CharaW / 2;
-			}
-		}
-	}
-	else if (Player->XStat == LEFT && (MAP_START_POINT_X + (MindexX)*SIZE_OF_MAPWIDTH) <= Player->getLeft())
-	{
-		if (matrix[mapId][(int)((Player->getTop() - (float)MAP_START_POINT_Y) / (float)SIZE_OF_MAPHEIGHT)][MindexX] == 3
-			|| matrix[mapId][(int)((Player->getBottom() - (float)MAP_START_POINT_Y) / (float)SIZE_OF_MAPHEIGHT)][MindexX] == 3)
-		{
-			Player->centerX = (MAP_START_POINT_X + (MindexX + 1) * SIZE_OF_MAPWIDTH) + CharaW / 2;
-		}
-	}
-	else if (Player->XStat == RIGHT && (MAP_START_POINT_X + (MindexX + 2) * SIZE_OF_MAPWIDTH) >= Player->getRight())
-	{
-		MindexX = (Player->getRight() - MAP_START_POINT_X - 1) / SIZE_OF_MAPWIDTH;
-		if (matrix[mapId][(int)((Player->getTop() - (float)MAP_START_POINT_Y) / (float)SIZE_OF_MAPHEIGHT)][MindexX] == 3
-			|| matrix[mapId][(int)((Player->getBottom() - (float)MAP_START_POINT_Y) / (float)SIZE_OF_MAPHEIGHT)][MindexX] == 3)
-		{
-			Player->centerX = (MAP_START_POINT_X + (MindexX)*SIZE_OF_MAPWIDTH) - CharaW / 2;
-		}
-	}
-}
-*/
 
 void Map::Collision(Character* Player)
 {
-	if (Player->XStat == LEFT) // 왼쪽 이동
+	if (MAP_START_POINT_X > Player->getLeft()) // 왼쪽 벽 방지
 	{
-		int bfCol = xToCol(Player->bfLeft); // 이전 캐릭터 왼쪽좌표 블록
-		int nowCol = xToCol(Player->getLeft()); // 현재 캐릭터 왼쪽좌표 블록
-		int nowRow = yToRow(Player->centerY); // 현재 캐릭터 중심좌표 블록
-		int nowTopRow = yToRow(Player->getTop()); // 현재 캐릭터 위쪽좌표 블록
-		int nowBottomRow = yToRow(Player->getBottom()); // 현재 캐릭터 아래쪽 블록
-
-		if (bfCol != nowCol) // 캐릭터 왼쪽좌표 블록에 변화가 있을 경우
-		{
-			//이전 캐릭터 왼쪽좌표 블록부터 현재좌표 블록까지 벽이 있는지 검사 후
-			for (int col = bfCol - 1; col >= nowCol; col--) 
-			{
-				// 벽 발견 시에 플레이어 좌표 수정
-				if (getBlockType(nowTopRow, col) == NonPassFloor ||
-					getBlockType(nowBottomRow, col) == NonPassFloor)
-				{
-					Player->centerX = getBlockRight(nowRow, col) + CharaW / 2 + 0.1;
-					break;
-				}
-			}
-		}
+		Player->centerX = MAP_START_POINT_X + Player->CharaW / 2;
 	}
-	if (Player->XStat == RIGHT) // 오른쪽 이동
+	if (MAP_START_POINT_Y > Player->getTop()) // 천장 방지
 	{
-		int bfCol = xToCol(Player->bfRight);
-		int nowCol = xToCol(Player->getRight());
-		int nowRow = yToRow(Player->centerY);
-		int nowTopRow = yToRow(Player->getTop());
-		int nowBottomRow = yToRow(Player->getBottom());
-
-		if (bfCol != nowCol)
-		{
-			for (int col = bfCol + 1; col <= nowCol; col++)
-			{
-				if (getBlockType(nowTopRow, col) == NonPassFloor ||
-					getBlockType(nowBottomRow, col) == NonPassFloor)
-				{
-					Player->centerX = getBlockLeft(nowRow, col) - CharaW / 2 - 0.1;
-					break;
-				}
-			}
-		}
+		Player->centerY = MAP_START_POINT_Y + Player->CharaH / 2;
+		Player->vy = 0;
 	}
+	if (borderX < Player->getRight()) // 오른쪽 벽 방지
+	{
+		Player->centerX = borderX - Player->CharaW / 2;
+	}
+	if (borderY < Player->getBottom()) // 바닥 방지
+	{
+		Player->centerY = borderY - Player->CharaH / 2;
+		Player->vy = 0;
+		Player->jumpNum = 2;
+	}
+	
 	if (Player->YStat == UP) // 위쪽 이동
 	{
 		int bfRow = yToRow(Player->bfTop); // 이전 캐릭터 위쪽좌표 블록
@@ -288,7 +177,7 @@ void Map::Collision(Character* Player)
 				if (getBlockType(row, nowLeftCol) == NonPassFloor ||
 					getBlockType(row, nowRightCol) == NonPassFloor)
 				{
-					Player->centerY = getBlockBottom(row, nowCol) + CharaH / 2 + 0.1;
+					Player->centerY = getBlockBottom(row, nowCol) + Player->CharaH / 2 + 0.1;
 					Player->vy = 0;
 					break;
 				}
@@ -313,9 +202,53 @@ void Map::Collision(Character* Player)
 					getBlockType(row, nowRightCol) == NonPassFloor || getBlockType(row, nowRightCol) == PassFloor
 					)
 				{
-					Player->centerY = getBlockTop(row, nowCol) - CharaH / 2 - 0.1;
+					Player->centerY = getBlockTop(row, nowCol) - Player->CharaH / 2 - 0.1;
 					Player->vy = 0;
 					Player->jumpNum = 2;
+					break;
+				}
+			}
+		}
+	}
+	if (Player->XStat == LEFT) // 왼쪽 이동
+	{
+		int bfCol = xToCol(Player->bfLeft); // 이전 캐릭터 왼쪽좌표 블록
+		int nowCol = xToCol(Player->getLeft()); // 현재 캐릭터 왼쪽좌표 블록
+		int nowRow = yToRow(Player->centerY); // 현재 캐릭터 중심좌표 블록
+		int nowTopRow = yToRow(Player->getTop()); // 현재 캐릭터 위쪽좌표 블록
+		int nowBottomRow = yToRow(Player->getBottom()); // 현재 캐릭터 아래쪽 블록
+
+		if (bfCol != nowCol) // 캐릭터 왼쪽좌표 블록에 변화가 있을 경우
+		{
+			//이전 캐릭터 왼쪽좌표 블록부터 현재좌표 블록까지 벽이 있는지 검사 후
+			for (int col = bfCol - 1; col >= nowCol; col--)
+			{
+				// 벽 발견 시에 플레이어 좌표 수정
+				if (getBlockType(nowTopRow, col) == NonPassFloor ||
+					getBlockType(nowBottomRow, col) == NonPassFloor)
+				{
+					Player->centerX = getBlockRight(nowRow, col) + Player->CharaW / 2 + 0.1;
+					break;
+				}
+			}
+		}
+	}
+	if (Player->XStat == RIGHT) // 오른쪽 이동
+	{
+		int bfCol = xToCol(Player->bfRight);
+		int nowCol = xToCol(Player->getRight());
+		int nowRow = yToRow(Player->centerY);
+		int nowTopRow = yToRow(Player->getTop());
+		int nowBottomRow = yToRow(Player->getBottom());
+
+		if (bfCol != nowCol)
+		{
+			for (int col = bfCol + 1; col <= nowCol; col++)
+			{
+				if (getBlockType(nowTopRow, col) == NonPassFloor ||
+					getBlockType(nowBottomRow, col) == NonPassFloor)
+				{
+					Player->centerX = getBlockLeft(nowRow, col) - Player->CharaW / 2 - 0.1;
 					break;
 				}
 			}

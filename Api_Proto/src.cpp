@@ -1,14 +1,15 @@
 #include <windows.h>
 #include <vector>
 #include <cmath>
-#include <list>
+#include <algorithm>
 #include <time.h>
+#include "Proj.h"
 #include "Chara.h"
 #include "Resol.h"
-#include "Proj.h"
 #include "Map.h"
 #include "Weapon.h"
 #include "WindowScreen.h"
+#include "Pathfinder.h"
 using namespace std;
 
 #pragma comment(lib, "winmm.lib")
@@ -24,7 +25,9 @@ typedef struct _EventStruct
 
 vector<EventStruct> eventList;    //이벤트 처리 리스트
 
-Character Player(CharaW, CharaH); // 캐릭 선언
+Character Player(400, 700); // 캐릭 선언
+
+Character Enemy(1400, 700); // 적 선언
 
 // 루프 관련
 bool g_bLoop = true;
@@ -48,6 +51,9 @@ RECT border = PlayGround.MaxSize;
 
 // 마우스 좌표
 float mX, mY;
+
+// AI 길 뚫기
+Pathfinder Way(PlayGround, 3);
 
 #define FIXED 0.016f
 
@@ -80,7 +86,7 @@ while (bGameLoop)
 
 void startAttack(EventStruct target, HDC hdc)
 {
-	PAINTSTRUCT ps;
+	//PAINTSTRUCT ps;
 	Motion motion = target.weapon.getMotion();
 	switch (target.weapon.getWeaponType())
 	{
@@ -115,6 +121,10 @@ void startAttack(EventStruct target, HDC hdc)
 	}
 }
 
+POINT EnemyinMap;
+POINT CharainMap;
+POINT OldCharainMap;
+vector<BrickInfo> Result;
 void Run()
 {	
 	dwCurrentGameTime = timeGetTime();
@@ -123,11 +133,36 @@ void Run()
 	rAccumlationTime = rAccumlationTime + rDeltaTime;
 
 	PlayGround.Collision(&Player);
+	PlayGround.Collision(&Enemy);
+
+	// 적과 플레이어의 좌표
+	OldCharainMap.x = CharainMap.x; 
+	OldCharainMap.y = CharainMap.y;
+	CharainMap.x = PlayGround.xToCol(Player.centerX);
+	CharainMap.y = PlayGround.yToRow(Player.centerY);
+	EnemyinMap.x = PlayGround.xToCol(Enemy.centerX);
+	EnemyinMap.y = PlayGround.yToRow(Enemy.centerY);
+
+	if (CharainMap.x != OldCharainMap.x || CharainMap.y != OldCharainMap.y) // 캐릭터 좌표 바뀔때마다 경로 변경
+	{		
+		if (Way.getNodeIndex(CharainMap) != -1 && Way.getNodeIndex(EnemyinMap) != -1)
+		{
+			Result.clear();
+			Way.AstarAlgorithm(CharainMap, EnemyinMap, &Result);
+		}
+		/*
+		if (Way.getNodeIndex(CharainMap) != -1 && Way.getNodeIndex(EnemyinMap) != -1)
+		{
+			Result.clear();
+			Way.AstarAlgorithm(CharainMap, EnemyinMap, &Result);
+		}
+		*/
+	}
 
 	if (rAccumlationTime > FIXED) // 60FPS 기준, 1 / 60.0f
 	{
 		rAccumlationTime = 0;
-		
+
 		g_hDC = GetDC(g_hWnd);
 
 		HDC bufferDC = CreateCompatibleDC(g_hDC);
@@ -137,7 +172,8 @@ void Run()
 		HBRUSH OldB = (HBRUSH)SelectObject(bufferDC, NewB);
 
 		FillRect(bufferDC, &Crect, NewB);
-		Player.MVSpeed = CHARACTERSPEED * FIXED;
+		Player.MVSpeed = Player.CHARACTERSPEED * FIXED;
+		Enemy.MVSpeed = Enemy.CHARACTERSPEED * FIXED;
 
 		if (PlayGround.matrix[PlayGround.mapId][(int)((Player.centerY - PlayGround.MAP_START_POINT_Y) / PlayGround.SIZE_OF_MAPHEIGHT)]
 			[(int)((Player.centerX - PlayGround.MAP_START_POINT_X) / PlayGround.SIZE_OF_MAPWIDTH)] == PlayGround.DoorOpen
@@ -147,7 +183,7 @@ void Run()
 			PlayGround.changer(WindowScreen.rect);
 			PlayGround.changedAnime = true;
 			oldMap.changedAnime = true;
-			Player.NextStagePosition(PlayGround.MAP_START_POINT_X + CharaW, Player.centerY);
+			Player.NextStagePosition(PlayGround.MAP_START_POINT_X + Player.CharaW, Player.centerY);
 			Player.draw(bufferDC);
 		}
 		else
@@ -164,43 +200,136 @@ void Run()
 			Player.NextStagePosition(Player.centerX - PlayGround.buff, Player.centerY);
 		}
 
-
 		Player.bfLeft = Player.getLeft();
 		Player.bfTop = Player.getTop();
 		Player.bfBottom = Player.getBottom();
 		Player.bfRight = Player.getRight();
 
-		Player.MVLeft(bufferDC); // 왼쪽
-		Player.MVRight(bufferDC); // 오른쪽	
-		Player.MVJump(bufferDC); // 점프
+		Enemy.bfLeft = Enemy.getLeft();
+		Enemy.bfTop = Enemy.getTop();
+		Enemy.bfBottom = Enemy.getBottom();
+		Enemy.bfRight = Enemy.getRight();
+
+		if (GetAsyncKeyState('A') & 0x8000)
+		{
+			Player.MVLeft(bufferDC); // 왼쪽
+		}
+		if (GetAsyncKeyState('D') & 0x8000)
+		{
+			Player.MVRight(bufferDC); // 오른쪽	
+		}
+		if ((GetAsyncKeyState(VK_SPACE) & 0x0001) && Player.jumpNum >= 1)
+		{
+			Player.MVJump(bufferDC); // 점프
+		}
+
+		if (Result.size() >= 1)
+		{
+			POINT CurBrick = Way.getGnode(Result.back().getParent())->getCord();
+			POINT NextBrick = Way.getGnode(Result.back().getCur())->getCord();
+			if (EnemyinMap.x == CurBrick.x)
+			{
+				if (Result.back().getState() == JUMP)
+				{
+					Enemy.MVJump(bufferDC);
+					if (EnemyinMap.x < NextBrick.x)
+					{
+						Enemy.MVRight(bufferDC);
+					}
+					else if (EnemyinMap.x > NextBrick.x)
+					{
+						Enemy.MVLeft(bufferDC);
+					}
+				}
+				else if (Result.back().getState() == WALK)
+				{
+					if (EnemyinMap.x < NextBrick.x)
+					{
+						Enemy.MVRight(bufferDC);
+					}
+					else if (EnemyinMap.x > NextBrick.x)
+					{
+						Enemy.MVLeft(bufferDC);
+					}
+				}
+				else if (Result.back().getState() == DROP)
+				{
+					if (Enemy.XStat == LEFT)
+					{
+						Enemy.MVLeft(bufferDC);
+					}
+					else
+					{
+						Enemy.MVRight(bufferDC);
+					}
+				}
+			}
+			else if (EnemyinMap.x == NextBrick.x && EnemyinMap.y == NextBrick.y)
+			{
+					Result.pop_back();
+			}
+			else if(Enemy.vy == 0)
+			{
+				if (Enemy.XStat == LEFT)
+				{
+					Enemy.MVLeft(bufferDC);
+				}
+				else
+				{
+					Enemy.MVRight(bufferDC);
+				}
+			}
+			/*
+			else if (NextBrick.y != EnemyinMap.y)
+			{
+				if (Result.back().getState() == JUMP)
+				{
+					Enemy.MVJump(bufferDC);
+				}
+				if (CurBrick.x < NextBrick.x)
+				{
+					Enemy.MVRight(bufferDC);
+				}
+				else if (CurBrick.x > NextBrick.x)
+				{
+					Enemy.MVLeft(bufferDC);
+				}
+			}
+			else
+			{
+				if ((Enemy.XStat == RIGHT && EnemyinMap.x > NextBrick.x)
+					|| (Enemy.XStat == LEFT && EnemyinMap.x < NextBrick.x))
+				{
+					EnemyinMap.x = PlayGround.xToCol(Enemy.centerX);
+					EnemyinMap.y = PlayGround.yToRow(Enemy.centerY);
+					if (Way.getNodeIndex(CharainMap) != -1 && Way.getNodeIndex(EnemyinMap) != -1)
+					{
+						Result.clear();
+						Way.AstarAlgorithm(CharainMap, EnemyinMap, &Result);
+					}
+				}		
+			}
+			*/
+		}
+		else if(Result.size() == 0)
+		{
+			char buffer[200];
+			wsprintf(buffer, "empty");
+			TextOut(bufferDC, 500, 100, buffer, lstrlen(buffer));
+		}
+
 		Player.Grav(bufferDC, FIXED); // 중력
+		Enemy.Grav(bufferDC, FIXED); // 중력
 
 		// 투사체
 		Player.UpdateProj(bufferDC, FIXED);
 
-		if (PlayGround.MAP_START_POINT_X > Player.getLeft()) // 왼쪽 벽 방지
-		{
-			Player.centerX = PlayGround.MAP_START_POINT_X + CharaW / 2;
-		}
-		if (PlayGround.MAP_START_POINT_Y > Player.getTop()) // 천장 방지
-		{
-			Player.centerY = PlayGround.MAP_START_POINT_Y + CharaH / 2;
-			Player.vy = 0;
-		}
-		if (PlayGround.borderX < Player.getRight()) // 오른쪽 벽 방지
-		{
-			Player.centerX = PlayGround.borderX - CharaW / 2;
-		}
-		if (PlayGround.borderY < Player.getBottom()) // 바닥 방지
-		{
-			Player.centerY = PlayGround.borderY - CharaH / 2;
-			Player.vy = 0;
-			Player.jumpNum = 2;
-		}
-
 		// 장애물 충돌 처리
 		PlayGround.ProjColl(bufferDC, &Player);
 		PlayGround.Collision(&Player);
+
+		// 적 충돌
+		PlayGround.Collision(&Enemy);
 
 		if (Player.delay > 0)
 		{
@@ -228,10 +357,54 @@ void Run()
 			}
 		}
 
+		drawBackground(bufferDC, border, WindowScreen.rect);
+
+		POINT pnt, pnt2;
+		vector<int>* linker;
+		for (int i = 0; i < Way.Size; i++)
+		{
+			pnt = Way.Epath[i].getCord();
+			Ellipse(bufferDC, pnt.x * PlayGround.SIZE_OF_MAPWIDTH + PlayGround.MAP_START_POINT_X, pnt.y * PlayGround.SIZE_OF_MAPHEIGHT + PlayGround.MAP_START_POINT_Y,
+				(pnt.x + 1) * PlayGround.SIZE_OF_MAPWIDTH + PlayGround.MAP_START_POINT_X, (pnt.y + 1) * PlayGround.SIZE_OF_MAPHEIGHT + PlayGround.MAP_START_POINT_Y);
+
+			linker = Way.Epath[i].getWalklist();
+			for (int i = 0; i < linker->size(); i++)
+			{
+				int result = linker->at(i);
+				pnt2 = Way.Epath[result].getCord();
+				MoveToEx(bufferDC, pnt.x * PlayGround.SIZE_OF_MAPWIDTH + PlayGround.MAP_START_POINT_X + PlayGround.SIZE_OF_MAPWIDTH / 2, pnt.y * PlayGround.SIZE_OF_MAPHEIGHT + PlayGround.MAP_START_POINT_Y + PlayGround.SIZE_OF_MAPHEIGHT / 2 , NULL);
+				LineTo(bufferDC, pnt2.x * PlayGround.SIZE_OF_MAPWIDTH + PlayGround.MAP_START_POINT_X + PlayGround.SIZE_OF_MAPWIDTH / 2, pnt2.y * PlayGround.SIZE_OF_MAPHEIGHT + PlayGround.MAP_START_POINT_Y + PlayGround.SIZE_OF_MAPHEIGHT / 2);
+			}
+
+			linker = Way.Epath[i].getJumplist();
+			for (int i = 0; i < linker->size(); i++)
+			{
+				int result = linker->at(i);
+				pnt2 = Way.Epath[result].getCord();
+				MoveToEx(bufferDC, pnt.x * PlayGround.SIZE_OF_MAPWIDTH + PlayGround.MAP_START_POINT_X + PlayGround.SIZE_OF_MAPWIDTH / 2, pnt.y * PlayGround.SIZE_OF_MAPHEIGHT + PlayGround.MAP_START_POINT_Y + PlayGround.SIZE_OF_MAPHEIGHT / 2 - 10, NULL);
+				LineTo(bufferDC, pnt2.x * PlayGround.SIZE_OF_MAPWIDTH + PlayGround.MAP_START_POINT_X + PlayGround.SIZE_OF_MAPWIDTH / 2, pnt2.y * PlayGround.SIZE_OF_MAPHEIGHT + PlayGround.MAP_START_POINT_Y + PlayGround.SIZE_OF_MAPHEIGHT / 2 - 10);
+			}
+
+			linker = Way.Epath[i].getDroplist();
+			for (int i = 0; i < linker->size(); i++)
+			{
+				int result = linker->at(i);
+				pnt2 = Way.Epath[result].getCord();
+				MoveToEx(bufferDC, pnt.x * PlayGround.SIZE_OF_MAPWIDTH + PlayGround.MAP_START_POINT_X + PlayGround.SIZE_OF_MAPWIDTH / 2, pnt.y * PlayGround.SIZE_OF_MAPHEIGHT + PlayGround.MAP_START_POINT_Y + PlayGround.SIZE_OF_MAPHEIGHT / 2 + 10, NULL);
+				LineTo(bufferDC, pnt2.x * PlayGround.SIZE_OF_MAPWIDTH + PlayGround.MAP_START_POINT_X + PlayGround.SIZE_OF_MAPWIDTH / 2, pnt2.y * PlayGround.SIZE_OF_MAPHEIGHT + PlayGround.MAP_START_POINT_Y + PlayGround.SIZE_OF_MAPHEIGHT / 2 + 10);
+			}
+		}
+
 		// 플레이어 갱신
 		Player.draw(bufferDC);
 
-		drawBackground(bufferDC, border, WindowScreen.rect);
+		// 적 갱신
+		Enemy.draw(bufferDC);
+
+		// test
+		char buffer[256];
+		wsprintf(buffer, "x좌표: %d y좌표: %d", CharainMap.x, CharainMap.y);
+		TextOut(bufferDC, 100, 100, buffer, lstrlen(buffer));
 
 		BitBlt(g_hDC, 0, 0, Crect.right, Crect.bottom, bufferDC, 0, 0, SRCCOPY);
 		SelectObject(bufferDC, OldB);
