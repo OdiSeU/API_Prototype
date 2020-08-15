@@ -1,6 +1,4 @@
-#include <vector>
 #include "Chara.h"
-#include "Proj.h"
 using namespace std;
 
 Character::Character(float x, float y)

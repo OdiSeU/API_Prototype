@@ -26,14 +26,17 @@ void Pathfinder::GnodeReset(int i)
 
 Gnode* Pathfinder::getGnode(int index) { return &Epath[index]; }
 
-vector<BrickInfo>* Pathfinder::AstarAlgorithm(POINT chara, POINT enemy)
+vector<BrickInfo>* Pathfinder::AstarAlgorithm(POINT chara, POINT enemy, vector<BrickInfo> *Result)
 {
-	vector<BrickInfo> Result; // 최종 경로 명령 저장
 	vector<BrickInfo> Closed;
 	vector<BrickInfo> Opened;
 
 	int Sindex = getNodeIndex(chara);
 	int Eindex = getNodeIndex(enemy);
+	if (Sindex == -1 || Eindex == -1)
+	{
+		return NULL; // 길이 없음
+	}
 	Closed.push_back(BrickInfo(Sindex, Sindex, 0, 0, -1));
 	Pushway(Sindex, 0, &Opened, &Closed, enemy);
 	while (Opened.size() > 0)
@@ -61,7 +64,7 @@ vector<BrickInfo>* Pathfinder::AstarAlgorithm(POINT chara, POINT enemy)
 		{
 			if (Closed[i].getCur() == track)
 			{
-				Result.push_back(Closed[i]);
+				Result->push_back(Closed[i]);
 				track = Closed[i].getParent();
 				Closed.erase(Closed.begin() + i); break;
 			}
@@ -87,7 +90,7 @@ vector<BrickInfo>* Pathfinder::AstarAlgorithm(POINT chara, POINT enemy)
 		// 방향은 맵x좌표 차이로 결정
 	}
 	*/
-	return &Result;
+	return Result;
 }
 
 void Pathfinder::Pushway(int index, int CurG, vector<BrickInfo>* Opened, vector<BrickInfo>* Closed, POINT END)

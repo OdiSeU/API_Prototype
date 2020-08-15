@@ -1,10 +1,8 @@
 #include "Chara.h"
-#include "WindowScreen.h"
 #include "Map.h"
-#include <cmath>
+#include <algorithm>
 
 #pragma once
-#include <algorithm>
 
 #define Gnode_size 100
 enum { WALK, JUMP, DROP };
@@ -40,7 +38,7 @@ public:
 	void modInfo(int parent, int g, short s) { Parent = parent; G = g; F = G + H; State = s; }
 };
 
-bool operator<(BrickInfo a, BrickInfo b)
+inline bool operator<(BrickInfo a, BrickInfo b)
 {
 	return a.getF() < b.getF();
 }
@@ -50,6 +48,7 @@ class Pathfinder
 	int Size;
 	Gnode Epath[Gnode_size];
 public:
+	Pathfinder(Map playground, int jumpP) { makeNode(&playground); autoLink(&playground, jumpP); }
 	void GnodeReset(int);
 	Gnode* getGnode(int index);
 	int getG(POINT Cur, POINT a)
@@ -94,7 +93,7 @@ public:
 		}
 		return -1;
 	}
-	vector<BrickInfo>* AstarAlgorithm(POINT chara, POINT enemy);
+	vector<BrickInfo>* AstarAlgorithm(POINT chara, POINT enemy, vector<BrickInfo>*);
 	void makeNode(Map* map);
 	void autoLink(Map* map, int jumpPower);
 	void Pushway(int index, int CurG, vector<BrickInfo>* Opened, vector<BrickInfo>* Closed, POINT END);

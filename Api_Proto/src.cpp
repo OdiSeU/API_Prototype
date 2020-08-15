@@ -1,14 +1,15 @@
 #include <windows.h>
 #include <vector>
 #include <cmath>
-#include <list>
+#include <algorithm>
 #include <time.h>
+#include "Proj.h"
 #include "Chara.h"
 #include "Resol.h"
-#include "Proj.h"
 #include "Map.h"
 #include "Weapon.h"
 #include "WindowScreen.h"
+#include "Pathfinder.h"
 using namespace std;
 
 #pragma comment(lib, "winmm.lib")
@@ -50,6 +51,9 @@ RECT border = PlayGround.MaxSize;
 
 // ¸¶¿ì½º ÁÂÇ¥
 float mX, mY;
+
+// AI ±æ ¶Õ±â
+Pathfinder Way(PlayGround, 3);
 
 #define FIXED 0.016f
 
@@ -117,6 +121,11 @@ void startAttack(EventStruct target, HDC hdc)
 	}
 }
 
+POINT EnemyinMap;
+POINT CharainMap;
+POINT OldCharainMap;
+vector<BrickInfo> Result;
+
 void Run()
 {	
 	dwCurrentGameTime = timeGetTime();
@@ -126,6 +135,23 @@ void Run()
 
 	PlayGround.Collision(&Player);
 	PlayGround.Collision(&Enemy);
+
+	// Àû°ú ÇÃ·¹ÀÌ¾îÀÇ ÁÂÇ¥
+	OldCharainMap.x = CharainMap.x; 
+	OldCharainMap.y = CharainMap.y;
+	CharainMap.x = PlayGround.xToCol(Player.centerX);
+	CharainMap.y = PlayGround.yToRow(Player.centerY);
+	EnemyinMap.x = PlayGround.xToCol(Enemy.centerX);
+	EnemyinMap.y = PlayGround.yToRow(Enemy.centerY);
+
+	if (CharainMap.x != OldCharainMap.x || CharainMap.y != OldCharainMap.y) // Ä³¸¯ÅÍ ÁÂÇ¥ ¹Ù²ð¶§¸¶´Ù °æ·Î º¯°æ
+	{		
+		if (Way.getNodeIndex(CharainMap) != -1)
+		{
+			Result.clear();
+			Way.AstarAlgorithm(CharainMap, EnemyinMap, &Result);
+		}
+	}
 
 	if (rAccumlationTime > FIXED) // 60FPS ±âÁØ, 1 / 60.0f
 	{
@@ -168,7 +194,6 @@ void Run()
 			Player.NextStagePosition(Player.centerX - PlayGround.buff, Player.centerY);
 		}
 
-
 		Player.bfLeft = Player.getLeft();
 		Player.bfTop = Player.getTop();
 		Player.bfBottom = Player.getBottom();
@@ -191,6 +216,24 @@ void Run()
 		{
 			Player.MVJump(bufferDC); // Á¡ÇÁ
 		}
+
+		if (Result.size() >= 1)
+		{
+			POINT CurBrick = Way.getGnode(Result.back().getCur())->getCord();
+			if (EnemyinMap.x == CurBrick.x && EnemyinMap.y == CurBrick.y)
+			{
+				POINT NextBrick = Way.getGnode(Result[Result.size() - 1].getParent())->getCord();
+				if (EnemyinMap.x < NextBrick.x)
+				{
+					Enemy.MVRight(bufferDC);
+				}
+				else if (EnemyinMap.x > NextBrick.x)
+				{
+					Enemy.MVLeft(bufferDC);
+				}
+			}
+		}
+
 		Player.Grav(bufferDC, FIXED); // Áß·Â
 		Enemy.Grav(bufferDC, FIXED); // Áß·Â
 
@@ -237,6 +280,11 @@ void Run()
 		Enemy.draw(bufferDC);
 
 		drawBackground(bufferDC, border, WindowScreen.rect);
+
+		// test
+		char buffer[256];
+		wsprintf(buffer, "xÁÂÇ¥: %d yÁÂÇ¥: %d", CharainMap.x, CharainMap.y);
+		TextOut(bufferDC, 100, 100, buffer, lstrlen(buffer));
 
 		BitBlt(g_hDC, 0, 0, Crect.right, Crect.bottom, bufferDC, 0, 0, SRCCOPY);
 		SelectObject(bufferDC, OldB);
