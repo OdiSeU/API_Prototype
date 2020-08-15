@@ -122,6 +122,8 @@ void startAttack(EventStruct target, HDC hdc)
 }
 
 POINT EnemyinMap;
+POINT EnemyinMapRight;
+POINT EnemyinMapLeft;
 POINT CharainMap;
 POINT OldCharainMap;
 vector<BrickInfo> Result;
@@ -132,35 +134,31 @@ void Run()
 	dwOldGameTime = dwCurrentGameTime;
 	rAccumlationTime = rAccumlationTime + rDeltaTime;
 
-	PlayGround.Collision(&Player);
-	PlayGround.Collision(&Enemy);
 
 	// 적과 플레이어의 좌표
-	OldCharainMap.x = CharainMap.x; 
+	OldCharainMap.x = CharainMap.x;
 	OldCharainMap.y = CharainMap.y;
 	CharainMap.x = PlayGround.xToCol(Player.centerX);
 	CharainMap.y = PlayGround.yToRow(Player.centerY);
 	EnemyinMap.x = PlayGround.xToCol(Enemy.centerX);
 	EnemyinMap.y = PlayGround.yToRow(Enemy.centerY);
+	EnemyinMapRight.x = PlayGround.xToCol(Enemy.getRight());
+	EnemyinMapLeft.x = PlayGround.xToCol(Enemy.getLeft());
 
-	if (CharainMap.x != OldCharainMap.x || CharainMap.y != OldCharainMap.y) // 캐릭터 좌표 바뀔때마다 경로 변경
+	PlayGround.Collision(&Player);
+	PlayGround.Collision(&Enemy);
+
+	if ((CharainMap.x != OldCharainMap.x || CharainMap.y != OldCharainMap.y)) // 캐릭터 좌표 바뀔때마다 경로 변경
 	{		
 		if (Way.getNodeIndex(CharainMap) != -1 && Way.getNodeIndex(EnemyinMap) != -1)
 		{
 			Result.clear();
 			Way.AstarAlgorithm(CharainMap, EnemyinMap, &Result);
 		}
-		/*
-		if (Way.getNodeIndex(CharainMap) != -1 && Way.getNodeIndex(EnemyinMap) != -1)
-		{
-			Result.clear();
-			Way.AstarAlgorithm(CharainMap, EnemyinMap, &Result);
-		}
-		*/
 	}
 
 	if (rAccumlationTime > FIXED) // 60FPS 기준, 1 / 60.0f
-	{
+	{	
 		rAccumlationTime = 0;
 
 		g_hDC = GetDC(g_hWnd);
@@ -228,10 +226,14 @@ void Run()
 			POINT CurBrick = Way.getGnode(Result.back().getParent())->getCord();
 			POINT NextBrick = Way.getGnode(Result.back().getCur())->getCord();
 			if (EnemyinMap.x == CurBrick.x)
+			//if (EnemyinMapLeft.x == CurBrick.x || EnemyinMapRight.x == CurBrick.x)
 			{
 				if (Result.back().getState() == JUMP)
 				{
-					Enemy.MVJump(bufferDC);
+					if (EnemyinMapLeft.x == CurBrick.x && EnemyinMapRight.x == CurBrick.x)
+					{
+						Enemy.MVJump(bufferDC);
+					}
 					if (EnemyinMap.x < NextBrick.x)
 					{
 						Enemy.MVRight(bufferDC);
@@ -254,7 +256,7 @@ void Run()
 				}
 				else if (Result.back().getState() == DROP)
 				{
-					if (Enemy.XStat == LEFT)
+					if (EnemyinMap.x > NextBrick.x)
 					{
 						Enemy.MVLeft(bufferDC);
 					}
@@ -268,7 +270,48 @@ void Run()
 			{
 					Result.pop_back();
 			}
-			else if(Enemy.vy == 0)
+			else if (Enemy.vy == 0)
+			{
+				int Rindex = -1;
+				for (int i = 0; i < Result.size(); i++)
+				{
+					POINT RinMap = Way.getGnode(Result[i].getCur())->getCord();
+					if (RinMap.x == EnemyinMap.x && RinMap.y == EnemyinMap.y)
+					{
+						Rindex = i; break;
+					}
+				}
+				int Roop = Result.size() - Rindex - 1;
+				while (Roop > 0 && Rindex != -1)
+				{
+					Result.pop_back();
+					Roop--;
+				}
+				if (Rindex == -1)
+				{
+					if (Way.getNodeIndex(EnemyinMap) != -1) // Result에 없는데 적이 갈 수 있는 길이다.
+					{
+						if (Way.getNodeIndex(CharainMap) != -1)
+						{
+							Result.clear();
+							Way.AstarAlgorithm(CharainMap, EnemyinMap, &Result);
+						}
+					}
+					else // Result에 없는데 적도 갈 수 없는 곳
+					{
+						if (Enemy.XStat == LEFT)
+						{
+							Enemy.MVLeft(bufferDC);
+						}
+						else
+						{
+							Enemy.MVRight(bufferDC);
+						}
+					}
+				}
+			}
+			/*
+			else if(Way.getNodeIndex(EnemyinMap) != -1 && Enemy.vy == 0)
 			{
 				if (Enemy.XStat == LEFT)
 				{
@@ -279,6 +322,7 @@ void Run()
 					Enemy.MVRight(bufferDC);
 				}
 			}
+			*/
 			/*
 			else if (NextBrick.y != EnemyinMap.y)
 			{
