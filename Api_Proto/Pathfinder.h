@@ -45,10 +45,13 @@ inline bool operator<(BrickInfo a, BrickInfo b)
 
 class Pathfinder
 {
+public:
 	int Size;
 	Gnode Epath[Gnode_size];
-public:
-	Pathfinder(Map playground, int jumpP) { makeNode(&playground); autoLink(&playground, jumpP); }
+	Pathfinder(Map playground, int jumpP) 
+	{ 
+		makeNode(&playground); autoLink(&playground, jumpP); 
+	}
 	void GnodeReset(int);
 	Gnode* getGnode(int index);
 	int getG(POINT Cur, POINT a)

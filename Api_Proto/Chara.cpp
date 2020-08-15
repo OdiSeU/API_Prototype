@@ -56,9 +56,12 @@ void Character::MVLeft(HDC hdc)
 
 void Character::MVJump(HDC hdc)
 {
-	vy = -JumpPower;
-	jumpNum--;
-	YStat = UP;
+	if (jumpNum >= 1)
+	{
+		vy = -JumpPower;
+		jumpNum--;
+		YStat = UP;
+	}
 }
 
 void Character::clear(HDC hdc)

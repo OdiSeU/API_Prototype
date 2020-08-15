@@ -31,8 +31,8 @@ vector<BrickInfo>* Pathfinder::AstarAlgorithm(POINT chara, POINT enemy, vector<B
 	vector<BrickInfo> Closed;
 	vector<BrickInfo> Opened;
 
-	int Sindex = getNodeIndex(chara);
-	int Eindex = getNodeIndex(enemy);
+	int Sindex = getNodeIndex(enemy);
+	int Eindex = getNodeIndex(chara);
 	if (Sindex == -1 || Eindex == -1)
 	{
 		return NULL; // 길이 없음
@@ -43,7 +43,7 @@ vector<BrickInfo>* Pathfinder::AstarAlgorithm(POINT chara, POINT enemy, vector<B
 	{
 		auto mIter = min_element(Opened.begin(), Opened.end());
 		BrickInfo Smallone = *mIter;
-		if (getGnode(Smallone.getCur())->getCord().x == enemy.x && getGnode(Smallone.getCur())->getCord().y == enemy.y)
+		if (getGnode(Smallone.getCur())->getCord().x == chara.x && getGnode(Smallone.getCur())->getCord().y == chara.y)
 		{
 			Closed.push_back(Smallone);
 			break;
@@ -57,10 +57,10 @@ vector<BrickInfo>* Pathfinder::AstarAlgorithm(POINT chara, POINT enemy, vector<B
 		return NULL; // 길이 없음
 	}
 	// 길 역추적
-	int track = Eindex;
+	int track = Eindex, i;
 	while (track != Sindex)
 	{
-		for (int i = 0; i < Closed.size(); i++)
+		for (i = 0; i < Closed.size(); i++)
 		{
 			if (Closed[i].getCur() == track)
 			{
@@ -142,11 +142,11 @@ void Pathfinder::Pushway(int index, int CurG, vector<BrickInfo>* Opened, vector<
 void Pathfinder::makeNode(Map* map)//노드생성자
 {
 	int index = 0;
-	for (int y = map->mapSizeNow.y; y > 0; y--)
+	for (int y = map->mapSizeNow.y - 1; y > 0; y--)
 	{
-		for (int x = 0; x <= map->mapSizeNow.x; x++)
+		for (int x = 0; x < map->mapSizeNow.x; x++)
 		{
-			if (y == map->mapSizeNow.y && map->matrix[map->mapId][y][x] != map->NonPassFloor)
+			if (y == map->mapSizeNow.y - 1 && map->matrix[map->mapId][y][x] != map->NonPassFloor)
 			{
 				Epath[index++].setCord(x, y);
 			}
@@ -177,11 +177,11 @@ void Pathfinder::autoLink(Map* map, int jumpPower)
 			point2 = Epath[j].getCord();
 			if (i == j)
 				continue;
-			else if ((point1.x - 1 == point2.x || point2.x == point1.x + 1) && point1.y == point2.y)//옆에 존재하는지
+			if ((point1.x - 1 == point2.x || point2.x == point1.x + 1) && point1.y == point2.y)//옆에 존재하는지
 			{
 				Linknode(i,j,WALK);
 			}
-			else if ((point1.x - 1 <= point2.x && point2.x <= point1.x + 1) && (point1.y > point2.y && point1.y - point2.y <= jumpPower))//상단에 존재하는지 && 점프 도달 가능 위치에 있는지
+			if ((point1.x - 1 <= point2.x && point2.x <= point1.x + 1) && (point1.y > point2.y && point1.y - point2.y <= jumpPower))//상단에 존재하는지 && 점프 도달 가능 위치에 있는지
 			{
 				bool block = false;
 				for (int count = 1; count <= point1.y - point2.y; count++) //내 머리위에 가로막는게 있는지
@@ -195,12 +195,13 @@ void Pathfinder::autoLink(Map* map, int jumpPower)
 				if (block == false)
 					Linknode(i, j, JUMP);
 			}
-			else if ((point1.x - 1 == point2.x || point2.x == point1.x + 1) && point1.y > point2.y)//하단에 존재하는지
+			if ((point1.x - 1 == point2.x || point2.x == point1.x + 1) && point1.y < point2.y)//하단에 존재하는지
 			{
 				bool block = false;
 				for (int count = 0; count <= point2.y - point1.y; count++)
 				{
-					if (map->matrix[map->mapId][point1.y + count][point2.x] == map->NonPassFloor || map->matrix[map->mapId][point1.y + count][point2.x] == map->PassFloor)
+					if (map->matrix[map->mapId][point1.y + count][point2.x] == map->NonPassFloor ||
+						map->matrix[map->mapId][point1.y + count][point2.x] == map->PassFloor)
 					{
 						block = true;
 						break;
