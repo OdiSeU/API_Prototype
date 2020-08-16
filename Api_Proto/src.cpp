@@ -158,7 +158,7 @@ void Run()
 	}
 
 	if (rAccumlationTime > FIXED) // 60FPS 기준, 1 / 60.0f
-	{	
+	{			
 		rAccumlationTime = 0;
 
 		g_hDC = GetDC(g_hWnd);
@@ -230,17 +230,28 @@ void Run()
 			{
 				if (Result.back().getState() == JUMP)
 				{
-					if (EnemyinMapLeft.x == CurBrick.x && EnemyinMapRight.x == CurBrick.x)
-					{
-						Enemy.MVJump(bufferDC);
-					}
-					if (EnemyinMap.x < NextBrick.x)
+					if (Enemy.centerX < PlayGround.getBlckCenterX(CurBrick.x) && Enemy.XStat == RIGHT)
 					{
 						Enemy.MVRight(bufferDC);
 					}
-					else if (EnemyinMap.x > NextBrick.x)
+					else if (Enemy.centerX > PlayGround.getBlckCenterX(CurBrick.x) && Enemy.XStat == LEFT)
 					{
 						Enemy.MVLeft(bufferDC);
+					}
+					else
+					{
+						if (EnemyinMapLeft.x == CurBrick.x && EnemyinMapRight.x == CurBrick.x)
+						{
+							Enemy.MVJump(bufferDC);
+						}
+						if (EnemyinMap.x < NextBrick.x)
+						{
+							Enemy.MVRight(bufferDC);
+						}
+						else if (EnemyinMap.x > NextBrick.x)
+						{
+							Enemy.MVLeft(bufferDC);
+						}
 					}
 				}
 				else if (Result.back().getState() == WALK)
@@ -310,6 +321,17 @@ void Run()
 					}
 				}
 			}
+			else // 징검다리 건너려면 있는게 좋음
+			{
+				if (EnemyinMap.x > NextBrick.x)
+				{
+					Enemy.MVLeft(bufferDC);
+				}
+				else
+				{
+					Enemy.MVRight(bufferDC);
+				}
+			}
 			/*
 			else if(Way.getNodeIndex(EnemyinMap) != -1 && Enemy.vy == 0)
 			{
@@ -357,9 +379,20 @@ void Run()
 		}
 		else if(Result.size() == 0)
 		{
-			char buffer[200];
-			wsprintf(buffer, "empty");
-			TextOut(bufferDC, 500, 100, buffer, lstrlen(buffer));
+			if (EnemyinMap.x != CharainMap.x || EnemyinMap.y != CharainMap.y)
+			{
+				if (Way.getNodeIndex(CharainMap) != -1)
+				{
+					Result.clear();
+					Way.AstarAlgorithm(CharainMap, EnemyinMap, &Result);
+				}
+			}
+			else
+			{
+				char buffer[200];
+				wsprintf(buffer, "empty");
+				TextOut(bufferDC, 500, 100, buffer, lstrlen(buffer));
+			}
 		}
 
 		Player.Grav(bufferDC, FIXED); // 중력
@@ -403,6 +436,7 @@ void Run()
 
 		drawBackground(bufferDC, border, WindowScreen.rect);
 
+		/*
 		POINT pnt, pnt2;
 		vector<int>* linker;
 		for (int i = 0; i < Way.Size; i++)
@@ -438,6 +472,7 @@ void Run()
 				LineTo(bufferDC, pnt2.x * PlayGround.SIZE_OF_MAPWIDTH + PlayGround.MAP_START_POINT_X + PlayGround.SIZE_OF_MAPWIDTH / 2, pnt2.y * PlayGround.SIZE_OF_MAPHEIGHT + PlayGround.MAP_START_POINT_Y + PlayGround.SIZE_OF_MAPHEIGHT / 2 + 10);
 			}
 		}
+		*/
 
 		// 플레이어 갱신
 		Player.draw(bufferDC);
@@ -445,10 +480,12 @@ void Run()
 		// 적 갱신
 		Enemy.draw(bufferDC);
 
+		/*
 		// test
 		char buffer[256];
 		wsprintf(buffer, "x좌표: %d y좌표: %d", CharainMap.x, CharainMap.y);
 		TextOut(bufferDC, 100, 100, buffer, lstrlen(buffer));
+		*/
 
 		BitBlt(g_hDC, 0, 0, Crect.right, Crect.bottom, bufferDC, 0, 0, SRCCOPY);
 		SelectObject(bufferDC, OldB);

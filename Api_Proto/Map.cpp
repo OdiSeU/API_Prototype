@@ -114,7 +114,8 @@ void Map::drawObject(HDC hdc)
 				break;
 
 			case DoorClose:
-
+				rgb = RGB(0, 100, 0);
+				drawRect(hdc, i, j, rgb);
 				break;
 
 			default:
@@ -340,6 +341,11 @@ int Map::getBlockBottom(int row, int col)
 int Map::getBlockRight(int row, int col)
 {
 	return MAP_START_POINT_X + (col + 1) * SIZE_OF_MAPWIDTH;
+}
+
+int Map::getBlckCenterX(int col)
+{
+	return MAP_START_POINT_X + col * SIZE_OF_MAPWIDTH + SIZE_OF_MAPWIDTH / 2;
 }
 
 int Map::getBlockType(int row, int col)
