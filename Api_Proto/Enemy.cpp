@@ -13,6 +13,24 @@ void Enemy::PushEnemy(float x, float y, int speed, int jumppower, int jumpnum, i
 	EnemyList.push_back(buffer);
 }
 
+void Enemy::StackEnemy(float x, float y, int speed, int jumppower, int jumpnum, int heart, COLORREF rgb)
+{
+	WaitingEnem.push_back(Character(x, y, speed, jumppower, jumpnum, heart, rgb));
+}
+
+bool Enemy::StacktoPush(int x, int y)
+{
+	if (WaitingEnem.size() == 0)
+	{
+		return false;
+	}
+	Character* buffer = &WaitingEnem.back();
+	PushEnemy(buffer->centerX, buffer->centerY, buffer->CHARACTERSPEED, buffer->JumpPower, buffer->jumpNum, buffer->Heart, buffer->Color);
+	EnemyList.back().foe.SetSpawn(MapWithE->getBlockCenterX(x), MapWithE->getBlockCenterY(y));
+	WaitingEnem.pop_back();
+	return true;
+}
+
 void Enemy::KillEnemy()
 {
 	for (int i = 0; i < EnemyList.size(); i++)
@@ -175,5 +193,15 @@ void Enemy::GetPath(POINT CharainMap)
 			EnemyList[i].Result.clear();
 			Way.AstarAlgorithm(CharainMap, EnemyinMap, &EnemyList[i].Result);
 		}
+	}
+}
+
+void Enemy::FillEnem(int Stagenum, Character MobAry[][MAX_MOBARY], int col, int row)
+{
+	int i = 0; Character* A;
+	while (MobAry[Stagenum][i].jumpNum != -1)
+	{
+		A = &MobAry[Stagenum][i++];
+		StackEnemy(A->centerX, A->centerY, A->CHARACTERSPEED, A->JumpPower, A->jumpNum, A->Heart, A->Color);
 	}
 }

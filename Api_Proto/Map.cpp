@@ -29,7 +29,7 @@ void Map::update()
 	MAP_START_POINT_X = MaxSize.left + ((MaxSize.right - MaxSize.left) - (SIZE_OF_MAPWIDTH * mapSizeNow.x)) / 2;
 	MAP_START_POINT_Y = MaxSize.top + ((MaxSize.bottom - MaxSize.top) - (SIZE_OF_MAPHEIGHT * mapSizeNow.y)) / 2;
 
-	maxBorderX = MAX_OF_MAPWIDTH * SIZE_OF_MAPWIDTH + MAX_MAP_START_POINT_X; // 촤대 맵 전체 너비
+	maxBorderX = MAX_OF_MAPWIDTH * SIZE_OF_MAPWIDTH + MAX_MAP_START_POINT_X; // 최대 맵 전체 너비
 	maxBorderY = MAX_OF_MAPHEIGHT * SIZE_OF_MAPHEIGHT + MAX_MAP_START_POINT_Y; // 최대 맵 전체 높이
 	borderX = mapSizeNow.x * SIZE_OF_MAPWIDTH + MAP_START_POINT_X; // 맵 전체 너비
 	borderY = mapSizeNow.y * SIZE_OF_MAPHEIGHT + MAP_START_POINT_Y; // 맵 전체 높이
@@ -261,7 +261,7 @@ void Map::Collision(Character* Player)
 
 void Map::openNextStage()
 {
-	can_NextStage = true; // 실험을 위해 항상 오픈상태로 만듦
+	//can_NextStage = true; // 실험을 위해 항상 오픈상태로 만듦
 	if (can_NextStage)//true면 실행
 	{
 		matrix[mapId][mapSizeNow.y - 1][mapSizeNow.x - 1] = DoorOpen;

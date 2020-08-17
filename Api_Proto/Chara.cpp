@@ -5,7 +5,7 @@ Character::Character(float x, float y, int speed, int jumppower, int jumpnum, in
 {
 	CharaW = 20; // 캐릭터 너비
 	CharaH = 39; // 캐릭터 높이
-	CHARACTERSPEED = 250; // 캐릭터 좌우 속도
+	CHARACTERSPEED = speed; // 캐릭터 좌우 속도
 	Gravity = 35; // 중력
 	Projnum = 3;
 	jumpNum = jumpnum;
@@ -161,7 +161,7 @@ void Character::SetSpec(int speed, int jumppower, int jumpnum, int heart, COLORR
 {
 	CharaW = 20; // 캐릭터 너비
 	CharaH = 39; // 캐릭터 높이
-	CHARACTERSPEED = 250; // 캐릭터 좌우 속도
+	CHARACTERSPEED = speed; // 캐릭터 좌우 속도
 	Gravity = 35; // 중력
 	Projnum = 3;
 	jumpNum = jumpnum;

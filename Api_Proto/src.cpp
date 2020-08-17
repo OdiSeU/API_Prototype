@@ -24,6 +24,22 @@ typedef struct _EventStruct
 	Weapon weapon;    //무기 객체
 }EventStruct;
 
+Character Bruser(0, 0, 150, 10, 1, 15, RGB(100, 100, 100)); // 브루저 몹
+Character Ninja(0, 0, 300, 10, 1, 7, RGB(0, 200, 250)); // 닌자 몹
+Character Nerd(0, 0, 120, 10, 1, 4, RGB(0, 100, 250)); // 찐따 몹
+Character Ender(-1, -1, -1, -1, -1, -1, RGB(0, 0, 0)); // 마침표
+
+int Stagenum = 0;
+
+Character StageMobAry[Stages][MAX_MOBARY] = // 스테이지에 담기는 몹들
+{
+	{Nerd,Nerd,Nerd,Nerd,Bruser,Ninja,Ender},
+	{Nerd,Bruser,Nerd,Nerd,Bruser,Nerd,Bruser,Ender},
+	{Nerd,Bruser,Ninja,Ninja,Bruser,Ninja,Bruser,Ender},
+	{Ninja,Ninja,Ninja,Ninja,Bruser,Bruser,Bruser,Ender},
+	{Bruser,Ninja,Bruser,Ninja,Bruser,Ninja,Bruser,Ninja,Ender}
+};
+
 vector<EventStruct> eventList;    //이벤트 처리 리스트
 
 // 루프 관련
@@ -48,13 +64,9 @@ RECT border = PlayGround.MaxSize;
 
 // 처음 생성 좌표(2개), 좌우 속도, 점프파워, 점프 가능 횟수, 생명력 순
 Character Player(PlayGround.getBlockCenterX(PlayGround.getWidth(0) / 2), PlayGround.getBlockCenterY(PlayGround.getHeight(0)/ 2), 250, 10, 2, 10, RGB(200, 0, 200));
-Character Foe(1400, 700, 250, 10, 1, 10, RGB(10, 200, 10)); // 적 선언
 
 // 마우스 좌표
 float mX, mY;
-
-// AI 길 뚫기
-Pathfinder Way(PlayGround, 2);
 
 // 적에 관환 데이터가 담길 리스트
 Enemy FoeList(&PlayGround, 2);
@@ -145,6 +157,11 @@ void Run()
 	PlayGround.Collision(&Player);
 	FoeList.Collision_E();
 
+	if (Stagenum == 0)
+	{
+		FoeList.FillEnem(Stagenum, StageMobAry, MAX_MOBARY, 5);
+		Stagenum++;
+	}
 	if ((CharainMap.x != OldCharainMap.x || CharainMap.y != OldCharainMap.y)) // 캐릭터 좌표 바뀔때마다 경로 변경
 	{		
 		FoeList.GetPath(CharainMap);
@@ -166,6 +183,17 @@ void Run()
 		Player.MVSpeed = Player.CHARACTERSPEED * FIXED;
 		FoeList.SpeedSet(FIXED);
 
+
+		if (FoeList.WaitingEnem.size() == 0 && FoeList.EnemyList.size() == 0) // 적을 모두 죽이면 문 열기
+		{
+			PlayGround.can_NextStage = true;
+		}
+		else if (FoeList.EnemyList.size() == 0 && FoeList.WaitingEnem.size() != 0) // 활동중인 적이 다 죽으면 다음 적 등장
+		{
+			FoeList.StacktoPush(0, PlayGround.getHeight(PlayGround.mapId) - 2);
+			FoeList.StacktoPush(PlayGround.getWidth(PlayGround.mapId) - 1, PlayGround.getHeight(PlayGround.mapId) - 2);
+		}
+
 		if (PlayGround.matrix[PlayGround.mapId][(int)((Player.centerY - PlayGround.MAP_START_POINT_Y) / PlayGround.SIZE_OF_MAPHEIGHT)]
 			[(int)((Player.centerX - PlayGround.MAP_START_POINT_X) / PlayGround.SIZE_OF_MAPWIDTH)] == PlayGround.DoorOpen
 			&& (GetAsyncKeyState('W') & 0x8000) && PlayGround.changedAnime == false)
@@ -178,6 +206,11 @@ void Run()
 				PlayGround.getBlockCenterY(PlayGround.getHeight(PlayGround.mapId) / 2)); // 플레이어 중심 생성
 			Player.draw(bufferDC);
 			FoeList.NodeChanger(); // 적이 지나갈 길 재생성
+			FoeList.FillEnem(Stagenum, StageMobAry, MAX_MOBARY, 5); // 해당 스테이지의 적 채우기
+			if (Stages - 1 > Stagenum)
+			{
+				Stagenum++;  // 스테이지 증가
+			}
 		}
 		else
 		{
@@ -192,6 +225,7 @@ void Run()
 			oldMap.changeAnimetion(bufferDC, WindowScreen.rect, FIXED);
 			Player.SetSpawn(PlayGround.getBlockCenterX(PlayGround.getWidth(PlayGround.mapId) / 2),
 				PlayGround.getBlockCenterY(PlayGround.getHeight(PlayGround.mapId) / 2)); // 플레이어 중심 생성
+			Player.vy = 0; // 확 떨어지는거 방지
 		}
 
 		// 충돌처리를 위한 전 좌표 따기
@@ -244,49 +278,15 @@ void Run()
 
 		drawBackground(bufferDC, border, WindowScreen.rect);
 
-		/*
-		POINT pnt, pnt2;
-		vector<int>* linker;
-		for (int i = 0; i < Way.Size; i++)
-		{
-			pnt = Way.Epath[i].getCord();
-			Ellipse(bufferDC, pnt.x * PlayGround.SIZE_OF_MAPWIDTH + PlayGround.MAP_START_POINT_X, pnt.y * PlayGround.SIZE_OF_MAPHEIGHT + PlayGround.MAP_START_POINT_Y,
-				(pnt.x + 1) * PlayGround.SIZE_OF_MAPWIDTH + PlayGround.MAP_START_POINT_X, (pnt.y + 1) * PlayGround.SIZE_OF_MAPHEIGHT + PlayGround.MAP_START_POINT_Y);
-
-			linker = Way.Epath[i].getWalklist();
-			for (int i = 0; i < linker->size(); i++)
-			{
-				int result = linker->at(i);
-				pnt2 = Way.Epath[result].getCord();
-				MoveToEx(bufferDC, pnt.x * PlayGround.SIZE_OF_MAPWIDTH + PlayGround.MAP_START_POINT_X + PlayGround.SIZE_OF_MAPWIDTH / 2, pnt.y * PlayGround.SIZE_OF_MAPHEIGHT + PlayGround.MAP_START_POINT_Y + PlayGround.SIZE_OF_MAPHEIGHT / 2 , NULL);
-				LineTo(bufferDC, pnt2.x * PlayGround.SIZE_OF_MAPWIDTH + PlayGround.MAP_START_POINT_X + PlayGround.SIZE_OF_MAPWIDTH / 2, pnt2.y * PlayGround.SIZE_OF_MAPHEIGHT + PlayGround.MAP_START_POINT_Y + PlayGround.SIZE_OF_MAPHEIGHT / 2);
-			}
-
-			linker = Way.Epath[i].getJumplist();
-			for (int i = 0; i < linker->size(); i++)
-			{
-				int result = linker->at(i);
-				pnt2 = Way.Epath[result].getCord();
-				MoveToEx(bufferDC, pnt.x * PlayGround.SIZE_OF_MAPWIDTH + PlayGround.MAP_START_POINT_X + PlayGround.SIZE_OF_MAPWIDTH / 2, pnt.y * PlayGround.SIZE_OF_MAPHEIGHT + PlayGround.MAP_START_POINT_Y + PlayGround.SIZE_OF_MAPHEIGHT / 2 - 10, NULL);
-				LineTo(bufferDC, pnt2.x * PlayGround.SIZE_OF_MAPWIDTH + PlayGround.MAP_START_POINT_X + PlayGround.SIZE_OF_MAPWIDTH / 2, pnt2.y * PlayGround.SIZE_OF_MAPHEIGHT + PlayGround.MAP_START_POINT_Y + PlayGround.SIZE_OF_MAPHEIGHT / 2 - 10);
-			}
-
-			linker = Way.Epath[i].getDroplist();
-			for (int i = 0; i < linker->size(); i++)
-			{
-				int result = linker->at(i);
-				pnt2 = Way.Epath[result].getCord();
-				MoveToEx(bufferDC, pnt.x * PlayGround.SIZE_OF_MAPWIDTH + PlayGround.MAP_START_POINT_X + PlayGround.SIZE_OF_MAPWIDTH / 2, pnt.y * PlayGround.SIZE_OF_MAPHEIGHT + PlayGround.MAP_START_POINT_Y + PlayGround.SIZE_OF_MAPHEIGHT / 2 + 10, NULL);
-				LineTo(bufferDC, pnt2.x * PlayGround.SIZE_OF_MAPWIDTH + PlayGround.MAP_START_POINT_X + PlayGround.SIZE_OF_MAPWIDTH / 2, pnt2.y * PlayGround.SIZE_OF_MAPHEIGHT + PlayGround.MAP_START_POINT_Y + PlayGround.SIZE_OF_MAPHEIGHT / 2 + 10);
-			}
-		}
-		*/
+		//FoeList.ShowNode(bufferDC);
 
 		// 플레이어 갱신
 		Player.draw(bufferDC);
 
 		// 적 갱신
 		FoeList.Draw_E(bufferDC);
+
+		FoeList.KillEnemy(); // 체력이 다한적 소멸
 
 		/*
 		// test
@@ -407,7 +407,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			Player.Thowable.push_back(Projectile(Player.centerX, Player.centerY, mX, mY, Arrowhead));
 			Player.Projnum--;
 		}
-		FoeList.PushEnemy(200, 300, 250, 10, 1, 10, RGB(0, 100, 200));
 		break;
 
 	case WM_DESTROY:
