@@ -141,6 +141,7 @@ void Map::drawRect(HDC hdc, int x, int y, COLORREF rgb)
 
 void Map::Collision(Character* Player)
 {
+	// 테두리 충돌
 	if (MAP_START_POINT_X > Player->getLeft()) // 왼쪽 벽 방지
 	{
 		Player->centerX = MAP_START_POINT_X + Player->CharaW / 2;
@@ -161,6 +162,7 @@ void Map::Collision(Character* Player)
 		Player->jumpNum = 2;
 	}
 	
+	// 블럭 충돌
 	if (Player->YStat == UP) // 위쪽 이동
 	{
 		int bfRow = yToRow(Player->bfTop); // 이전 캐릭터 위쪽좌표 블록
@@ -314,7 +316,6 @@ void Map::ProjColl(HDC hdc, Character* Player)
 			|| borderX < Player->Thowable[i].getRight()
 			|| borderY < Player->Thowable[i].getBottom())
 		{
-			//Player->Thowable[i].clear(hdc);
 			Player->Thowable.erase(Player->Thowable.begin() + i--);
 			Player->Projnum++;
 		}
@@ -326,26 +327,54 @@ void Map::ProjColl(HDC hdc, Character* Player)
 	}
 }
 
+int Map::getWidth(int num)
+{
+	int count = 0;
+	for (int i = 0; matrix[num][0][i] != 10; i++)
+	{
+		count++;
+	}
+	return count;
+}
+
+int Map::getHeight(int num)
+{
+	int count = 0;
+	for (int i = 0; matrix[num][i][0] != 10; i++)
+	{
+		count++;
+	}
+	return count;
+}
+
 int Map::getBlockLeft(int row, int col)
 {
 	return MAP_START_POINT_X + col * SIZE_OF_MAPWIDTH;
 }
+
 int Map::getBlockTop(int row, int col)
 {
 	return MAP_START_POINT_Y + row * SIZE_OF_MAPHEIGHT;
 }
+
 int Map::getBlockBottom(int row, int col)
 {
 	return MAP_START_POINT_Y + (row + 1) * SIZE_OF_MAPHEIGHT;
 }
+
 int Map::getBlockRight(int row, int col)
 {
 	return MAP_START_POINT_X + (col + 1) * SIZE_OF_MAPWIDTH;
 }
 
-int Map::getBlckCenterX(int col)
+int Map::getBlockCenterX(int col)
 {
 	return MAP_START_POINT_X + col * SIZE_OF_MAPWIDTH + SIZE_OF_MAPWIDTH / 2;
+}
+
+int Map::getBlockCenterY(int row)
+{
+	return MAP_START_POINT_Y + row * SIZE_OF_MAPHEIGHT + SIZE_OF_MAPHEIGHT / 2;
 }
 
 int Map::getBlockType(int row, int col)

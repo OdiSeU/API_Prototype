@@ -1,35 +1,68 @@
-#pragma once
 #include <Windows.h>
 #include <vector>
-#include "Proj.h"
+#include "Chara.h"
+#include "Pathfinder.h"
 using namespace std;
+
 #pragma once
 
-#define EnemyW 20 // 캐릭터 너비
-#define EnemyH 39 // 캐릭터 높이
-#define ENEMYSPEED 250 // 캐릭터 좌우 속도
-#define EJumpP 0.4 // 점프 파워
-
-enum { DOWN, UP, LEFT, RIGHT };
+typedef struct _EandP
+{
+	Character foe;
+	vector<BrickInfo> Result;
+}EnemWithPath;
 
 class Enemy
 {
 public:
-	vector<Projectile> Thowable; // 투사체
-	int Projnum; // 투사체 숫자
-	int jumpNum; // 점프 가능 횟수
-	float centerX, centerY; // 중심 좌표
-	float vx, vy; // 좌우 벡터
-	float MVSpeed; // 캐릭터 좌우 속도
-	int Heart; // 체력
-	float JumpPower; // 점프 파워
-	float AttackSpeed; // 공격 속도
-	short YStat; // 위 아래 상태
-	short XStat; // 좌 우 상태
-public:
-	Enemy(int, int);
-	float getTop() { return centerY - EnemyH / 2; }
-	float getBottom() { return centerY + EnemyH / 2; }
-	float getRight() { return centerX + EnemyW / 2; }
-	float getLeft() { return centerX - EnemyW / 2; }
+	vector<EnemWithPath> EnemyList;
+	Pathfinder Way;
+	Map* MapWithE;
+	Enemy(Map* PlayGround, int JumpP = 2);
+	void PushEnemy(float x, float y, int speed, int jumppower, int jumpnum, int heart, COLORREF rgb);
+	void KillEnemy();
+	void UpdatePath(HDC bufferDC, POINT CharainMap);
+	void Collision_E()
+	{
+		for (int i = 0; i < EnemyList.size(); i++)
+		{
+			MapWithE->Collision(&EnemyList[i].foe);
+		}
+	}
+	void Draw_E(HDC buffer)
+	{
+		for (int i = 0; i < EnemyList.size(); i++)
+		{
+			EnemyList[i].foe.draw(buffer);
+		}
+	}
+	void PastSaves()
+	{
+		for (int i = 0; i < EnemyList.size(); i++)
+		{
+			EnemyList[i].foe.bfLeft = EnemyList[i].foe.getLeft();
+			EnemyList[i].foe.bfTop = EnemyList[i].foe.getTop();
+			EnemyList[i].foe.bfBottom = EnemyList[i].foe.getBottom();
+			EnemyList[i].foe.bfRight = EnemyList[i].foe.getRight();
+		}
+	}
+	void Grav(HDC buffer, float FIX)
+	{
+		for (int i = 0; i < EnemyList.size(); i++)
+		{
+			EnemyList[i].foe.Grav(buffer, FIX);
+		}
+	}
+	void SpeedSet(float FIX)
+	{
+		for (int i = 0; i < EnemyList.size(); i++)
+		{
+			EnemyList[i].foe.MVSpeed = EnemyList[i].foe.CHARACTERSPEED * FIX;
+		}
+	}
+	void NodeChanger(int JumpP = 2)
+	{
+		Way.makeNode(MapWithE); Way.autoLink(MapWithE, JumpP);
+	}
+	void GetPath(POINT CharainMap);
 };

@@ -1,18 +1,31 @@
-﻿  Map.cpp
+﻿  src.cpp
 C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Motion.h(42,22): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Motion.h(54,26): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Motion.h(55,24): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Map.cpp(146,39): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Map.cpp(150,39): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Map.cpp(155,29): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Map.cpp(159,29): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Map.cpp(181,73): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Map.cpp(206,70): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Map.cpp(231,72): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Map.cpp(252,71): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Map.cpp(288,44): warning C4244: '+=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Map.cpp(289,29): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Map.cpp(308,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Map.cpp(310,15): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Map.cpp(311,15): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Pathfinder.h(68,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Pathfinder.h(79,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Enemy.h(27,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Enemy.h(34,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Enemy.h(41,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Enemy.h(51,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\Enemy.h(58,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(50,100): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(50,44): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(110,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(109,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(108,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(107,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(124,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(123,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(122,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(121,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(120,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(119,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(118,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(117,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(178,31): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(177,46): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(194,31): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(193,46): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Api_Proto\src.cpp(223,23): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
   Api_Proto.vcxproj -> C:\Users\tongm\OneDrive\Documents\GitHub\API_Prototype\Debug\Api_Proto.exe

@@ -48,6 +48,7 @@ class Pathfinder
 public:
 	int Size;
 	Gnode Epath[Gnode_size];
+	Pathfinder() {}
 	Pathfinder(Map playground, int jumpP) 
 	{ 
 		makeNode(&playground); autoLink(&playground, jumpP); 
@@ -84,7 +85,6 @@ public:
 		}
 		return -1;
 	}
-	void Linknode(int a, int b, int type); // a에서 선이 뻗어 b를 연결
 	int getNodeIndex(POINT point)
 	{
 		for (int i = 0; i < Size; i++)
@@ -96,6 +96,7 @@ public:
 		}
 		return -1;
 	}
+	void Linknode(int a, int b, int type); // a에서 선이 뻗어 b를 연결
 	vector<BrickInfo>* AstarAlgorithm(POINT chara, POINT enemy, vector<BrickInfo>*);
 	void makeNode(Map* map);
 	void autoLink(Map* map, int jumpPower);

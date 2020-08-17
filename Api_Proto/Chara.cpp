@@ -1,6 +1,33 @@
 #include "Chara.h"
 using namespace std;
 
+Character::Character(float x, float y, int speed, int jumppower, int jumpnum, int heart, COLORREF rgb)
+{
+	CharaW = 20; // 캐릭터 너비
+	CharaH = 39; // 캐릭터 높이
+	CHARACTERSPEED = 250; // 캐릭터 좌우 속도
+	Gravity = 35; // 중력
+	Projnum = 3;
+	jumpNum = jumpnum;
+	centerX = x + CharaW / 2;
+	centerY = y + CharaH / 2;
+	bfLeft = getLeft();
+	bfTop = getTop();
+	bfBottom = getBottom();
+	bfRight = getRight();
+	vx = 0;
+	vy = 0;
+	Heart = heart;
+	Shield = 0;
+	JumpPower = jumppower; // 점프 파워
+	delay = 0;
+	YStat = NULL;
+	XStat = NULL;
+	MVSpeed = NULL;
+	Color = rgb;
+}
+
+/*
 Character::Character(float x, float y)
 {
 	CharaW = 20; // 캐릭터 너비
@@ -26,28 +53,51 @@ Character::Character(float x, float y)
 	XStat = NULL;
 	MVSpeed = NULL;
 }
+*/
 
 void Character::draw(HDC hdc)
 {
+	HBRUSH NewB = (HBRUSH)CreateSolidBrush(Color);
+	HBRUSH OldB = (HBRUSH)SelectObject(hdc, NewB);
+	HPEN NewPen = CreatePen(PS_SOLID, 1, Color);
+	HPEN OldPen = (HPEN)SelectObject(hdc, NewPen);
 	Rectangle(hdc, getLeft(), getTop(), getRight(), getBottom());
 	for (int i = 0;i < Thowable.size();i++)
 	{
 		Thowable[i].draw(hdc);
 	}
+	SelectObject(hdc, OldB);
+	DeleteObject(NewB);
+	SelectObject(hdc, OldPen);
+	DeleteObject(NewPen);
+}
+
+void Character::KeyMVment(HDC bufferDC)
+{
+	if (GetAsyncKeyState('A') & 0x8000)
+	{
+		MVLeft(bufferDC); // 왼쪽
+	}
+	if (GetAsyncKeyState('D') & 0x8000)
+	{
+		MVRight(bufferDC); // 오른쪽	
+	}
+	if ((GetAsyncKeyState(VK_SPACE) & 0x0001))
+	{
+		MVJump(bufferDC); // 점프
+	}
 }
 
 void Character::MVRight(HDC hdc)
 {
-		//clear(hdc);
-		vx += MVSpeed;
-		centerX = centerX + vx;
-		XStat = RIGHT;
-		vx = 0;
+	vx += MVSpeed;
+	centerX = centerX + vx;
+	XStat = RIGHT;
+	vx = 0;
 }
 
 void Character::MVLeft(HDC hdc)
 {
-	//clear(hdc);
 	vx -= MVSpeed;
 	centerX = centerX + vx;
 	XStat = LEFT;
@@ -99,4 +149,42 @@ void Character::NextStagePosition(int x, int y)
 {
 	centerX = x;
 	centerY = y;
+}
+
+void Character::SetSpawn(float x, float y)
+{
+	centerX = x + CharaW / 2;
+	centerY = y + CharaH / 2;
+}
+
+void Character::SetSpec(int speed, int jumppower, int jumpnum, int heart, COLORREF rgb)
+{
+	CharaW = 20; // 캐릭터 너비
+	CharaH = 39; // 캐릭터 높이
+	CHARACTERSPEED = 250; // 캐릭터 좌우 속도
+	Gravity = 35; // 중력
+	Projnum = 3;
+	jumpNum = jumpnum;
+	bfLeft = getLeft();
+	bfTop = getTop();
+	bfBottom = getBottom();
+	bfRight = getRight();
+	vx = 0;
+	vy = 0;
+	Heart = heart; // 체력
+	Shield = 0;
+	JumpPower = jumppower; // 점프 파워
+	delay = 0;
+	YStat = NULL;
+	XStat = NULL;
+	MVSpeed = NULL;
+	Color = rgb;
+}
+
+void Character::PastSaves() // 전 좌표 저장 (충돌처리)
+{
+	bfLeft = getLeft();
+	bfTop = getTop();
+	bfBottom = getBottom();
+	bfRight = getRight();
 }
