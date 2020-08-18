@@ -1,5 +1,4 @@
-#include <Windows.h>
-#include<time.h>
+#include <time.h>
 #include "Map.h"
 
 Map::Map(RECT winRect)
@@ -8,6 +7,7 @@ Map::Map(RECT winRect)
 	stageCount = 1;
 	Reset(winRect);
 }
+
 void Map::Reset(RECT winRect)
 {
 	can_NextStage = false;
@@ -73,7 +73,7 @@ void Map::drawBorder(HDC hdc)
 	OldB = (HBRUSH)SelectObject(hdc, NewB);
 	HPEN NewPen = CreatePen(PS_SOLID, 1, NULL_PEN);
 	HPEN OldPen = (HPEN)SelectObject(hdc, NewPen);
-	
+
 	int width = getWidth(mapId) * SIZE_OF_MAPWIDTH + MAP_START_POINT_X;
 	int height = getHeight(mapId) * SIZE_OF_MAPHEIGHT + MAP_START_POINT_Y;
 	Rectangle(hdc, MAX_MAP_START_POINT_X, MAX_MAP_START_POINT_Y, MaxSize.right, MaxSize.bottom);
@@ -99,10 +99,10 @@ void Map::drawObject(HDC hdc)
 				break;
 
 			case PassFloor:
-				rgb = RGB(255,0,0);
+				rgb = RGB(255, 0, 0);
 				drawRect(hdc, i, j, rgb);
 				break;
-				
+
 			case NonPassFloor:
 				rgb = RGB(0, 0, 255);
 				drawRect(hdc, i, j, rgb);
@@ -114,7 +114,8 @@ void Map::drawObject(HDC hdc)
 				break;
 
 			case DoorClose:
-
+				rgb = RGB(0, 100, 0);
+				drawRect(hdc, i, j, rgb);
 				break;
 
 			default:
@@ -124,7 +125,7 @@ void Map::drawObject(HDC hdc)
 	}
 }
 
-void Map::drawRect(HDC hdc,int x, int y, COLORREF rgb)
+void Map::drawRect(HDC hdc, int x, int y, COLORREF rgb)
 {
 	HBRUSH NewB = (HBRUSH)CreateSolidBrush(rgb);
 	HBRUSH OldB = (HBRUSH)SelectObject(hdc, NewB);
@@ -140,85 +141,121 @@ void Map::drawRect(HDC hdc,int x, int y, COLORREF rgb)
 
 void Map::Collision(Character* Player)
 {
-	int MindexY = (Player->getBottom() - MAP_START_POINT_Y - 1) / SIZE_OF_MAPHEIGHT;
-	int MindexX = (Player->getLeft() - MAP_START_POINT_X - 1) / SIZE_OF_MAPWIDTH;
-	if (Player->YStat == DOWN && (MAP_START_POINT_Y + (MindexY + 1) * SIZE_OF_MAPHEIGHT) <= Player->getBottom())
+	//테두리
+	if (MAP_START_POINT_X > Player->getLeft()) // 왼쪽 벽 방지
 	{
-		if (matrix[mapId][MindexY + 1][(int)((Player->getLeft() - (float)MAP_START_POINT_X) / (float)SIZE_OF_MAPWIDTH)] == 2
-			|| matrix[mapId][MindexY + 1][(int)((Player->getRight() - (float)MAP_START_POINT_X) / (float)SIZE_OF_MAPWIDTH)] == 2)
+		Player->centerX = MAP_START_POINT_X + Player->CharaW / 2;
+	}
+	if (MAP_START_POINT_Y > Player->getTop()) // 천장 방지
+	{
+		Player->centerY = MAP_START_POINT_Y + Player->CharaH / 2;
+		Player->vy = 0;
+	}
+	if (borderX < Player->getRight()) // 오른쪽 벽 방지
+	{
+		Player->centerX = borderX - Player->CharaW / 2;
+	}
+	if (borderY < Player->getBottom()) // 바닥 방지
+	{
+		Player->centerY = borderY - Player->CharaH / 2;
+		Player->vy = 0;
+		Player->jumpNum = 2;
+	}
+
+	//여기서부터 고쳐야될 부분 확인
+
+	if (Player->YStat == UP) // 위쪽 이동
+	{
+		int bfRow = yToRow(Player->bfTop); // 이전 캐릭터 위쪽좌표 블록
+		int nowRow = yToRow(Player->getTop()); // 현재 캐릭터 위쪽좌표 블록
+		int nowCol = xToCol(Player->centerX); // 현재 캐릭터 중심좌표 블록
+		int nowLeftCol = xToCol(Player->getLeft()); // 현재 캐릭터 왼쪽좌표 블록
+		int nowRightCol = xToCol(Player->getRight()); // 현재 캐릭터 오른쪽좌표 블록
+
+		if (bfRow != nowRow) // 캐릭터 위쪽좌표 블록에 변화가 있을 경우
 		{
-			Player->centerY = (MAP_START_POINT_Y + (MindexY + 1) * SIZE_OF_MAPHEIGHT) - CharaH / 2;
-			Player->vy = 0;
-			Player->jumpNum = 2;
-		}
-		else if (matrix[mapId][MindexY + 1][(int)((Player->getLeft() - (float)MAP_START_POINT_X) / (float)SIZE_OF_MAPWIDTH)] == 3
-			|| matrix[mapId][MindexY + 1][(int)((Player->getRight() - (float)MAP_START_POINT_X) / (float)SIZE_OF_MAPWIDTH)] == 3)
-		{
-			Player->centerY = (MAP_START_POINT_Y + (MindexY + 1) * SIZE_OF_MAPHEIGHT) - CharaH / 2;
-			Player->vy = 0;
-			Player->jumpNum = 2;
-		}
-		if (Player->XStat == LEFT && (MAP_START_POINT_X + (MindexX)*SIZE_OF_MAPWIDTH) <= Player->getLeft())
-		{
-			if (matrix[mapId][MindexY][MindexX] == 3)
+			//이전 캐릭터 위쪽좌표 블록부터 현재좌표 블록까지 벽이 있는지 검사 후
+			for (int row = bfRow - 1; row >= nowRow; row--)
 			{
-				Player->centerX = (MAP_START_POINT_X + (MindexX + 1) * SIZE_OF_MAPWIDTH) + CharaW / 2;
-			}
-		}
-		else if (Player->XStat == RIGHT && (MAP_START_POINT_X + (MindexX + 2) * SIZE_OF_MAPWIDTH) >= Player->getRight())
-		{
-			MindexX = (Player->getRight() - MAP_START_POINT_X - 1) / SIZE_OF_MAPWIDTH;
-			if (matrix[mapId][MindexY][MindexX] == 3)
-			{
-				Player->centerX = (MAP_START_POINT_X + (MindexX)*SIZE_OF_MAPWIDTH) - CharaW / 2;
+				// 벽 발견 시에 플레이어 좌표 수정 & 플레이어 VectorY 수정
+				if (getBlockType(row, nowLeftCol) == NonPassFloor ||
+					getBlockType(row, nowRightCol) == NonPassFloor)
+				{
+					Player->centerY = getBlockBottom(row, nowCol) + Player->CharaH / 2 + 0.1;
+					Player->vy = 0;
+					break;
+				}
 			}
 		}
 	}
-	else if (Player->YStat == UP && (MAP_START_POINT_Y + (MindexY)*SIZE_OF_MAPHEIGHT) <= Player->getTop()) // 블록 3은 안올라가짐
+	if (Player->YStat == DOWN) // 아래쪽 이동
 	{
-		MindexX = (Player->getLeft() - MAP_START_POINT_X - 1) / SIZE_OF_MAPWIDTH;
-		if (matrix[mapId][MindexY - 1][(int)((Player->getLeft() - (float)MAP_START_POINT_X) / (float)SIZE_OF_MAPWIDTH)] == 3
-			|| matrix[mapId][MindexY - 1][(int)((Player->getRight() - (float)MAP_START_POINT_X) / (float)SIZE_OF_MAPWIDTH)] == 3)
+		int bfRow = yToRow(Player->bfBottom);
+		int nowRow = yToRow(Player->getBottom());
+
+		int nowCol = xToCol(Player->centerX);
+		int nowLeftCol = xToCol(Player->getLeft());
+		int nowRightCol = xToCol(Player->getRight());
+
+		if (bfRow != nowRow)
 		{
-			if ((MAP_START_POINT_Y + (MindexY)*SIZE_OF_MAPHEIGHT) == (int)Player->getTop())
+			for (int row = bfRow + 1; row <= nowRow; row++)
 			{
-				Player->centerY = (MAP_START_POINT_Y + (MindexY)*SIZE_OF_MAPHEIGHT) + CharaH / 2;
-				Player->vy = 0;
-			}
-		}
-		if (Player->XStat == LEFT && (MAP_START_POINT_X + (MindexX)*SIZE_OF_MAPWIDTH) <= Player->getLeft())
-		{
-			if (matrix[mapId][(int)((Player->getTop() - (float)MAP_START_POINT_Y) / (float)SIZE_OF_MAPHEIGHT)][MindexX] == 3
-				|| matrix[mapId][(int)((Player->getBottom() - (float)MAP_START_POINT_Y) / (float)SIZE_OF_MAPHEIGHT)][MindexX] == 3)
-			{
-				Player->centerX = (MAP_START_POINT_X + (MindexX + 1) * SIZE_OF_MAPWIDTH) + CharaW / 2;
-			}
-		}
-		else if (Player->XStat == RIGHT && (MAP_START_POINT_X + (MindexX + 2) * SIZE_OF_MAPWIDTH) >= Player->getRight())
-		{
-			MindexX = (Player->getRight() - MAP_START_POINT_X - 1) / SIZE_OF_MAPWIDTH;
-			if (matrix[mapId][(int)((Player->getTop() - (float)MAP_START_POINT_Y) / (float)SIZE_OF_MAPHEIGHT)][MindexX] == 3
-				|| matrix[mapId][(int)((Player->getBottom() - (float)MAP_START_POINT_Y) / (float)SIZE_OF_MAPHEIGHT)][MindexX] == 3)
-			{
-				Player->centerX = (MAP_START_POINT_X + (MindexX)*SIZE_OF_MAPWIDTH) - CharaW / 2;
+				// 벽 발견 시에 플레이어 좌표 수정 & 플레이어 VectorY 수정 & 플레이어 점프 횟수 초기화
+				if (getBlockType(row, nowLeftCol) == NonPassFloor || getBlockType(row, nowLeftCol) == PassFloor ||
+					getBlockType(row, nowRightCol) == NonPassFloor || getBlockType(row, nowRightCol) == PassFloor
+					)
+				{
+					Player->centerY = getBlockTop(row, nowCol) - Player->CharaH / 2 - 0.1;
+					Player->vy = 0;
+					Player->jumpNum = 2;
+					break;
+				}
 			}
 		}
 	}
-	else if (Player->XStat == LEFT && (MAP_START_POINT_X + (MindexX)*SIZE_OF_MAPWIDTH) <= Player->getLeft())
+	if (Player->XStat == LEFT) // 왼쪽 이동
 	{
-		if (matrix[mapId][(int)((Player->getTop() - (float)MAP_START_POINT_Y) / (float)SIZE_OF_MAPHEIGHT)][MindexX] == 3
-			|| matrix[mapId][(int)((Player->getBottom() - (float)MAP_START_POINT_Y) / (float)SIZE_OF_MAPHEIGHT)][MindexX] == 3)
+		int bfCol = xToCol(Player->bfLeft); // 이전 캐릭터 왼쪽좌표 블록
+		int nowCol = xToCol(Player->getLeft()); // 현재 캐릭터 왼쪽좌표 블록
+		int nowRow = yToRow(Player->centerY); // 현재 캐릭터 중심좌표 블록
+		int nowTopRow = yToRow(Player->getTop()); // 현재 캐릭터 위쪽좌표 블록
+		int nowBottomRow = yToRow(Player->getBottom()); // 현재 캐릭터 아래쪽 블록
+
+		if (bfCol != nowCol) // 캐릭터 왼쪽좌표 블록에 변화가 있을 경우
 		{
-			Player->centerX = (MAP_START_POINT_X + (MindexX + 1) * SIZE_OF_MAPWIDTH) + CharaW / 2;
-		} 
+			//이전 캐릭터 왼쪽좌표 블록부터 현재좌표 블록까지 벽이 있는지 검사 후
+			for (int col = bfCol - 1; col >= nowCol; col--)
+			{
+				// 벽 발견 시에 플레이어 좌표 수정
+				if (getBlockType(nowTopRow, col) == NonPassFloor ||
+					getBlockType(nowBottomRow, col) == NonPassFloor)
+				{
+					Player->centerX = getBlockRight(nowRow, col) + Player->CharaW / 2 + 0.1;
+					break;
+				}
+			}
+		}
 	}
-	else if (Player->XStat == RIGHT && (MAP_START_POINT_X + (MindexX + 2) * SIZE_OF_MAPWIDTH) >= Player->getRight())
+	if (Player->XStat == RIGHT) // 오른쪽 이동
 	{
-		MindexX = (Player->getRight() - MAP_START_POINT_X - 1) / SIZE_OF_MAPWIDTH;
-		if (matrix[mapId][(int)((Player->getTop() - (float)MAP_START_POINT_Y) / (float)SIZE_OF_MAPHEIGHT)][MindexX] == 3
-			|| matrix[mapId][(int)((Player->getBottom() - (float)MAP_START_POINT_Y) / (float)SIZE_OF_MAPHEIGHT)][MindexX] == 3)
+		int bfCol = xToCol(Player->bfRight);
+		int nowCol = xToCol(Player->getRight());
+		int nowRow = yToRow(Player->centerY);
+		int nowTopRow = yToRow(Player->getTop());
+		int nowBottomRow = yToRow(Player->getBottom());
+
+		if (bfCol != nowCol)
 		{
-			Player->centerX = (MAP_START_POINT_X + (MindexX)*SIZE_OF_MAPWIDTH) - CharaW / 2;
+			for (int col = bfCol + 1; col <= nowCol; col++)
+			{
+				if (getBlockType(nowTopRow, col) == NonPassFloor ||
+					getBlockType(nowBottomRow, col) == NonPassFloor)
+				{
+					Player->centerX = getBlockLeft(nowRow, col) - Player->CharaW / 2 - 0.1;
+					break;
+				}
+			}
 		}
 	}
 }
@@ -240,7 +277,7 @@ void Map::changer(RECT winRect)
 {
 	srand((int)time(NULL));
 
-	mapId = rand()%2;//rand
+	mapId = rand() % 2;//rand
 	stageCount++;
 	can_NextStage = false;
 	mapSizeNow.x = getWidth(mapId); // 해당 맵의 너비
@@ -261,10 +298,70 @@ void Map::changeAnimetion(HDC hdc, RECT winRect, float delta)
 	drawObject(hdc);
 	MaxSize.left += buff;
 	MaxSize.right += buff;
-	
+
 	if (sin(stageMoveSpeed) >= 0.9999)
 	{
 		changedAnime = false;
 		Reset(winRect);
 	}
+}
+
+void Map::ProjColl(HDC hdc, Character* Player)
+{
+	for (int i = 0; i < Player->Thowable.size(); i++)
+	{
+		int MindexY = (Player->Thowable[i].getCentY() - MAP_START_POINT_Y - 1) / SIZE_OF_MAPHEIGHT;
+		int MindexX = (Player->Thowable[i].getCentX() - MAP_START_POINT_X - 1) / SIZE_OF_MAPWIDTH;
+		if (MAP_START_POINT_X > Player->Thowable[i].getLeft()
+			|| MAP_START_POINT_Y > Player->Thowable[i].getTop()
+			|| borderX < Player->Thowable[i].getRight()
+			|| borderY < Player->Thowable[i].getBottom())
+		{
+			//Player->Thowable[i].clear(hdc);
+			Player->Thowable.erase(Player->Thowable.begin() + i--);
+			Player->Projnum++;
+		}
+		else if (matrix[mapId][MindexY][MindexX] == 3)
+		{
+			Player->Thowable.erase(Player->Thowable.begin() + i--);
+			Player->Projnum++;
+		}
+	}
+}
+
+int Map::getBlockLeft(int row, int col)
+{
+	return MAP_START_POINT_X + col * SIZE_OF_MAPWIDTH;
+}
+int Map::getBlockTop(int row, int col)
+{
+	return MAP_START_POINT_Y + row * SIZE_OF_MAPHEIGHT;
+}
+int Map::getBlockBottom(int row, int col)
+{
+	return MAP_START_POINT_Y + (row + 1) * SIZE_OF_MAPHEIGHT;
+}
+int Map::getBlockRight(int row, int col)
+{
+	return MAP_START_POINT_X + (col + 1) * SIZE_OF_MAPWIDTH;
+}
+
+int Map::getBlckCenterX(int col)
+{
+	return MAP_START_POINT_X + col * SIZE_OF_MAPWIDTH + SIZE_OF_MAPWIDTH / 2;
+}
+
+int Map::getBlockType(int row, int col)
+{
+	return matrix[mapId][row][col];
+}
+
+int Map::xToCol(float x)
+{
+	return ((int)x - MAP_START_POINT_X) / SIZE_OF_MAPWIDTH;
+}
+
+int Map::yToRow(float y)
+{
+	return ((int)y - MAP_START_POINT_Y) / SIZE_OF_MAPHEIGHT;
 }

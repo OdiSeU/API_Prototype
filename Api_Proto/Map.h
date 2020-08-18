@@ -1,13 +1,16 @@
 #include "Chara.h"
 #include "WindowScreen.h"
-#include "math.h"
+#include <cmath>
 
 #pragma once
 // 맵 사각형 개수
 #define MAX_OF_MAPWIDTH 40
 #define MAX_OF_MAPHEIGHT 20
+#define Map_vary 5
 
-#define STAGE_MOVE_SPEED 3.14
+#define STAGE_MOVE_SPEED 3.14159265358979323846
+
+void drawBackground(HDC, RECT, RECT);
 
 class Map
 {
@@ -35,19 +38,19 @@ public:
 	bool can_NextStage;
 	POINT mapSizeNow;
 	enum { Deadlock = 1, PassFloor, NonPassFloor, DoorOpen, DoorClose };
-	unsigned char matrix[5][MAX_OF_MAPHEIGHT][MAX_OF_MAPWIDTH] =
-	{ 
+	unsigned char matrix[Map_vary][MAX_OF_MAPHEIGHT][MAX_OF_MAPWIDTH] =
+	{
 		{
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 10},
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,0,0,0,0,0},
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,3,0,3,0,0,0,0,0,0,0,0,0,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,3,3,3,0,0,0,0,0},
-		{0,0,0,0,0,0,3,3,0,3,3,3,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{5,0,0,0,0,0,0,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5},
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,3,3,3,3,0,0,0},
+		{0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,3,3,3,3,3,0,0,0,0,0,0,0},
+		{0,0,3,3,3,0,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,3,3,3,3,3,0,0,0,3,0,0,0,0,0,0,3,3,3,3,3,3,0,0,0,0},
+		{5,0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,5},
 		{10,}
 		},
 
@@ -58,8 +61,8 @@ public:
 		{0,0,0,0,3,3,3,0,0,0},
 		{0,0,0,0,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0,0,0,0},
-		{0,0,2,2,2,2,0,0,0,0},
 		{0,0,0,0,0,0,0,0,0,0},
+		{0,0,2,2,2,2,0,0,0,0},
 		{0,0,0,0,0,0,0,0,0,0},
 		{5,0,0,0,0,0,0,0,0,5},
 		{10,}
@@ -99,15 +102,40 @@ public:
 		}
 		return count;
 	}
-	void drawRect(HDC hdc,int x, int y, COLORREF rgb);
+	void drawRect(HDC hdc, int x, int y, COLORREF rgb);
 	void drawMap(HDC hdc, int);
 	void drawBorder(HDC hdc);
 	void drawObject(HDC hdc);
 	void Collision(Character*);
+	//void CollisionCheck(Character* Player, int bfRow, int bfCol, int nowRow, int nowCol);
 	void openNextStage();
 	void changer(RECT winRect);
 	void changeAnimetion(HDC hdc, RECT winRect, float delta);
 	void Reset(RECT winRect);
 	void update();
+	void ProjColl(HDC hdc, Character* Player);
+	int getBlockLeft(int row, int col);
+	int getBlockTop(int row, int col);
+	int getBlockBottom(int row, int col);
+	int getBlockRight(int row, int col);
+	int getBlckCenterX(int col);
+	int getBlockType(int row, int col);
+	int xToCol(float x);
+	int yToRow(float y);
 };
 
+/*
+{
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 10},
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,3,0,3,0,0,0,0,0,0,0,0,0,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,0,0,0,0,0,3,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,3,3,3,0,0,0,0,0},
+		{0,0,0,0,3,3,3,3,0,3,3,3,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{5,0,0,0,0,0,0,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5},
+		{10,}
+		},
+*/

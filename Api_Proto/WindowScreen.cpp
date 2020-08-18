@@ -2,7 +2,7 @@
 
 Screen::Screen()
 {
-	rect = { 0,0,1400,800 };
+	rect = { 0,0,1920,1080 };
 	adjustRect = rect;
 	AdjustWindowRect(&adjustRect, WS_OVERLAPPEDWINDOW, FALSE);
 	width = adjustRect.right - adjustRect.left;

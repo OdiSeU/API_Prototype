@@ -140,17 +140,26 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Chara.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Pathfinder.cpp" />
     <ClCompile Include="Proj.cpp" />
     <ClCompile Include="Resol.cpp" />
     <ClCompile Include="src.cpp" />
+    <ClCompile Include="UI.cpp" />
+    <ClCompile Include="UI.h" />
+    <ClCompile Include="Weapon.cpp" />
     <ClCompile Include="WindowScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Chara.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="Pathfinder.h" />
     <ClInclude Include="Proj.h" />
     <ClInclude Include="Resol.h" />
+    <ClInclude Include="Motion.h" />
+    <ClInclude Include="Weapon.h" />
     <ClInclude Include="WindowScreen.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

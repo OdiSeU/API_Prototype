@@ -1,12 +1,34 @@
 #include <windows.h>
+#include <vector>
 #include <cmath>
+#include <algorithm>
+#include <time.h>
+#include "Proj.h"
 #include "Chara.h"
 #include "Resol.h"
-#include "Proj.h"
 #include "Map.h"
+#include "Weapon.h"
 #include "WindowScreen.h"
+#include "Pathfinder.h"
+#include "UI.h"
+using namespace std;
 
-void drawBackground(HDC hdc, RECT border, RECT winRect);
+#pragma comment(lib, "winmm.lib")
+
+typedef struct _EventStruct
+{
+	float px, py;    //플레이어 위치
+	float mx, my;    //마우스 위치
+	float leftTime; //시작까지 남은시간
+	float progTime;    //진행 시간
+	Weapon weapon;    //무기 객체
+}EventStruct;
+
+vector<EventStruct> eventList;    //이벤트 처리 리스트
+
+Character Player(400, 700); // 캐릭 선언
+
+Character Enemy(1400, 700); // 적 선언
 
 // 루프 관련
 bool g_bLoop = true;
@@ -15,101 +37,469 @@ bool g_bLoop = true;
 HBITMAP hbitmap, oldbitmap;
 
 // 시간 측정
-LARGE_INTEGER g_tsecond;
-LARGE_INTEGER g_tTime;
-float g_fDeltatime;
+DWORD dwOldGameTime = 0, dwCurrentGameTime = 0;
+FLOAT rDeltaTime = 0.0f, rAccumlationTime = 0.0f;
 
 // 전역 핸들
 HDC g_hDC;
 HWND g_hWnd;
 
+// 맵 전연 변수
 Screen WindowScreen; //윈도우 화면  신민수 추가
-Character Player(CharaW, CharaH); // 캐릭 선언
 Map PlayGround(WindowScreen.rect); // 맵 선언
 Map oldMap(WindowScreen.rect);
 RECT border = PlayGround.MaxSize;
 
-void Run()
+// 마우스 좌표
+float mX, mY;
+
+// AI 길 뚫기
+Pathfinder Way(PlayGround, 3);
+
+#define FIXED 0.016f
+
+/*
+DWORD dwOldGameTime = 0, dwCurrentGameTime = 0;
+DWORD dwOldGameTime = dwCurrentGameTime = ::timeGetTime();
+FLOAT rDeltaTime = 0.0f, rAccumlationTime = 0.0f;
+
+// DeltaTime은 이전 프레임과 현재 프레임의 시간 간격을 의미하고
+// AccumlationTime은 DeltaTime이 누적된 것을 의미합니다.
+
+bool bGameLoop = true;
+while (bGameLoop)
 {
-	LARGE_INTEGER tTime;
-	QueryPerformanceCounter(&tTime);
+	dwCurrentGameTime = ::timeGetTime();
+	rDeltaTime       = static_cast<float>(dwCurrentGameTime - dwOldGameTime) / 1000;
+	dwOldGameTime    = dwCurrentGameTime;
+	rAccumlationTime += rDeltaTime;
 
-	g_fDeltatime = (tTime.QuadPart - g_tTime.QuadPart) / (float)g_tsecond.QuadPart;
-	g_tTime = tTime;
-	g_hDC = GetDC(g_hWnd);
-
-	HDC bufferDC = CreateCompatibleDC(g_hDC);
-	hbitmap = CreateCompatibleBitmap(g_hDC, Crect.right, Crect.bottom);
-	oldbitmap = (HBITMAP)SelectObject(bufferDC, hbitmap);
-	HBRUSH NewB = (HBRUSH)CreateSolidBrush(RGB(255, 255, 255)); // 배경색 브러쉬
-	HBRUSH OldB = (HBRUSH)SelectObject(bufferDC, NewB);
-
-	FillRect(bufferDC, &Crect, NewB);
-	Player.MVSpeed = CHARACTERSPEED * g_fDeltatime;
-
-	if (PlayGround.matrix[PlayGround.mapId][(int)((Player.centerY - PlayGround.MAP_START_POINT_Y) / PlayGround.SIZE_OF_MAPHEIGHT)]
-		[(int)((Player.centerX - PlayGround.MAP_START_POINT_X) / PlayGround.SIZE_OF_MAPWIDTH)] == PlayGround.DoorOpen
-		&& (GetAsyncKeyState('W') & 0x8000) && PlayGround.changedAnime == false)
+	if (rAccumlationTime > 0.016f) // 60FPS 기준, 1 / 60.0f
 	{
-		oldMap = PlayGround;
-		PlayGround.changer(WindowScreen.rect);
-		PlayGround.changedAnime = true;
-		oldMap.changedAnime = true;
-		Player.NextStagePosition(PlayGround.MAP_START_POINT_X + CharaW, Player.centerY);
-		Player.draw(bufferDC);
-	}
-	else
-	{
-		PlayGround.openNextStage(); //다음스테이지 조건 충족 확인
-		PlayGround.drawBorder(bufferDC); // 테두리 그리기
-		PlayGround.drawObject(bufferDC); // 물건 그리기
-	}
+		rAccumlationTime = 0.0f;
 
-	if (PlayGround.changedAnime)
-	{
-		PlayGround.changeAnimetion(bufferDC, WindowScreen.rect, g_fDeltatime);
-		oldMap.changeAnimetion(bufferDC, WindowScreen.rect, g_fDeltatime);
-		Player.NextStagePosition(Player.centerX - PlayGround.buff, Player.centerY);
+		// 실제로 게임 루틴을 처리하는 부분
+		OnUpdate();
+		OnRender();
 	}
+}
+*/
 
-	Player.MVLeft(bufferDC); // 왼쪽
-	Player.MVRight(bufferDC); // 오른쪽	
-	Player.MVJump(bufferDC); // 점프
-	Player.Grav(bufferDC, g_fDeltatime); // 중력
+void startAttack(EventStruct target, HDC hdc)
+{
+	//PAINTSTRUCT ps;
+	Motion motion = target.weapon.getMotion();
+	switch (target.weapon.getWeaponType())
+	{
+	case Arrow:
+		break;
+	default:
+		if (motion.shape == 'r')
+		{
+			Rectangle(hdc,
+				motion.centerX - motion.Hwidth,
+				motion.centerY - motion.Hheight,
+				motion.centerX + motion.Hwidth,
+				motion.centerY + motion.Hheight
+			);
+			// 적과 공격범위 충돌체크 추가
+		}
+		if (motion.shape == 's')
+		{
+			Pie(hdc,
+				motion.centerX - motion.Radius,
+				motion.centerY - motion.Radius,
+				motion.centerX + motion.Radius,
+				motion.centerY + motion.Radius,
+				motion.centerX + motion.Radius * cos(motion.startAngle),
+				motion.centerY - motion.Radius * sin(motion.startAngle),
+				motion.centerX + motion.Radius * cos(motion.endAngle),
+				motion.centerY - motion.Radius * sin(motion.endAngle)
+			);
+			// 적과 공격범위 충돌체크 추가
+		}
+		break;
+	}
+}
 
-	if (PlayGround.MAP_START_POINT_X > Player.getLeft()) // 왼쪽 벽 방지
-	{
-		Player.centerX = PlayGround.MAP_START_POINT_X + CharaW / 2;
-	}
-	if (PlayGround.MAP_START_POINT_Y > Player.getTop()) // 천장 방지
-	{
-		Player.centerY = PlayGround.MAP_START_POINT_Y + CharaH / 2;
-		Player.vy = 0;
-	}
-	if (PlayGround.borderX < Player.getRight()) // 오른쪽 벽 방지
-	{
-		Player.centerX = PlayGround.borderX - CharaW / 2;
-	}
-	if (PlayGround.borderY < Player.getBottom()) // 바닥 방지
-	{
-		Player.centerY = PlayGround.borderY - CharaH / 2;
-		Player.vy = 0;
-		Player.jumpNum = 2;
-	}
+POINT EnemyinMap;
+POINT EnemyinMapRight;
+POINT EnemyinMapLeft;
+POINT CharainMap;
+POINT OldCharainMap;
+vector<BrickInfo> Result;
+void Run()
+{	
+	dwCurrentGameTime = timeGetTime();
+	rDeltaTime = (float)(dwCurrentGameTime - dwOldGameTime) / 1000;
+	dwOldGameTime = dwCurrentGameTime;
+	rAccumlationTime = rAccumlationTime + rDeltaTime;
 
-	// 장애물 충돌 처리
+
+	// 적과 플레이어의 좌표
+	OldCharainMap.x = CharainMap.x;
+	OldCharainMap.y = CharainMap.y;
+	CharainMap.x = PlayGround.xToCol(Player.centerX);
+	CharainMap.y = PlayGround.yToRow(Player.centerY);
+	EnemyinMap.x = PlayGround.xToCol(Enemy.centerX);
+	EnemyinMap.y = PlayGround.yToRow(Enemy.centerY);
+	EnemyinMapRight.x = PlayGround.xToCol(Enemy.getRight());
+	EnemyinMapLeft.x = PlayGround.xToCol(Enemy.getLeft());
+
 	PlayGround.Collision(&Player);
-	Player.draw(bufferDC);
+	PlayGround.Collision(&Enemy);
 
-	drawBackground(bufferDC, border, WindowScreen.rect);
+	if ((CharainMap.x != OldCharainMap.x || CharainMap.y != OldCharainMap.y)) // 캐릭터 좌표 바뀔때마다 경로 변경
+	{		
+		if (Way.getNodeIndex(CharainMap) != -1 && Way.getNodeIndex(EnemyinMap) != -1)
+		{
+			Result.clear();
+			Way.AstarAlgorithm(CharainMap, EnemyinMap, &Result);
+		}
+	}
 
-	BitBlt(g_hDC, 0, 0, Crect.right, Crect.bottom, bufferDC, 0, 0, SRCCOPY);
-	SelectObject(bufferDC, OldB);
-	DeleteObject(NewB);
-	DeleteObject(SelectObject(bufferDC, oldbitmap)); // 종이 원래대로 한 후 제거
-	DeleteDC(bufferDC); // hMemDC 제거
+	if (rAccumlationTime > FIXED) // 60FPS 기준, 1 / 60.0f
+	{			
+		rAccumlationTime = 0;
 
-	ReleaseDC(g_hWnd, g_hDC);
+		g_hDC = GetDC(g_hWnd);
+
+		HDC bufferDC = CreateCompatibleDC(g_hDC);
+		hbitmap = CreateCompatibleBitmap(g_hDC, Crect.right, Crect.bottom);
+		oldbitmap = (HBITMAP)SelectObject(bufferDC, hbitmap);
+		HBRUSH NewB = (HBRUSH)CreateSolidBrush(RGB(255, 255, 255)); // 배경색 브러쉬
+		HBRUSH OldB = (HBRUSH)SelectObject(bufferDC, NewB);
+
+		FillRect(bufferDC, &Crect, NewB);
+		Player.MVSpeed = Player.CHARACTERSPEED * FIXED;
+		Enemy.MVSpeed = Enemy.CHARACTERSPEED * FIXED;
+
+		if (PlayGround.matrix[PlayGround.mapId][(int)((Player.centerY - PlayGround.MAP_START_POINT_Y) / PlayGround.SIZE_OF_MAPHEIGHT)]
+			[(int)((Player.centerX - PlayGround.MAP_START_POINT_X) / PlayGround.SIZE_OF_MAPWIDTH)] == PlayGround.DoorOpen
+			&& (GetAsyncKeyState('W') & 0x8000) && PlayGround.changedAnime == false)
+		{
+			oldMap = PlayGround;
+			PlayGround.changer(WindowScreen.rect);
+			PlayGround.changedAnime = true;
+			oldMap.changedAnime = true;
+			Player.NextStagePosition(PlayGround.MAP_START_POINT_X + Player.CharaW, Player.centerY);
+			Player.draw(bufferDC);
+		}
+		else
+		{
+			PlayGround.openNextStage(); //다음스테이지 조건 충족 확인
+			PlayGround.drawBorder(bufferDC); // 테두리 그리기
+			PlayGround.drawObject(bufferDC); // 물건 그리기
+		}
+
+		if (PlayGround.changedAnime)
+		{
+			PlayGround.changeAnimetion(bufferDC, WindowScreen.rect, FIXED);
+			oldMap.changeAnimetion(bufferDC, WindowScreen.rect, FIXED);
+			Player.NextStagePosition(Player.centerX - PlayGround.buff, Player.centerY);
+		}
+
+		Player.bfLeft = Player.getLeft();
+		Player.bfTop = Player.getTop();
+		Player.bfBottom = Player.getBottom();
+		Player.bfRight = Player.getRight();
+
+		Enemy.bfLeft = Enemy.getLeft();
+		Enemy.bfTop = Enemy.getTop();
+		Enemy.bfBottom = Enemy.getBottom();
+		Enemy.bfRight = Enemy.getRight();
+
+		if (GetAsyncKeyState('A') & 0x8000)
+		{
+			Player.MVLeft(bufferDC); // 왼쪽
+		}
+		if (GetAsyncKeyState('D') & 0x8000)
+		{
+			Player.MVRight(bufferDC); // 오른쪽	
+		}
+		if ((GetAsyncKeyState(VK_SPACE) & 0x0001) && Player.jumpNum >= 1)
+		{
+			Player.MVJump(bufferDC); // 점프
+		}
+		PlayGround.Collision(&Player);
+
+		if (Result.size() >= 1)
+		{
+			POINT CurBrick = Way.getGnode(Result.back().getParent())->getCord();
+			POINT NextBrick = Way.getGnode(Result.back().getCur())->getCord();
+			if (EnemyinMap.x == CurBrick.x)
+			//if (EnemyinMapLeft.x == CurBrick.x || EnemyinMapRight.x == CurBrick.x)
+			{
+				if (Result.back().getState() == JUMP)
+				{
+					if (Enemy.centerX < PlayGround.getBlckCenterX(CurBrick.x) && Enemy.XStat == RIGHT)
+					{
+						Enemy.MVRight(bufferDC);
+					}
+					else if (Enemy.centerX > PlayGround.getBlckCenterX(CurBrick.x) && Enemy.XStat == LEFT)
+					{
+						Enemy.MVLeft(bufferDC);
+					}
+					else
+					{
+						if (EnemyinMapLeft.x == CurBrick.x && EnemyinMapRight.x == CurBrick.x)
+						{
+							Enemy.MVJump(bufferDC);
+						}
+						if (EnemyinMap.x < NextBrick.x)
+						{
+							Enemy.MVRight(bufferDC);
+						}
+						else if (EnemyinMap.x > NextBrick.x)
+						{
+							Enemy.MVLeft(bufferDC);
+						}
+					}
+				}
+				else if (Result.back().getState() == WALK)
+				{
+					if (EnemyinMap.x < NextBrick.x)
+					{
+						Enemy.MVRight(bufferDC);
+					}
+					else if (EnemyinMap.x > NextBrick.x)
+					{
+						Enemy.MVLeft(bufferDC);
+					}
+				}
+				else if (Result.back().getState() == DROP)
+				{
+					if (EnemyinMap.x > NextBrick.x)
+					{
+						Enemy.MVLeft(bufferDC);
+					}
+					else
+					{
+						Enemy.MVRight(bufferDC);
+					}
+				}
+				PlayGround.Collision(&Enemy);
+			}
+			else if (EnemyinMap.x == NextBrick.x && EnemyinMap.y == NextBrick.y)
+			{
+					Result.pop_back();
+			}
+			else if (Enemy.vy == 0)
+			{
+				int Rindex = -1;
+				for (int i = 0; i < Result.size(); i++)
+				{
+					POINT RinMap = Way.getGnode(Result[i].getCur())->getCord();
+					if (RinMap.x == EnemyinMap.x && RinMap.y == EnemyinMap.y)
+					{
+						Rindex = i; break;
+					}
+				}
+				int Roop = Result.size() - Rindex - 1;
+				while (Roop > 0 && Rindex != -1)
+				{
+					Result.pop_back();
+					Roop--;
+				}
+				if (Rindex == -1)
+				{
+					if (Way.getNodeIndex(EnemyinMap) != -1) // Result에 없는데 적이 갈 수 있는 길이다.
+					{
+						if (Way.getNodeIndex(CharainMap) != -1)
+						{
+							Result.clear();
+							Way.AstarAlgorithm(CharainMap, EnemyinMap, &Result);
+						}
+					}
+					else // Result에 없는데 적도 갈 수 없는 곳
+					{
+						if (Enemy.XStat == LEFT)
+						{
+							Enemy.MVLeft(bufferDC);
+						}
+						else
+						{
+							Enemy.MVRight(bufferDC);
+						}
+					}
+				}
+			}
+			else // 징검다리 건너려면 있는게 좋음
+			{
+				if (EnemyinMap.x > NextBrick.x)
+				{
+					Enemy.MVLeft(bufferDC);
+				}
+				else
+				{
+					Enemy.MVRight(bufferDC);
+				}
+			}
+			/*
+			else if(Way.getNodeIndex(EnemyinMap) != -1 && Enemy.vy == 0)
+			{
+				if (Enemy.XStat == LEFT)
+				{
+					Enemy.MVLeft(bufferDC);
+				}
+				else
+				{
+					Enemy.MVRight(bufferDC);
+				}
+			}
+			*/
+			/*
+			else if (NextBrick.y != EnemyinMap.y)
+			{
+				if (Result.back().getState() == JUMP)
+				{
+					Enemy.MVJump(bufferDC);
+				}
+				if (CurBrick.x < NextBrick.x)
+				{
+					Enemy.MVRight(bufferDC);
+				}
+				else if (CurBrick.x > NextBrick.x)
+				{
+					Enemy.MVLeft(bufferDC);
+				}
+			}
+			else
+			{
+				if ((Enemy.XStat == RIGHT && EnemyinMap.x > NextBrick.x)
+					|| (Enemy.XStat == LEFT && EnemyinMap.x < NextBrick.x))
+				{
+					EnemyinMap.x = PlayGround.xToCol(Enemy.centerX);
+					EnemyinMap.y = PlayGround.yToRow(Enemy.centerY);
+					if (Way.getNodeIndex(CharainMap) != -1 && Way.getNodeIndex(EnemyinMap) != -1)
+					{
+						Result.clear();
+						Way.AstarAlgorithm(CharainMap, EnemyinMap, &Result);
+					}
+				}		
+			}
+			*/
+		}
+		else if(Result.size() == 0)
+		{
+			if (EnemyinMap.x != CharainMap.x || EnemyinMap.y != CharainMap.y)
+			{
+				if (Way.getNodeIndex(CharainMap) != -1)
+				{
+					Result.clear();
+					Way.AstarAlgorithm(CharainMap, EnemyinMap, &Result);
+				}
+			}
+			else
+			{
+				char buffer[200];
+				wsprintf(buffer, "empty");
+				TextOut(bufferDC, 500, 100, buffer, lstrlen(buffer));
+			}
+		}
+
+		Player.Grav(bufferDC, FIXED); // 중력
+		Enemy.Grav(bufferDC, FIXED); // 중력
+
+		// 투사체
+		Player.UpdateProj(bufferDC, FIXED);
+
+		// 장애물 충돌 처리
+		PlayGround.ProjColl(bufferDC, &Player);
+		PlayGround.Collision(&Player);
+
+		// 적 충돌
+		PlayGround.Collision(&Enemy);
+
+		if (Player.delay > 0)
+		{
+			Player.delay -= FIXED * 1;
+		}
+		for (int it = 0; it < eventList.size(); it++)
+		{
+			eventList[it].weapon.setWeaponPos(Player.centerX, Player.centerY);
+			if (eventList[it].leftTime > 0)
+			{
+				eventList[it].leftTime -= FIXED * 1;
+			}
+			else
+			{
+				if (eventList[it].progTime > 0)
+				{
+					eventList[it].progTime -= FIXED * 1;
+					startAttack(eventList[it], bufferDC);
+				}
+				else
+				{
+					eventList.erase(eventList.begin() + it);
+					//eventEnd
+				}
+			}
+		}
+
+		drawBackground(bufferDC, border, WindowScreen.rect);
+		
+		DrawPlayerHP(bufferDC,Player.MaxHeart,Player.CurHeart, Player.Shield);
+		
+		/*
+		POINT pnt, pnt2;
+		vector<int>* linker;
+		for (int i = 0; i < Way.Size; i++)
+		{
+			pnt = Way.Epath[i].getCord();
+			Ellipse(bufferDC, pnt.x * PlayGround.SIZE_OF_MAPWIDTH + PlayGround.MAP_START_POINT_X, pnt.y * PlayGround.SIZE_OF_MAPHEIGHT + PlayGround.MAP_START_POINT_Y,
+				(pnt.x + 1) * PlayGround.SIZE_OF_MAPWIDTH + PlayGround.MAP_START_POINT_X, (pnt.y + 1) * PlayGround.SIZE_OF_MAPHEIGHT + PlayGround.MAP_START_POINT_Y);
+
+			linker = Way.Epath[i].getWalklist();
+			for (int i = 0; i < linker->size(); i++)
+			{
+				int result = linker->at(i);
+				pnt2 = Way.Epath[result].getCord();
+				MoveToEx(bufferDC, pnt.x * PlayGround.SIZE_OF_MAPWIDTH + PlayGround.MAP_START_POINT_X + PlayGround.SIZE_OF_MAPWIDTH / 2, pnt.y * PlayGround.SIZE_OF_MAPHEIGHT + PlayGround.MAP_START_POINT_Y + PlayGround.SIZE_OF_MAPHEIGHT / 2 , NULL);
+				LineTo(bufferDC, pnt2.x * PlayGround.SIZE_OF_MAPWIDTH + PlayGround.MAP_START_POINT_X + PlayGround.SIZE_OF_MAPWIDTH / 2, pnt2.y * PlayGround.SIZE_OF_MAPHEIGHT + PlayGround.MAP_START_POINT_Y + PlayGround.SIZE_OF_MAPHEIGHT / 2);
+			}
+
+			linker = Way.Epath[i].getJumplist();
+			for (int i = 0; i < linker->size(); i++)
+			{
+				int result = linker->at(i);
+				pnt2 = Way.Epath[result].getCord();
+				MoveToEx(bufferDC, pnt.x * PlayGround.SIZE_OF_MAPWIDTH + PlayGround.MAP_START_POINT_X + PlayGround.SIZE_OF_MAPWIDTH / 2, pnt.y * PlayGround.SIZE_OF_MAPHEIGHT + PlayGround.MAP_START_POINT_Y + PlayGround.SIZE_OF_MAPHEIGHT / 2 - 10, NULL);
+				LineTo(bufferDC, pnt2.x * PlayGround.SIZE_OF_MAPWIDTH + PlayGround.MAP_START_POINT_X + PlayGround.SIZE_OF_MAPWIDTH / 2, pnt2.y * PlayGround.SIZE_OF_MAPHEIGHT + PlayGround.MAP_START_POINT_Y + PlayGround.SIZE_OF_MAPHEIGHT / 2 - 10);
+			}
+
+			linker = Way.Epath[i].getDroplist();
+			for (int i = 0; i < linker->size(); i++)
+			{
+				int result = linker->at(i);
+				pnt2 = Way.Epath[result].getCord();
+				MoveToEx(bufferDC, pnt.x * PlayGround.SIZE_OF_MAPWIDTH + PlayGround.MAP_START_POINT_X + PlayGround.SIZE_OF_MAPWIDTH / 2, pnt.y * PlayGround.SIZE_OF_MAPHEIGHT + PlayGround.MAP_START_POINT_Y + PlayGround.SIZE_OF_MAPHEIGHT / 2 + 10, NULL);
+				LineTo(bufferDC, pnt2.x * PlayGround.SIZE_OF_MAPWIDTH + PlayGround.MAP_START_POINT_X + PlayGround.SIZE_OF_MAPWIDTH / 2, pnt2.y * PlayGround.SIZE_OF_MAPHEIGHT + PlayGround.MAP_START_POINT_Y + PlayGround.SIZE_OF_MAPHEIGHT / 2 + 10);
+			}
+		}
+		*/
+
+		// 플레이어 갱신
+		Player.draw(bufferDC);
+
+		// 적 갱신
+		Enemy.draw(bufferDC);
+
+		/*
+		// test
+		char buffer[256];
+		wsprintf(buffer, "x좌표: %d y좌표: %d", CharainMap.x, CharainMap.y);
+		TextOut(bufferDC, 100, 100, buffer, lstrlen(buffer));
+		*/
+
+		BitBlt(g_hDC, 0, 0, Crect.right, Crect.bottom, bufferDC, 0, 0, SRCCOPY);
+		SelectObject(bufferDC, OldB);
+		DeleteObject(NewB);
+		DeleteObject(SelectObject(bufferDC, oldbitmap)); // 종이 원래대로 한 후 제거
+		DeleteDC(bufferDC); // hMemDC 제거
+
+		ReleaseDC(g_hWnd, g_hDC);
+	}
 }
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg,
@@ -141,8 +531,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, //WINAPI : 윈도
 		WS_OVERLAPPEDWINDOW, //윈도우 스타일
 		CW_USEDEFAULT, //윈도우 위치, x좌표
 		CW_USEDEFAULT, //윈도우 위치, y좌표
-		WindowScreen.width, //윈도우 폭   신민수 추가
-		WindowScreen.height, //윈도우 높이   신민수 추가
+		WindowScreen.width, //윈도우 폭   
+		WindowScreen.height, //윈도우 높이   
 		NULL, //부모 윈도우 핸들 
 		NULL, //메뉴 핸들
 		hInstance,     //응용 프로그램 ID
@@ -151,10 +541,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, //WINAPI : 윈도
 	ShowWindow(hwnd, nCmdShow); //윈도우의 화면 출력
 	UpdateWindow(hwnd); //O/S 에 WM_PAINT 메시지 전송
 
-	g_hWnd = hwnd;
+	dwOldGameTime = dwCurrentGameTime = timeGetTime();
 
-	QueryPerformanceFrequency(&g_tsecond);
-	QueryPerformanceCounter(&g_tTime);
+	g_hWnd = hwnd;
 
  	while (g_bLoop)
 	{
@@ -175,8 +564,8 @@ HDC hdc;
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 {
-
 	PAINTSTRUCT ps;
+	EventStruct eventStruct;
 
 	switch (iMsg)
 	{
@@ -189,6 +578,34 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 
 		EndPaint(hwnd, &ps);
 		break;
+
+	case WM_LBUTTONDOWN:
+		Player.weapon.setWeaponPos(Player.centerX, Player.centerY);
+		if (Player.delay <= 0) {
+			Player.delay = Player.weapon.getDealy() + Player.weapon.getAtkSpeed();
+			eventStruct.mx = LOWORD(lParam);
+			eventStruct.my = HIWORD(lParam);
+			eventStruct.px = Player.centerX;
+			eventStruct.py = Player.centerY;
+			eventStruct.weapon = Player.weapon;
+			eventStruct.leftTime = Player.weapon.getDealy();
+			eventStruct.progTime = Player.weapon.getAtkSpeed();
+			eventList.push_back(eventStruct);
+
+			Player.weapon.addCombo();
+		}
+		break;
+		
+	case WM_RBUTTONDOWN:
+		mX = LOWORD(lParam);
+		mY = HIWORD(lParam);
+		if (Player.Projnum > 0)
+		{
+			Player.Thowable.push_back(Projectile(Player.centerX, Player.centerY, mX, mY, Arrowhead));
+			Player.Projnum--;
+		}
+		break;
+
 	case WM_DESTROY:
 		g_bLoop = false;
 		PostQuitMessage(0);

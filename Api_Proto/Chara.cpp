@@ -1,17 +1,28 @@
 #include "Chara.h"
-#include "Map.h"
-Character::Character(int width, int height)
+using namespace std;
+
+Character::Character(float x, float y)
 {
+	CharaW = 20; // 캐릭터 너비
+	CharaH = 39; // 캐릭터 높이
+	CHARACTERSPEED = 250; // 캐릭터 좌우 속도
+	Gravity = 35; // 중력
+	JumpP = 10; // 점프 파워
+	Projnum = 3;
 	jumpNum = 2;
-	centerX = 700 + width / 2;
-	centerY = 500 + height / 2;
-	vx = 10;
+	centerX = x + CharaW / 2;
+	centerY = y + CharaH / 2;
+	bfLeft = getLeft();
+	bfTop = getTop();
+	bfBottom = getBottom();
+	bfRight = getRight();
+	vx = 0;
 	vy = 0;
-	Heart = 10;
+	MaxHeart = 6; // 처음 생명력
+	CurHeart = MaxHeart - 1;
 	Shield = 3;
 	JumpPower = JumpP;
-	AttackSpeed = 1;
-	Weapon = 0;
+	delay = 0;
 	YStat = NULL;
 	XStat = NULL;
 	MVSpeed = NULL;
@@ -20,31 +31,33 @@ Character::Character(int width, int height)
 void Character::draw(HDC hdc)
 {
 	Rectangle(hdc, getLeft(), getTop(), getRight(), getBottom());
+	for (int i = 0;i < Thowable.size();i++)
+	{
+		Thowable[i].draw(hdc);
+	}
 }
 
 void Character::MVRight(HDC hdc)
 {
-	if (GetAsyncKeyState('D') & 0x8000)
-	{
-		clear(hdc);
-		centerX = centerX + MVSpeed;
+		//clear(hdc);
+		vx += MVSpeed;
+		centerX = centerX + vx;
 		XStat = RIGHT;
-	}
+		vx = 0;
 }
 
 void Character::MVLeft(HDC hdc)
 {
-	if (GetAsyncKeyState('A') & 0x8000)
-	{
-		clear(hdc);
-		centerX = centerX - MVSpeed;
-		XStat = LEFT;
-	}
+	//clear(hdc);
+	vx -= MVSpeed;
+	centerX = centerX + vx;
+	XStat = LEFT;
+	vx = 0;
 }
 
 void Character::MVJump(HDC hdc)
 {
-	if ((GetAsyncKeyState(VK_SPACE) & 0x0001) && jumpNum >= 1)
+	if (jumpNum >= 1)
 	{
 		vy = -JumpPower;
 		jumpNum--;
@@ -71,12 +84,32 @@ void Character::Grav(HDC hdc, float delta) // 중력
 	{
 		YStat = DOWN;
 	}
-	clear(hdc);
+	//clear(hdc);
 	centerY = centerY + vy;
 }
-//신민수 추가
+
+void Character::UpdateProj(HDC hdc, float delta)
+{
+	for (int i = 0;i < Thowable.size();i++)
+	{
+		Thowable[i].Update(hdc, delta);
+	}
+}
+
 void Character::NextStagePosition(int x, int y)
 {
 	centerX = x;
 	centerY = y;
+}
+
+void Character::TakeADamage(int getDamage) // 데미지를 받을 조건을 만족했을 때 이 함수를 불러오기
+{
+	if (Shield > 0)
+	{
+		Shield -= 1;
+	}
+	else
+	{
+		CurHeart -= getDamage;
+	}
 }
