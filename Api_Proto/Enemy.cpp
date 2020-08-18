@@ -25,7 +25,7 @@ bool Enemy::StacktoPush(int x, int y)
 		return false;
 	}
 	Character* buffer = &WaitingEnem.back();
-	PushEnemy(buffer->centerX, buffer->centerY, buffer->CHARACTERSPEED, buffer->JumpPower, buffer->jumpNum, buffer->Heart, buffer->Color);
+	PushEnemy(buffer->centerX, buffer->centerY, buffer->CHARACTERSPEED, buffer->JumpPower, buffer->jumpNum, buffer->MaxHeart, buffer->Color);
 	EnemyList.back().foe.SetSpawn(MapWithE->getBlockCenterX(x), MapWithE->getBlockCenterY(y));
 	WaitingEnem.pop_back();
 	return true;
@@ -35,7 +35,7 @@ void Enemy::KillEnemy()
 {
 	for (int i = 0; i < EnemyList.size(); i++)
 	{
-		if (EnemyList[i].foe.Heart <= 0)
+		if (EnemyList[i].foe.MaxHeart <= 0)
 		{
 			EnemyList.erase(EnemyList.begin() + i--);
 		}
@@ -202,6 +202,6 @@ void Enemy::FillEnem(int Stagenum, Character MobAry[][MAX_MOBARY], int col, int 
 	while (MobAry[Stagenum][i].jumpNum != -1)
 	{
 		A = &MobAry[Stagenum][i++];
-		StackEnemy(A->centerX, A->centerY, A->CHARACTERSPEED, A->JumpPower, A->jumpNum, A->Heart, A->Color);
+		StackEnemy(A->centerX, A->centerY, A->CHARACTERSPEED, A->JumpPower, A->jumpNum, A->MaxHeart, A->Color);
 	}
 }

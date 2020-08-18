@@ -146,6 +146,7 @@
     <ClCompile Include="Proj.cpp" />
     <ClCompile Include="Resol.cpp" />
     <ClCompile Include="src.cpp" />
+    <ClCompile Include="UI.cpp" />
     <ClCompile Include="Weapon.cpp" />
     <ClCompile Include="WindowScreen.cpp" />
   </ItemGroup>
@@ -157,6 +158,7 @@
     <ClInclude Include="Proj.h" />
     <ClInclude Include="Resol.h" />
     <ClInclude Include="Motion.h" />
+    <ClInclude Include="UI.h" />
     <ClInclude Include="Weapon.h" />
     <ClInclude Include="WindowScreen.h" />
   </ItemGroup>

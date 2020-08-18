@@ -22,7 +22,8 @@ public:
     float centerX, centerY; // 중심 좌표
     float vx, vy; // 좌우 벡터
     float MVSpeed; // 캐릭터 좌우 속도
-    int Heart; // 체력
+    int MaxHeart; // 최대 생명력
+    int CurHeart; // 현재 생명력
     int Shield; // 방어막
     int JumpPower; // 점프 파워
     float delay; // 
@@ -48,4 +49,5 @@ public:
     void SetSpawn(float x, float y);
     void SetSpec(int speed, int jumppower, int jumpnum, int heart, COLORREF rgb);
     void PastSaves();
+    void TakeADamage(int getDamage);
 };

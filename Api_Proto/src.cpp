@@ -11,6 +11,7 @@
 #include "WindowScreen.h"
 #include "Pathfinder.h"
 #include "Enemy.h"
+#include "UI.h"
 using namespace std;
 
 #pragma comment(lib, "winmm.lib")
@@ -24,8 +25,8 @@ typedef struct _EventStruct
 	Weapon weapon;    //¹«±â °´Ã¼
 }EventStruct;
 
-Character Bruser(0, 0, 150, 10, 1, 15, RGB(100, 100, 100)); // ºê·çÀú ¸÷
-Character Ninja(0, 0, 300, 10, 1, 7, RGB(0, 200, 250)); // ´ÑÀÚ ¸÷
+Character Bruser(0, 0, 170, 10, 1, 15, RGB(100, 100, 100)); // ºê·çÀú ¸÷
+Character Ninja(0, 0, 360, 12, 1, 7, RGB(0, 200, 250)); // ´ÑÀÚ ¸÷
 Character Nerd(0, 0, 120, 10, 1, 4, RGB(0, 100, 250)); // Âðµû ¸÷
 Character Ender(-1, -1, -1, -1, -1, -1, RGB(0, 0, 0)); // ¸¶Ä§Ç¥
 
@@ -278,6 +279,7 @@ void Run()
 
 		drawBackground(bufferDC, border, WindowScreen.rect);
 
+		DrawPlayerHP(bufferDC, Player.MaxHeart, Player.CurHeart, Player.Shield);
 		//FoeList.ShowNode(bufferDC);
 
 		// ÇÃ·¹ÀÌ¾î °»½Å

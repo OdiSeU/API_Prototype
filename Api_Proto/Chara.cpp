@@ -17,8 +17,9 @@ Character::Character(float x, float y, int speed, int jumppower, int jumpnum, in
 	bfRight = getRight();
 	vx = 0;
 	vy = 0;
-	Heart = heart;
-	Shield = 0;
+	MaxHeart = 6; // 처음 생명력
+	CurHeart = MaxHeart;
+	Shield = 2;
 	JumpPower = jumppower; // 점프 파워
 	delay = 0;
 	YStat = NULL;
@@ -171,7 +172,7 @@ void Character::SetSpec(int speed, int jumppower, int jumpnum, int heart, COLORR
 	bfRight = getRight();
 	vx = 0;
 	vy = 0;
-	Heart = heart; // 체력
+	MaxHeart = heart; // 체력
 	Shield = 0;
 	JumpPower = jumppower; // 점프 파워
 	delay = 0;
@@ -187,4 +188,16 @@ void Character::PastSaves() // 전 좌표 저장 (충돌처리)
 	bfTop = getTop();
 	bfBottom = getBottom();
 	bfRight = getRight();
+}
+
+void Character::TakeADamage(int getDamage) // 데미지를 받을 조건을 만족했을 때 이 함수를 불러오기
+{
+	if (Shield > 0)
+	{
+		Shield -= 1;
+	}
+	else
+	{
+		CurHeart -= getDamage;
+	}
 }
