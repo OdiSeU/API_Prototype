@@ -1,21 +1,59 @@
 ﻿  Chara.cpp
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Motion.h(42,22): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Motion.h(54,26): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Motion.h(55,24): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(10,16): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(11,16): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(16,19): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(25,59): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(25,46): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(25,34): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(25,24): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(26,19): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(68,74): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(68,57): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(68,41): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(68,27): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(76,10): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(87,19): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(95,12): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Chara.cpp(96,12): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  Api_Proto.vcxproj -> C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Debug\Api_Proto.exe
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Motion.h(42,22): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Motion.h(54,26): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Motion.h(55,24): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Chara.h(21,2): warning C4091: 'typedef ': 변수를 선언하지 않으면 'EventStruct' 왼쪽은 무시됩니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Chara.cpp(66,59): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Chara.cpp(66,46): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Chara.cpp(66,34): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Chara.cpp(66,24): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Chara.cpp(67,19): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Chara.cpp(113,8): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Chara.cpp(125,74): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Chara.cpp(125,57): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Chara.cpp(125,41): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Chara.cpp(125,27): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Chara.cpp(144,19): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Chara.cpp(152,12): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Chara.cpp(153,12): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  src.cpp
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Motion.h(42,22): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Motion.h(54,26): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Motion.h(55,24): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Chara.h(21,2): warning C4091: 'typedef ': 변수를 선언하지 않으면 'EventStruct' 왼쪽은 무시됩니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Pathfinder.h(68,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Pathfinder.h(79,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Enemy.h(32,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Enemy.h(39,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Enemy.h(46,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Enemy.h(56,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Enemy.h(63,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Enemy.h(88,22): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Enemy.h(97,22): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Enemy.h(106,22): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\src.cpp(58,100): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\src.cpp(58,44): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\src.cpp(102,56): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\src.cpp(115,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\src.cpp(114,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\src.cpp(113,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\src.cpp(112,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\src.cpp(143,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\src.cpp(142,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\src.cpp(141,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\src.cpp(140,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\src.cpp(139,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\src.cpp(138,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\src.cpp(137,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\src.cpp(136,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\src.cpp(149,22): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\src.cpp(242,31): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\src.cpp(241,46): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\src.cpp(263,31): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\src.cpp(262,46): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\src.cpp(289,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\src.cpp(301,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\src.cpp(416,14): warning C4101: 'eventStruct' :참조되지 않은 지역 변수입니다.
+  코드를 생성하고 있습니다...
+C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Api_Proto\Chara.cpp(276): warning C4715: 'Character::isCollideWith': 모든 제어 경로에서 값을 반환하지는 않습니다.
+  Api_Proto.vcxproj -> C:\Programming\C++\Winform_Project\Game_proto\CartelGame_Prototype_WinAPI\Debug\Api_Proto.exe
