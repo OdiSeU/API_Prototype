@@ -21,7 +21,7 @@ Projectile::Projectile(float Cx, float Cy, float Mx, float My, int type)
 	Sin = Height / Distance;
 	Cos = Width / Distance;
 	vx = 1000 * Cos;
-	vy = 0.4 * Sin;
+	vy = 15 * Sin;
 }
 
 /*
