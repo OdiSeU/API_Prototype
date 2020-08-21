@@ -45,6 +45,7 @@ void DrawPlayerHP(HDC hdc, int MaxHeart, int CurHeart, int Shield)
 {
 	const POINT startPoint = { 100,200 }; // 그릴 위치
 	const int hpSize = 50; // 그릴 크기
+	bool flag = true;
 	int i;
 	COLORREF rgb;
 
@@ -58,14 +59,14 @@ void DrawPlayerHP(HDC hdc, int MaxHeart, int CurHeart, int Shield)
 			rgb = RGB(255, 0, 0);
 			drawEllipse(hdc, startPoint.x + (hpSize * i), startPoint.y, (startPoint.x + hpSize) + (hpSize * i), startPoint.y + hpSize, rgb);// 현재 체력 그리기
 		}
+		else if (i >= CurHeart / 2 && CurHeart % 2 == 1 && flag)
+		{
+			flag = false;
+			rgb = RGB(255, 0, 0);
+			drawSemicircle(hdc, startPoint.x + (hpSize * i), startPoint.y, (startPoint.x + hpSize) + (hpSize * i), startPoint.y + hpSize, rgb);
+		}
 	}
-	i--;
-	if (CurHeart % 2 == 1) //홀수면 반칸짜리 현재 체력 그리기
-	{
-		rgb = RGB(255, 0, 0);
-		drawSemicircle(hdc, startPoint.x + (hpSize * i), startPoint.y, (startPoint.x + hpSize) + (hpSize * i), startPoint.y + hpSize, rgb);
-	}
-	i++;
+
 	for (; i < Shield + (MaxHeart + 1) / 2; i++)
 	{
 		rgb = RGB(0xE2, 0xE2, 0xE2);

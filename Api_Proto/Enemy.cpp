@@ -2,20 +2,21 @@
 
 Enemy::Enemy(Map* PlayGround, int JumpP)
 {
+	idCnt = 1;
 	MapWithE = PlayGround;
 	Way.makeNode(MapWithE); Way.autoLink(MapWithE, JumpP);
 }
 
 void Enemy::PushEnemy(float x, float y, int speed, int jumppower, int jumpnum, int heart, COLORREF rgb)
 {
-	EnemWithPath buffer; buffer.foe.SetSpec(speed, jumppower, jumpnum, heart, rgb);
+	EnemWithPath buffer; buffer.foe.SetSpec(++idCnt, speed, jumppower, jumpnum, heart, rgb);
 	buffer.foe.SetSpawn(x, y);
 	EnemyList.push_back(buffer);
 }
 
 void Enemy::StackEnemy(float x, float y, int speed, int jumppower, int jumpnum, int heart, COLORREF rgb)
 {
-	WaitingEnem.push_back(Character(x, y, speed, jumppower, jumpnum, heart, rgb));
+	WaitingEnem.push_back(Character(-1, x, y, speed, jumppower, jumpnum, heart, rgb));
 }
 
 bool Enemy::StacktoPush(int x, int y)
@@ -25,19 +26,41 @@ bool Enemy::StacktoPush(int x, int y)
 		return false;
 	}
 	Character* buffer = &WaitingEnem.back();
-	PushEnemy(buffer->centerX, buffer->centerY, buffer->CHARACTERSPEED, buffer->JumpPower, buffer->jumpNum, buffer->MaxHeart, buffer->Color);
+	PushEnemy(buffer->centerX, buffer->centerY, buffer->CHARACTERSPEED, buffer->JumpPower, buffer->jumpNum, buffer->CurHeart, buffer->Color);
 	EnemyList.back().foe.SetSpawn(MapWithE->getBlockCenterX(x), MapWithE->getBlockCenterY(y));
 	WaitingEnem.pop_back();
 	return true;
 }
 
-void Enemy::KillEnemy()
+void Enemy::KillEnemy(vector<EventStruct>* eventList)
 {
+	bool isErased = false;
 	for (int i = 0; i < EnemyList.size(); i++)
 	{
-		if (EnemyList[i].foe.MaxHeart <= 0)
+		if (EnemyList[i].foe.CurHeart <= 0)
 		{
+			for (int j = 0; j < eventList->size(); j++)
+			{
+				if (EnemyList[i].foe.id == eventList->at(j).id)
+				{
+					eventList->erase(eventList->begin() + j--);
+				}
+			}
 			EnemyList.erase(EnemyList.begin() + i--);
+			isErased = true;
+		}
+	}
+
+	if (isErased) {
+		for (int j = 0; j < eventList->size(); j++)
+		{
+			for (int i = 0; i < EnemyList.size(); i++)
+			{
+				if (eventList->at(j).id == EnemyList[i].foe.id)
+				{
+					eventList->at(j).subject = &EnemyList[i].foe;
+				}
+			}
 		}
 	}
 }
@@ -183,6 +206,7 @@ void Enemy::UpdatePath(HDC bufferDC, POINT CharainMap)
 
 void Enemy::GetPath(POINT CharainMap)
 {
+	/*
 	POINT EnemyinMap;
 	for (int i = 0; i < EnemyList.size(); i++)
 	{
@@ -194,6 +218,35 @@ void Enemy::GetPath(POINT CharainMap)
 			Way.AstarAlgorithm(CharainMap, EnemyinMap, &EnemyList[i].Result);
 		}
 	}
+	*/
+	POINT EnemyinMap;
+	for (int i = 0; i < EnemyList.size(); i++)
+	{
+		EnemyinMap.x = MapWithE->xToCol(EnemyList[i].foe.centerX);
+		EnemyinMap.y = MapWithE->yToRow(EnemyList[i].foe.centerY);
+		int Cindex = Way.getNodeIndex(CharainMap);
+		int Eindex = Way.getNodeIndex(EnemyinMap);
+		if (Cindex != -1 && Eindex != -1)
+		{
+			EnemyList[i].Result.clear();
+			Way.AstarAlgorithm(CharainMap, EnemyinMap, &EnemyList[i].Result);
+		}
+		else if (Eindex != -1 && Cindex == -1)
+		{
+			POINT CharaLeft; CharaLeft.x = CharainMap.x - 1; CharaLeft.y = CharainMap.y;
+			POINT CharaRight; CharaRight.x = CharainMap.x + 1; CharaRight.y = CharainMap.y;
+			if (Way.getNodeIndex(CharaLeft) != -1)
+			{
+				EnemyList[i].Result.clear();
+				Way.AstarAlgorithm(CharaLeft, EnemyinMap, &EnemyList[i].Result);
+			}
+			else if (Way.getNodeIndex(CharaRight) != -1)
+			{
+				EnemyList[i].Result.clear();
+				Way.AstarAlgorithm(CharaRight, EnemyinMap, &EnemyList[i].Result);
+			}
+		}
+	}
 }
 
 void Enemy::FillEnem(int Stagenum, Character MobAry[][MAX_MOBARY], int col, int row)
@@ -202,6 +255,6 @@ void Enemy::FillEnem(int Stagenum, Character MobAry[][MAX_MOBARY], int col, int 
 	while (MobAry[Stagenum][i].jumpNum != -1)
 	{
 		A = &MobAry[Stagenum][i++];
-		StackEnemy(A->centerX, A->centerY, A->CHARACTERSPEED, A->JumpPower, A->jumpNum, A->MaxHeart, A->Color);
+		StackEnemy(A->centerX, A->centerY, A->CHARACTERSPEED, A->JumpPower, A->jumpNum, A->CurHeart, A->Color);
 	}
 }

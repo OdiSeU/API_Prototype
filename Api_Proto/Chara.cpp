@@ -1,8 +1,9 @@
 #include "Chara.h"
 using namespace std;
 
-Character::Character(float x, float y, int speed, int jumppower, int jumpnum, int heart, COLORREF rgb)
+Character::Character(int id, float x, float y, int speed, int jumppower, int jumpnum, int heart, COLORREF rgb)
 {
+	this->id = id;
 	CharaW = 20; // 캐릭터 너비
 	CharaH = 39; // 캐릭터 높이
 	CHARACTERSPEED = speed; // 캐릭터 좌우 속도
@@ -17,15 +18,16 @@ Character::Character(float x, float y, int speed, int jumppower, int jumpnum, in
 	bfRight = getRight();
 	vx = 0;
 	vy = 0;
-	MaxHeart = 6; // 처음 생명력
+	MaxHeart = heart; // 처음 생명력
 	CurHeart = MaxHeart;
-	Shield = 2;
+	Shield = 3;
 	JumpPower = jumppower; // 점프 파워
 	delay = 0;
 	YStat = NULL;
 	XStat = NULL;
 	MVSpeed = NULL;
-	Color = rgb;
+	OrgColor = Color = rgb;
+	isInvincible = false;
 }
 
 /*
@@ -158,8 +160,9 @@ void Character::SetSpawn(float x, float y)
 	centerY = y + CharaH / 2;
 }
 
-void Character::SetSpec(int speed, int jumppower, int jumpnum, int heart, COLORREF rgb)
+void Character::SetSpec(int id, int speed, int jumppower, int jumpnum, int heart, COLORREF rgb)
 {
+	this->id = id;
 	CharaW = 20; // 캐릭터 너비
 	CharaH = 39; // 캐릭터 높이
 	CHARACTERSPEED = speed; // 캐릭터 좌우 속도
@@ -173,13 +176,14 @@ void Character::SetSpec(int speed, int jumppower, int jumpnum, int heart, COLORR
 	vx = 0;
 	vy = 0;
 	MaxHeart = heart; // 체력
+	CurHeart = MaxHeart;
 	Shield = 0;
 	JumpPower = jumppower; // 점프 파워
 	delay = 0;
 	YStat = NULL;
 	XStat = NULL;
 	MVSpeed = NULL;
-	Color = rgb;
+	OrgColor = Color = rgb;
 }
 
 void Character::PastSaves() // 전 좌표 저장 (충돌처리)
@@ -188,6 +192,110 @@ void Character::PastSaves() // 전 좌표 저장 (충돌처리)
 	bfTop = getTop();
 	bfBottom = getBottom();
 	bfRight = getRight();
+}
+
+void Character::newAttackEvent(float mx, float my, vector<EventStruct>* eventList)
+{
+	if (delay > 0) return;
+	delay = weapon.getDelay() + weapon.getAtkSpeed();
+	weapon.tilt = atan2(mx - centerX, my - centerY);
+	EventStruct e;
+	e.id = id;
+	e.eType = ATTACK;
+	e.angle = atan2(mx - centerX, my - centerY);
+	e.leftTime = weapon.getDelay();
+	e.progTime = weapon.getAtkSpeed();
+	e.subject = this;
+	weapon.addCombo();
+	eventList->push_back(e);
+}
+
+void Character::newDamagedEvent(int dmg, vector<EventStruct>* eventList)
+{
+	if (isInvincible) return;
+	if (Shield > 0) Shield--;
+	else CurHeart -= dmg;
+	delay = 0.5;
+	EventStruct e;
+	e.id = id;
+	e.eType = DAMAGED;
+	e.angle = 0;
+	e.leftTime = 0;
+	e.progTime = 0.5;
+	e.subject = this;
+	eventList->push_back(e);
+}
+
+float Character::getDistance(Character target)
+{
+	float dx = target.centerX - centerX;
+	float dy = target.centerY - centerY;
+	  
+	return sqrt(pow(dx, 2) + pow(dy, 2));
+}
+
+bool Character::isCollideWith(Character target)
+{
+	Motion atkMotion = weapon.getMotion();
+	if (atkMotion.shape == 'r')
+	{
+		if (atkMotion.centerX - atkMotion.Hwidth < target.getRight() &&
+			atkMotion.centerX + atkMotion.Hwidth > target.getLeft() &&
+			atkMotion.centerY - atkMotion.Hheight < target.getBottom() &&
+			atkMotion.centerY + atkMotion.Hheight > target.getTop())
+			return true;
+		else
+			return false;
+	}
+	if (atkMotion.shape == 's')
+	{
+		float cX, cY, startX, startY, midX, midY, endX, endY;
+		if (sin(weapon.tilt) < 0)
+		{
+			startX = -cos(atkMotion.endAngle);
+			startY = sin(atkMotion.endAngle);
+			midX = -cos(atkMotion.endAngle + atkMotion.startAngle);
+			midY = sin(atkMotion.endAngle + atkMotion.startAngle);
+			endX = -cos(atkMotion.startAngle);
+			endY = sin(atkMotion.startAngle);
+		}
+		else
+		{
+			startX = cos(atkMotion.startAngle);
+			startY = sin(atkMotion.startAngle);
+			midX = cos(atkMotion.endAngle + atkMotion.startAngle);
+			midY = sin(atkMotion.endAngle + atkMotion.startAngle);
+			endX = cos(atkMotion.endAngle);
+			endY = sin(atkMotion.endAngle);
+		}
+		cX = atkMotion.centerX;
+		cY = atkMotion.centerY;
+		startX = atkMotion.centerX + atkMotion.Radius * startX;
+		startY = atkMotion.centerY - atkMotion.Radius * startY;
+		midX = atkMotion.centerX + atkMotion.Radius * midX;
+		midY = atkMotion.centerX + atkMotion.Radius * midY;
+		endX = atkMotion.centerX + atkMotion.Radius * endX;
+		endY = atkMotion.centerY - atkMotion.Radius * endY;
+
+		if (target.isDotinMe(cX, cY)) return true;
+		else if (target.isDotinMe(startX, startY)) return true;
+		else if (target.isDotinMe(midX, midY)) return true;
+		else if (target.isDotinMe(endX, endY)) return true;
+		else return false;
+		//else if ()
+	}
+	return false;
+}
+
+bool Character::isDotinMe(float x, float y)
+{
+	if (getLeft() < x && x < getRight() &&
+		getTop() < y && y < getBottom())
+	{
+		return true;
+	}
+	else
+		return false;
 }
 
 void Character::TakeADamage(int getDamage) // 데미지를 받을 조건을 만족했을 때 이 함수를 불러오기

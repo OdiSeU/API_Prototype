@@ -1,18 +1,59 @@
 ﻿  Chara.cpp
-C:\Users\tongm\OneDrive\바탕 화면\buffer\Api_Proto\Motion.h(42,22): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\바탕 화면\buffer\Api_Proto\Motion.h(54,26): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\바탕 화면\buffer\Api_Proto\Motion.h(55,24): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\바탕 화면\buffer\Api_Proto\Chara.cpp(65,59): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\바탕 화면\buffer\Api_Proto\Chara.cpp(65,46): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\바탕 화면\buffer\Api_Proto\Chara.cpp(65,34): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\바탕 화면\buffer\Api_Proto\Chara.cpp(65,24): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\바탕 화면\buffer\Api_Proto\Chara.cpp(66,19): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\tongm\OneDrive\바탕 화면\buffer\Api_Proto\Chara.cpp(112,8): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\바탕 화면\buffer\Api_Proto\Chara.cpp(124,74): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\바탕 화면\buffer\Api_Proto\Chara.cpp(124,57): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\바탕 화면\buffer\Api_Proto\Chara.cpp(124,41): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\바탕 화면\buffer\Api_Proto\Chara.cpp(124,27): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\바탕 화면\buffer\Api_Proto\Chara.cpp(143,19): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\tongm\OneDrive\바탕 화면\buffer\Api_Proto\Chara.cpp(151,12): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\tongm\OneDrive\바탕 화면\buffer\Api_Proto\Chara.cpp(152,12): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  Api_Proto.vcxproj -> C:\Users\tongm\OneDrive\바탕 화면\buffer\Debug\Api_Proto.exe
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\Motion.h(42,22): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\Motion.h(54,26): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\Motion.h(55,24): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\Chara.h(22,2): warning C4091: 'typedef ': 변수를 선언하지 않으면 'EventStruct' 왼쪽은 무시됩니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\Chara.cpp(67,59): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\Chara.cpp(67,46): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\Chara.cpp(67,34): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\Chara.cpp(67,24): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\Chara.cpp(68,19): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\Chara.cpp(114,8): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\Chara.cpp(126,74): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\Chara.cpp(126,57): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\Chara.cpp(126,41): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\Chara.cpp(126,27): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\Chara.cpp(145,19): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\Chara.cpp(153,12): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\Chara.cpp(154,12): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  src.cpp
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\Motion.h(42,22): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\Motion.h(54,26): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\Motion.h(55,24): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\Chara.h(22,2): warning C4091: 'typedef ': 변수를 선언하지 않으면 'EventStruct' 왼쪽은 무시됩니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\Pathfinder.h(68,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\Pathfinder.h(79,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\Enemy.h(16,2): warning C4091: 'typedef ': 변수를 선언하지 않으면 'EnemWithPath' 왼쪽은 무시됩니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\Enemy.h(33,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\Enemy.h(40,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\Enemy.h(47,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\Enemy.h(57,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\Enemy.h(64,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\Enemy.h(89,22): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\Enemy.h(98,22): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\Enemy.h(107,22): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\src.cpp(59,103): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\src.cpp(59,47): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\src.cpp(103,56): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\src.cpp(116,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\src.cpp(115,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\src.cpp(114,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\src.cpp(113,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\src.cpp(144,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\src.cpp(143,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\src.cpp(142,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\src.cpp(141,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\src.cpp(140,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\src.cpp(139,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\src.cpp(138,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\src.cpp(137,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\src.cpp(150,22): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\src.cpp(253,31): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\src.cpp(252,46): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\src.cpp(274,31): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\src.cpp(273,46): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\src.cpp(302,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\src.cpp(319,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\tongm\OneDrive\바탕 화면\Main\Api_Proto\src.cpp(434,14): warning C4101: 'eventStruct' :참조되지 않은 지역 변수입니다.
+  코드를 생성하고 있습니다...
+  Api_Proto.vcxproj -> C:\Users\tongm\OneDrive\바탕 화면\Main\Debug\Api_Proto.exe
