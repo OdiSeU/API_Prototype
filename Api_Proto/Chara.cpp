@@ -278,6 +278,7 @@ bool Character::isCollideWith(Character target)
 		else if (target.isDotinMe(startX, startY)) return true;
 		else if (target.isDotinMe(midX, midY)) return true;
 		else if (target.isDotinMe(endX, endY)) return true;
+		else return false;
 		//else if ()
 	}
 }

@@ -55,7 +55,7 @@ Map oldMap(WindowScreen.rect);
 RECT border = PlayGround.MaxSize;
 
 // 처음 생성 좌표(2개), 좌우 속도, 점프파워, 점프 가능 횟수, 생명력 순
-Character Player(0, PlayGround.getBlockCenterX(PlayGround.getWidth(0) / 2), PlayGround.getBlockCenterY(PlayGround.getHeight(0)/ 2), 250, 10, 2, 10, RGB(200, 0, 200));
+Character Player(0, PlayGround.getBlockCenterX(PlayGround.getWidth(0) / 2), PlayGround.getBlockCenterY(PlayGround.getHeight(0)/ 2), 250, 10, 2, 100, RGB(200, 0, 200));
 
 // 마우스 좌표
 float mX, mY;
@@ -158,7 +158,7 @@ void attackStart(EventStruct target, HDC hdc)
 		{
 			if (target.subject->isCollideWith(Player))
 			{
-				//Player.newDamagedEvent(target.subject->weapon.damage, &eventList);
+				Player.newDamagedEvent(target.subject->weapon.damage, &eventList);
 			}
 		}
 		break;

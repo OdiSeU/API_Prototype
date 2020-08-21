@@ -1,4 +1,4 @@
-﻿  src.cpp
+﻿  Enemy.cpp
 C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Motion.h(42,22): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Motion.h(54,26): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Motion.h(55,24): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
@@ -14,27 +14,13 @@ C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Enemy.h(64
 C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Enemy.h(89,22): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
 C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Enemy.h(98,22): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
 C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Enemy.h(107,22): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\src.cpp(58,103): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\src.cpp(58,47): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\src.cpp(102,56): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\src.cpp(115,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\src.cpp(114,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\src.cpp(113,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\src.cpp(112,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\src.cpp(143,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\src.cpp(142,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\src.cpp(141,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\src.cpp(140,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\src.cpp(139,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\src.cpp(138,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\src.cpp(137,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\src.cpp(136,20): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\src.cpp(149,22): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\src.cpp(246,31): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\src.cpp(245,46): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\src.cpp(267,31): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\src.cpp(266,46): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\src.cpp(295,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\src.cpp(312,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\src.cpp(426,14): warning C4101: 'eventStruct' :참조되지 않은 지역 변수입니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Enemy.cpp(30,87): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Enemy.cpp(30,57): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Enemy.cpp(38,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Enemy.cpp(42,22): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Enemy.cpp(55,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Enemy.cpp(57,22): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Enemy.cpp(71,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Enemy.cpp(140,23): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Api_Proto\Enemy.cpp(210,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
   Api_Proto.vcxproj -> C:\Programming\C++\Winform_Project\Game_proto\API_Prototype\Debug\Api_Proto.exe

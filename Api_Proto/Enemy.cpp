@@ -34,31 +34,35 @@ bool Enemy::StacktoPush(int x, int y)
 
 void Enemy::KillEnemy(vector<EventStruct>* eventList)
 {
+	bool isErased = false;
 	for (int i = 0; i < EnemyList.size(); i++)
 	{
 		if (EnemyList[i].foe.Heart <= 0)
 		{
 			for (int j = 0; j < eventList->size(); j++)
 			{
-				if (&EnemyList[i].foe == eventList->at(j).subject)
+				if (EnemyList[i].foe.id == eventList->at(j).id)
 				{
 					eventList->erase(eventList->begin() + j--);
 				}
 			}
 			EnemyList.erase(EnemyList.begin() + i--);
-		}
-	}
-	for (int j = 0; j < eventList->size(); j++)
-	{
-		for (int i = 0; i < EnemyList.size(); i++)
-		{
-			if (eventList->at(j).id == EnemyList[i].foe.id)
-			{
-				eventList->at(j).subject = &EnemyList[i].foe;
-			}
+			isErased = true;
 		}
 	}
 
+	if (isErased) {
+		for (int j = 0; j < eventList->size(); j++)
+		{
+			for (int i = 0; i < EnemyList.size(); i++)
+			{
+				if (eventList->at(j).id == EnemyList[i].foe.id)
+				{
+					eventList->at(j).subject = &EnemyList[i].foe;
+				}
+			}
+		}
+	}
 }
 
 void Enemy::UpdatePath(HDC bufferDC, POINT CharainMap)
