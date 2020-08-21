@@ -16,10 +16,10 @@ using namespace std;
 
 #pragma comment(lib, "winmm.lib")
 
-Character Bruser(0, 0, 150, 10, 1, 15, RGB(100, 100, 100)); // 브루저 몹
-Character Ninja(0, 0, 300, 10, 1, 7, RGB(0, 200, 250)); // 닌자 몹
-Character Nerd(0, 0, 120, 10, 1, 4, RGB(0, 100, 250)); // 찐따 몹
-Character Ender(-1, -1, -1, -1, -1, -1, RGB(0, 0, 0)); // 마침표
+Character Bruser(1, 0, 0, 150, 10, 1, 15, RGB(100, 100, 100)); // 브루저 몹
+Character Ninja(1, 0, 0, 300, 10, 1, 7, RGB(0, 200, 250)); // 닌자 몹
+Character Nerd(1, 0, 0, 120, 10, 1, 4, RGB(0, 100, 250)); // 찐따 몹
+Character Ender(1, -1, -1, -1, -1, -1, -1, RGB(0, 0, 0)); // 마침표
 
 int Stagenum = 0;
 
@@ -55,7 +55,7 @@ Map oldMap(WindowScreen.rect);
 RECT border = PlayGround.MaxSize;
 
 // 처음 생성 좌표(2개), 좌우 속도, 점프파워, 점프 가능 횟수, 생명력 순
-Character Player(PlayGround.getBlockCenterX(PlayGround.getWidth(0) / 2), PlayGround.getBlockCenterY(PlayGround.getHeight(0)/ 2), 250, 10, 2, 10, RGB(200, 0, 200));
+Character Player(0, PlayGround.getBlockCenterX(PlayGround.getWidth(0) / 2), PlayGround.getBlockCenterY(PlayGround.getHeight(0)/ 2), 250, 10, 2, 10, RGB(200, 0, 200));
 
 // 마우스 좌표
 float mX, mY;
@@ -158,7 +158,7 @@ void attackStart(EventStruct target, HDC hdc)
 		{
 			if (target.subject->isCollideWith(Player))
 			{
-				Player.newDamagedEvent(target.subject->weapon.damage, &eventList);
+				//Player.newDamagedEvent(target.subject->weapon.damage, &eventList);
 			}
 		}
 		break;
@@ -227,6 +227,10 @@ void Run()
 		else if (FoeList.EnemyList.size() == 0 && FoeList.WaitingEnem.size() != 0) // 활동중인 적이 다 죽으면 다음 적 등장
 		{
 			FoeList.StacktoPush(0, PlayGround.getHeight(PlayGround.mapId) - 2);
+			FoeList.StacktoPush(0, PlayGround.getHeight(PlayGround.mapId) - 2);
+			FoeList.StacktoPush(0, PlayGround.getHeight(PlayGround.mapId) - 2);
+			FoeList.StacktoPush(0, PlayGround.getHeight(PlayGround.mapId) - 2);
+			FoeList.StacktoPush(0, PlayGround.getHeight(PlayGround.mapId) - 2);
 			FoeList.StacktoPush(PlayGround.getWidth(PlayGround.mapId) - 1, PlayGround.getHeight(PlayGround.mapId) - 2);
 		}
 
@@ -286,15 +290,22 @@ void Run()
 		// 적 충돌
 		FoeList.Collision_E();
 
+		FoeList.KillEnemy(&eventList); // 체력이 다한적 소멸
+
 		for (int i = 0; i < FoeList.EnemyList.size(); i++)
 		{
+			FoeList.EnemyList[i].foe.delay -= FIXED * 1;
 			Character enemy = FoeList.EnemyList[i].foe;
 			float distToPlayer = enemy.getDistance(Player);
 			float weaponDist = enemy.weapon.getRange();
-			if (enemy.delay > 0) enemy.delay -= FIXED * 1;
-			if (weaponDist > distToPlayer)
-				FoeList.EnemyList[i].foe.newAttackEvent(Player.centerX, Player.centerY, &eventList);
+			if (weaponDist > distToPlayer) FoeList.EnemyList[i].foe.newAttackEvent(Player.centerX, Player.centerY, &eventList);
 		}
+
+		//for (int i = 0; i < FoeList.EnemyList.size(); i++)
+		//{
+		//
+		//}
+
 
 		if (Player.delay > 0) Player.delay -= FIXED * 1;
 
@@ -316,7 +327,7 @@ void Run()
 				{
 					//if (eventList[it].eType == ATTACK)
 					if (eventList[i].eType == DAMAGED) damagedEnd(&eventList[i]);
-					eventList.erase(eventList.begin() + i);
+					eventList.erase(eventList.begin() + i--);
 				}
 			}
 		}
@@ -331,7 +342,6 @@ void Run()
 		// 적 갱신
 		FoeList.Draw_E(bufferDC);
 
-		FoeList.KillEnemy(); // 체력이 다한적 소멸
 
 		/*
 		// test

@@ -1,8 +1,9 @@
 #include "Chara.h"
 using namespace std;
 
-Character::Character(float x, float y, int speed, int jumppower, int jumpnum, int heart, COLORREF rgb)
+Character::Character(int id, float x, float y, int speed, int jumppower, int jumpnum, int heart, COLORREF rgb)
 {
+	this->id = id;
 	CharaW = 20; // 캐릭터 너비
 	CharaH = 39; // 캐릭터 높이
 	CHARACTERSPEED = speed; // 캐릭터 좌우 속도
@@ -26,7 +27,6 @@ Character::Character(float x, float y, int speed, int jumppower, int jumpnum, in
 	MVSpeed = NULL;
 	Color = rgb;
 	isInvincible = false;
-	weapon.setWeaponType(Sword);
 }
 
 /*
@@ -159,8 +159,9 @@ void Character::SetSpawn(float x, float y)
 	centerY = y + CharaH / 2;
 }
 
-void Character::SetSpec(int speed, int jumppower, int jumpnum, int heart, COLORREF rgb)
+void Character::SetSpec(int id, int speed, int jumppower, int jumpnum, int heart, COLORREF rgb)
 {
+	this->id = id;
 	CharaW = 20; // 캐릭터 너비
 	CharaH = 39; // 캐릭터 높이
 	CHARACTERSPEED = speed; // 캐릭터 좌우 속도
@@ -197,6 +198,7 @@ void Character::newAttackEvent(float mx, float my, vector<EventStruct>* eventLis
 	delay = weapon.getDelay() + weapon.getAtkSpeed();
 	weapon.tilt = atan2(mx - centerX, my - centerY);
 	EventStruct e;
+	e.id = id;
 	e.eType = ATTACK;
 	e.angle = atan2(mx - centerX, my - centerY);
 	e.leftTime = weapon.getDelay();
@@ -212,6 +214,7 @@ void Character::newDamagedEvent(int dmg, vector<EventStruct>* eventList)
 	Heart -= dmg;
 	delay = 0.5;
 	EventStruct e;
+	e.id = id;
 	e.eType = DAMAGED;
 	e.angle = 0;
 	e.leftTime = 0;

@@ -9,15 +9,16 @@ using namespace std;
 #define Stages 5
 #define MAX_MOBARY 20
 
-typedef struct _EandP
+typedef struct EnemWithPath
 {
 	Character foe;
 	vector<BrickInfo> Result;
-}EnemWithPath;
+};
 
 class Enemy
 {
 public:
+	int idCnt;
 	vector<Character> WaitingEnem; // 적 대기자
 	vector<EnemWithPath> EnemyList; // 활동 중인 적
 	Pathfinder Way; // 길찾기 알고리즘
@@ -25,7 +26,7 @@ public:
 	Enemy(Map* MapWithE, int JumpP = 2);
 	void PushEnemy(float x, float y, int speed, int jumppower, int jumpnum, int heart, COLORREF rgb);
 	void StackEnemy(float x, float y, int speed, int jumppower, int jumpnum, int heart, COLORREF rgb);
-	void KillEnemy();
+	void KillEnemy(vector<EventStruct>* eventList);
 	void UpdatePath(HDC bufferDC, POINT CharainMap);
 	void Collision_E()
 	{

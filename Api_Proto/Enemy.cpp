@@ -2,20 +2,21 @@
 
 Enemy::Enemy(Map* PlayGround, int JumpP)
 {
+	idCnt = 1;
 	MapWithE = PlayGround;
 	Way.makeNode(MapWithE); Way.autoLink(MapWithE, JumpP);
 }
 
 void Enemy::PushEnemy(float x, float y, int speed, int jumppower, int jumpnum, int heart, COLORREF rgb)
 {
-	EnemWithPath buffer; buffer.foe.SetSpec(speed, jumppower, jumpnum, heart, rgb);
+	EnemWithPath buffer; buffer.foe.SetSpec(++idCnt, speed, jumppower, jumpnum, heart, rgb);
 	buffer.foe.SetSpawn(x, y);
 	EnemyList.push_back(buffer);
 }
 
 void Enemy::StackEnemy(float x, float y, int speed, int jumppower, int jumpnum, int heart, COLORREF rgb)
 {
-	WaitingEnem.push_back(Character(x, y, speed, jumppower, jumpnum, heart, rgb));
+	WaitingEnem.push_back(Character(-1, x, y, speed, jumppower, jumpnum, heart, rgb));
 }
 
 bool Enemy::StacktoPush(int x, int y)
@@ -31,15 +32,33 @@ bool Enemy::StacktoPush(int x, int y)
 	return true;
 }
 
-void Enemy::KillEnemy()
+void Enemy::KillEnemy(vector<EventStruct>* eventList)
 {
 	for (int i = 0; i < EnemyList.size(); i++)
 	{
 		if (EnemyList[i].foe.Heart <= 0)
 		{
+			for (int j = 0; j < eventList->size(); j++)
+			{
+				if (&EnemyList[i].foe == eventList->at(j).subject)
+				{
+					eventList->erase(eventList->begin() + j--);
+				}
+			}
 			EnemyList.erase(EnemyList.begin() + i--);
 		}
 	}
+	for (int j = 0; j < eventList->size(); j++)
+	{
+		for (int i = 0; i < EnemyList.size(); i++)
+		{
+			if (eventList->at(j).id == EnemyList[i].foe.id)
+			{
+				eventList->at(j).subject = &EnemyList[i].foe;
+			}
+		}
+	}
+
 }
 
 void Enemy::UpdatePath(HDC bufferDC, POINT CharainMap)
